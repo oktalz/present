@@ -1,0 +1,48 @@
+.template{TITLE}
+.header
+.div{font-size: 5svh; margin-bottom: 0px!important; margin-left: 3svw;}(##  {{.}})
+<hr>
+.header.end
+.footer
+.div{font-size: 5svh; position: absolute; left: 91svw; bottom: 0svh;}(.image(icon.png 8svw:))
+.footer.end
+.template.end
+
+.template{MAIN_MEET}
+.div{"font-size: 5svh; margin-bottom: 0px!important; margin-left: 20svw;"}(## .link{#MENU#}({{.}}))
+<hr>
+.div{"position: absolute; top: 1svh; left: 0svh; ;"}(.image(assets/images/1.png :12svh))
+.slide.enable.overflow
+.//.slide.link.previous #MENU#
+.template.end
+
+.template{MEETING}
+.MAIN_MEET{Go meetup - {{ . }}}
+.slide.link({{.}})
+.slide.title({{.}})
+.slide.link.previous(#MENU#)
+
+.template.end
+
+.TITLE{Meetings}
+.slide.link(#MENU#)
+.slide.title(Menu)
+.slide.link.next(#security#)
+
+### 2024
+- .link{2024-07-06}(`06.07`)
+- .link{2024-07-07}(`07.07`)
+.================================
+.MEETING{2024-07-06}
+
+- topics
+  - topic 1
+  - topic 2
+- speakers
+  - speaker 1
+  - speaker 2
+.================================
+.MEETING{2024-07-07}
+
+- something
+- something else

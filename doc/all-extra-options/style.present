@@ -1,0 +1,33 @@
+
+.// image
+.image(link.png)
+.image(link.png :5svh)
+.image(link.png 3svw:)
+.image(link.png 12svw:12svh)
+
+.// background
+.global.background(assets/images/golang-back-empty.png)
+.slide.background(assets/images/golang-back-empty.png)
+.global.background-color(#FFFFFF)
+.slide.background-color(#FFFFFF)
+
+.// enable overflow on slide, scrollbar will appear if content is longer
+.slide.enable.overflow
+
+.// replace directives
+.replace{#ReplaceID#}(markdown)
+
+.// replace,after is triggered after slide generation
+.replace.after{#ReplaceID#}(markdown)
+
+.// center data
+.center
+markdown
+.center.end
+
+.// apply HTML style to markdown data
+.{"font-size: 4svh"}(markdown)
+.div{"font-size: 4svh"}(markdown)
+.css{"font-size: 4svh"}
+markdown
+.css.end

@@ -1,0 +1,23 @@
+graph LR;
+   subgraph K8s
+        API
+    end
+
+   subgraph ControllerSG[Ingress Controller]
+        K8sInformers
+
+        subgraph LoopSG[Event Loop]
+
+                Event{Event}
+                Event --> K8sEV[k8s event]
+                K8sEV --> Storage[Storage + Runtime]
+                Storage --> Loop
+                Event --> Command
+                Command --> Config[Update configuration]
+                Config --> Loop
+                Loop --> Event
+        end
+   end
+
+   API --> K8sInformers
+   K8sInformers --> Event

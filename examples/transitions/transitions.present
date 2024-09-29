@@ -1,0 +1,127 @@
+# transitions
+.notes
+this is an example of transitions
+.notes.end
+
+- transitions are also available
+.transition
+- you can add new content to the same page
+.transition
+- last line
+.notes
+where with `cut` you can add content to the screen,
+but page does not change
+.notes.end
+
+use `.transition` (needs to be on start of the line).
+slide content will be split to two pages
+(only last one seen when printing )
+
+```txt
+- transitions are also available
+#dot#transition
+- you can add new content to the same page
+#dot#transition
+- last line
+```
+.================================
+# transitions
+.notes
+instead of adding new content, you can also replace the content
+.notes.end
+
+- transitions are also available
+.transition.clean
+# transitions
+- but you can 'reset the state of the screen'
+.transition.clean
+# transitions
+- but you can 'reset the state of the screen' - second time
+.notes
+where with `cut` you can add content to the screen,
+but page does not change
+.notes.end
+
+use `.transition.clean` (needs to be on start of the line)
+
+```txt
+ # transitions
+ - transitions are also available
+ .transition.clean
+ # transitions
+ - but you can 'reset the state of the screen'
+ .transition.clean
+ # transitions
+ - but you can 'reset the state of the screen' - second time
+```
+
+.================================
+# transitions - advanced -1
+
+.replace{#empty#}()
+.replace{#check1#}(:white_check_mark:)
+.notes
+so lets see how we can use replace with transitions
+we have two options, and we want to show that one is the correct one
+.notes.end
+
+- option one #empty#
+- option two
+.transition{#empty#}(#check1#)
+
+.transition
+`.transition{ORIGINAL}(RESULT)` -> replaces one template with another on transition
+`.transition(ORIGINAL){RESULT}` -> alternative
+.notes
+we can use cut and after that keyword mention what replace command is
+replaced with new content.
+in this case we define two replace blocks,
+one that is empty and second one
+that contains checkmark
+.notes.end
+```txt
+#dot#replace{-hashtag-empty-hashtag-}()
+#dot#replace{-hashtag-check-hashtag-}(:white_check_mark:)
+
+- option one -hashtag-empty-hashtag-
+- option two
+#dot#transition{-hashtag-empty-hashtag-}(-hashtag-check-hashtag-)
+```
+.================================
+# transitions - advanced - 2
+.notes
+let see another more complex example
+
+yes, this start to look like a code now, not a text,
+but some effects require that, especially one with animations
+.notes.end
+
+.replace{#spinner#}(.{color:green}(.bx{bx-loader-circle bx-spin}))
+.replace{#check#}(.{color:green}(.bx{bx-check}))
+.replace{#empty#}()
+.replace{#done#}( is done.)
+
+#spinner# topic one #empty#
+.transition{#spinner#}(#check#).transition{#empty#}(#done#)
+
+#spinner# topic two
+.transition{#spinner#}(#check#)
+
+`.transition{ORIGINAL}(RESULT).transition{ORIGINAL2}(RESULT2)` -> more than one replaces can be used (in one line to be in same transition)
+.notes
+each cut or transition can have multiple replaces,
+and effect of the first change must be
+accounted for on second one
+
+just as a note, multiple replaces can be used on one transition
+.notes.end
+```txt
+#dot#replace{-hashtag-spinner-hashtag-}(#dot#bx{bx-loader-circle bx-spin})
+#dot#replace{-hashtag-check-hashtag-}(#dot#{color:green}(#dot#bx{bx-check})
+
+.{color:green}(-hashtag-spinner-hashtag-) topic one  #empty#
+#dot#transition{-hashtag-spinner-hashtag-}(-hashtag-check-hashtag-)#dot#transition{#dot#empty#}(#done#)
+
+.{color:green}(-hashtag-spinner-hashtag-) topic two
+#dot#transition{-hashtag-spinner-hashtag-}(-hashtag-check-hashtag-)
+```

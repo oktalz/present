@@ -1,0 +1,64 @@
+.global.font-size(5svh)
+.title(Present - example slides)
+
+.replace.after{#space#}(&nbsp;)
+.replace.after{#dot#}(.)
+.replace.after{#amp#}(&amp;)
+.replace.after{-hashtag-}(#)
+.replace.after{#backtick#}(`)
+.replace.after{#equal#}(=)
+.replace.after{#brace#}({)
+.replace.after{#div#}(&lt;div&gt;)
+
+.template{TITLE}
+.header
+.style "font-size: 5svh; margin-left: 2svw;" ## {{ . }}
+<hr>
+.header.end
+
+.footer
+.footer.end
+.template.end
+
+.template{FOOTER_TITLE}
+.header
+.style "font-size: 5svh; margin-left: 2svw;" ## {{ . }}
+<hr>
+.header.end
+.footer
+my footer
+.footer.end
+
+.template.end
+
+.template{CAST_FOLDER}
+.cast.run{({{ .}})go run .}
+.template.end
+
+.template{TERMINAL}
+.cast.stream.edit.save(install.sh).run(sh install.sh)
+.template.end
+
+.template{CAST}
+.cast.stream.edit.save(mai1n.go).run(go run .).before(go mod init x)
+.template.end
+
+.template{TITLE_WITH_OVERFLOW}
+<p></p>
+.{font-size: 3.5svh; margin-bottom: 0px!important;}(## {{ . }})
+<hr>
+.slide.enable.overflow
+
+.template.end
+
+.template{CAST_NO_HEADER}
+.cast.stream.edit.save(main.go).run(go run .).before(go mod init x).show({{.}}:1000)
+.template.end
+
+.template{CAST_SHOW} .From .To
+.cast.stream.edit.save(main.go).run(go run .).before(go mod init x).show({{.From}}:{{.To}})
+.template.end
+
+.template{PLAYLINK}
+.style "position: absolute; top: 2svh; right: 10svh; ;" [{{.}}]({{.}})
+.template.end

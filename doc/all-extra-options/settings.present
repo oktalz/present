@@ -1,0 +1,49 @@
+.================================
+.// settings
+.title(seen as tab name)
+
+.// create an endpoint to API
+.api.endpoint(endpoint-path).path(dir).run(command)
+
+.// run specific command on index position of command on slide (index starts at 1)
+.run{index}(md-data)
+.run{1}(md-data)
+
+.// run button
+.global.hide.run.button
+.slide.hide.run.button
+
+.// page number
+.global.show.page.number
+.slide.show.page.number
+.global.hide.page.number
+.slide.hide.page.number
+
+.// flags for .transition do we show cut slides on print
+.global.keep.page.print.on.transition
+.slide.keep.page.print.on.transition
+
+.// add notes to slide (for presenter view)
+.notes
+my notes
+.notes.end
+
+.// admin view of slide
+.admin
+admin-md
+.admin.end
+
+.// header for slide
+.header
+header-md
+.header.end
+
+.// footer for slide
+.footer
+footer-md
+.footer.end
+
+.// set whether bullet points are automatic transition or not
+.global.dash.is.transition
+.slide.dash.is.transition
+.slide.dash.disable.transition

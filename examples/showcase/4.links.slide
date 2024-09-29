@@ -1,0 +1,57 @@
+.================================
+.TITLE{Links}
+
+.slide.link(#link0#)
+.slide.link.next(#linkNothing#)
+
+pick :cat: or :dog: (click with mouse)
+.center
+.css{font-size: 35svh;}
+.link{#link1#}(:cat:) .link{#link2#}(:dog:)
+.css.end
+.center.end
+
+- see source for code
+
+.================================
+.TITLE{Links :cat:}
+
+.slide.link(#link1#)
+.slide.link.next(#link3#)
+
+.div{"font-size: 55svh; text-align:center;"}(:cat:)
+.================================
+.TITLE{Links :dog:}
+
+.slide.link(#link2#)
+.slide.link.previous(#link0#)
+.slide.link.next(#link3#)
+
+.div{"font-size: 55svh; text-align:center;"}(:dog:)
+.================================
+.TITLE{Links :confused:}
+
+no pick ?
+
+.div{"font-size: 55svh; text-align:center;"}(:confused:)
+
+.slide.link(#linkNothing#)
+.slide.link.next(#linkEndLoop#)
+.slide.link.previous(#link0#)
+.================================
+.TITLE{Links :cat: & :dog:}
+
+happy path
+
+.div{"font-size: 55svh; text-align:center;"}(:+1:)
+
+.slide.link(#link3#)
+.slide.link.previous(#link0#)
+.slide.link.next(#linkEndLoop#)
+.================================
+.TITLE{Links}
+
+next slide from all paths
+
+.slide.link(#linkEndLoop#)
+.slide.link.previous(#link0#)

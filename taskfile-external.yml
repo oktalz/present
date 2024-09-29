@@ -1,0 +1,51 @@
+#https://taskfile.dev/
+version: '3'
+
+vars:
+  BOXICONS_VERSION: 2.1.4
+  HIGHLIGHT_JS_VERSION: 11.10.0
+  MERMAID_JS_VERSION: 11.2.1
+  CHART_JS_VERSION: 4.4.4
+
+tasks:
+  mermaidjs-check-latest-version:
+      desc: 'check if mermaid.js is up to date'
+      silent: true
+      cmds:
+        - |
+          if [ "{{.LATEST_VERSION}}" != "mermaid@{{.MERMAID_JS_VERSION}}" ]; then
+            echo "mermaid.js can be updated from v{{.MERMAID_JS_VERSION}} to {{.LATEST_VERSION}}"
+          fi
+      vars:
+        LATEST_VERSION:
+          sh: curl --silent "https://api.github.com/repos/mermaid-js/mermaid/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/'
+
+  highlightjs-check-latest-version:
+      desc: 'check if highlight.js is up to date'
+      silent: true
+      cmds:
+        - |
+          if [ "{{.LATEST_VERSION}}" != "{{.HIGHLIGHT_JS_VERSION}}" ]; then
+            echo "highlight.js can be updated from v{{.HIGHLIGHT_JS_VERSION}} to {{.LATEST_VERSION}}"
+          fi
+      vars:
+        LATEST_VERSION:
+          sh: curl --silent "https://api.github.com/repos/highlightjs/highlight.js/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/'
+
+  external:
+    desc: 'download all external libraries'
+    deps:
+      - task: highlightjs-check-latest-version
+      - task: mermaidjs-check-latest-version
+    cmds:
+      - mkdir -p ui/static
+      - wget -q -O ui/static/chart.js https://cdn.jsdelivr.net/npm/chart.js@{{.CHART_JS_VERSION}}/dist/chart.umd.min.js
+      - wget -q -O ui/static/mermaid.min.js https://cdn.jsdelivr.net/npm/mermaid@{{.MERMAID_JS_VERSION}}/dist/mermaid.min.js
+      - wget -q -O ui/static/highlight.min.js https://cdnjs.cloudflare.com/ajax/libs/highlight.js/{{.HIGHLIGHT_JS_VERSION}}/highlight.min.js
+      - wget -q -O ui/static/highlight.min.css https://cdnjs.cloudflare.com/ajax/libs/highlight.js/{{.HIGHLIGHT_JS_VERSION}}/styles/default.min.css
+      - wget -q -O ui/static/boxicons.js https://unpkg.com/boxicons@{{.BOXICONS_VERSION}}/dist/boxicons.js
+      - wget -q -O ui/static/boxicons.min.css https://unpkg.com/boxicons@{{.BOXICONS_VERSION}}/css/boxicons.min.css
+      - mkdir -p ui/static/fonts
+      - wget -q -O ui/static/fonts/boxicons.woff2 https://cdn.jsdelivr.net/npm/boxicons@latest/fonts/boxicons.woff2
+      - wget -q -O ui/static/fonts/boxicons.woff https://cdn.jsdelivr.net/npm/boxicons@latest/fonts/boxicons.woff
+      - wget -q -O ui/static/fonts/boxicons.ttf https://cdn.jsdelivr.net/npm/boxicons@latest/fonts/boxicons.ttf

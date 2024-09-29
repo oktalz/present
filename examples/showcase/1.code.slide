@@ -1,0 +1,297 @@
+.TITLE{Code}
+
+.notes
+code blocks are also supported,
+and standard coloring is applied to them
+.notes.end
+
+```go
+func main() {
+    fmt.Println("hello world")
+}
+```
+
+code:
+```txt
+#backtick##backtick##backtick#go
+func main() {
+    fmt.Println("hello world")
+}
+#backtick##backtick##backtick#
+```
+
+.================================
+.TITLE{Code}
+
+```python
+x = 1
+if x == 1:
+    # indented four spaces
+    print("x is 1.")
+```
+
+code:
+```txt
+#backtick##backtick##backtick#python
+x = 1
+if x == 1:
+    # indented four spaces
+    print("x is 1.")
+#backtick##backtick##backtick#
+```
+
+.================================
+.notes
+what is new here though is you can specify additional commands
+before the block
+we can see here list of all possible options
+
+first of all. we need to start with cast, after cast keyword,
+in same line we can specify multiple attributes
+
+as we see, file is here to save code to a file,
+some programming languages are sensitive to extensions we need to use.
+by default code is executed and just returned
+we can use stream that allows you to demonstrate time sensitive operations.
+edit is a nice feature that allows you to edit code in browser.
+before and after allow you to execute commands before and after code block
+(to prepare environment, for example setting right context in k8s)
+parallel allows you to run code in parallel to yours,
+a good example of that is having server in background
+and running client to connect to it.
+
+let's see some examples
+
+.notes.end
+.TITLE{Code - Running blocks}
+.slide.font-size(3.7svh)
+
+- `#dot#cast`
+  - by default runs in tmp folder
+  - `.save(filename)` - save content of block after command to a file
+  - `.stream` - use streaming of data
+  - `.edit` - allow editing of data/code in browser
+  - `.before(cmd)` - execute command before code block
+    - `.before({folder}cmd)` - specify folder where command will be executed (can be repeated)
+  - `.after(cmd)` - execute command after code block
+    - `.after({folder}cmd)` - specify folder where command will be executed (can be repeated)
+  - `.parallel(cmd)` - run code in parallel
+    - `.parallel({folder}cmd)` - specify folder where command will be executed (can be repeated)
+  - `.show(from:to)` - show only specific part of the code
+
+.================================
+.TITLE{Code - Running Example (editable)}
+.notes
+when we have those commands, a small button
+to run the code will be displayed
+also run can be triggered with simply pressing 'r'
+
+after running the code, result will be displayed
+in the window on top of the presentation
+.notes.end
+
+.slide.font-size(4.3svh)
+
+.CAST
+```go
+package main
+
+import (
+  "fmt"
+  "slices"
+)
+
+func main() {
+  s1 := []string{"a", "b", "c"}
+  s2 := []string{"d", "e"}
+  s3 := []string{"f"}
+  res := slices.Concat(s1, s2, s3)
+  fmt.Println(res)
+}
+```
+
+📜 use `r` key to run the code and `c` to close the terminal
+.================================
+.TITLE{Code - Omitting the code}
+.slide.font-size(4.35svh)
+.notes
+as said before, we can show only specific part of the code
+to show only `fmt.Println("hello world")`line needs to be set before code block:
+.notes.end
+
+
+.cast.edit.save(main.go).run(go run .).before(go mod init x).show(8:8)
+```go
+package main
+
+import (
+  "fmt"
+)
+
+func main() {
+  fmt.Println("hello world")
+}
+```
+example:
+`#dot#cast#dot#edit.save(main.go).run(go run .).before(go mod init x).show(8:8)`
+```txt
+package main
+
+import (
+  "fmt"
+)
+
+func main() {
+  fmt.Println("hello world")
+}
+```
+
+.================================
+.TITLE{Code - templates}
+
+.notes
+if we do repetitive code calls, we can create template and use that.
+for example terminal call, go code examples and many more
+.notes.end
+
+.TERMINAL
+```sh
+pwd
+```
+
+```txt
+#dot#template TERMINAL
+#dot#cast.block.stream.edit.save(install.sh).run(sh install.sh)
+#dot#template.end
+
+#dot#TERMINAL
+#backtick##backtick##backtick#sh
+pwd
+#backtick##backtick##backtick#
+
+```
+
+
+
+.================================
+.TITLE{Code - Result}
+.notes
+code is usually executed and returned
+sometimes is useful to show how much time
+execution of specific commands took
+.notes.end
+.slide.font-size(4.33svh)
+`#dot#cast#dot#edit.save(main.go).run(go run .).before(go mod init x).show(9:11)`
+
+.cast.edit.save(main.go).run(go run .).before(go mod init x).show(9:11)
+```go
+package main
+
+import (
+  "fmt"
+  "time"
+)
+
+func main() {
+  fmt.Println("hello")
+  time.Sleep(3 * time.Second)
+  fmt.Println("world")
+}
+```
+.transition
+sometimes execution time is important.
+we can show it by adding `.stream` to the list
+
+`#dot#cast#dot#stream.edit.save(main.go).run(go run .).before(go mod init x).show(9:11)`
+
+.cast.stream.run(go run .)
+.notes
+adding .stream will trigger streaming of data
+.notes.end
+
+.================================
+.TITLE{Code - Running code from folder}
+.notes
+since some examples can be complex,
+commands can be executed from specific folder
+that is prepared in advance
+
+this does not require showing of the code on screen
+of course, in order to execution to work properly,
+all applications used needs to be installed.
+for example, shown command is not able to be executed
+if *Go* is not installed
+
+any kind of terminal command can be executed
+.notes.end
+
+- command to execute specific command in specified folder and return result
+
+.cast.path(hello-world).run(go run .)
+```txt
+#dot#cast.path(hello-world).run(go run .)
+```
+- no need to have code displayed
+
+:warning: example does not work if *Go* is not installed
+:warning: any kind of terminal command can be executed
+.================================
+.TITLE{Slides}
+.notes
+since we want to have multiple slides, we needs to have them separated somehow
+as seen here, multiple ways are allowed
+.notes.end
+
+slide separator is `.===` or `.---` (needs to be on start of the line)
+
+- number of `=`/`-` needs to be at least 3, more is allowed (to have better readability)
+  - `.================================` OK
+  - `.--------------------------------` OK
+
+.================================
+.TITLE{Notes}
+
+.notes
+for presentations, sometimes is useful to have notes.
+In order to define them use notes keyword
+
+to see them, append ?notes to URL.
+tabs will sync with each other
+
+also, you can just write comments that are only seen in file
+.notes.end
+
+```txt
+#dot#notes
+my comment
+#dot#notes.end
+```
+
+.// in file comment, no seen anywhere
+```txt
+#dot#// in file comment, no seen anywhere
+```
+by default [http://localhost:8080/?notes#39](http://localhost:8080/?notes#39m) -> open in different tab
+
+tabs will sync with each other
+.================================
+.TITLE{Settings}
+
+.notes
+.notes.end
+.slide.background-color(#FFFFFF)
+```txt
+#dot#title(seen as tab name)
+
+#dot#global.font-size(5svh)
+#dot#slide.font-size(5svh)
+
+#dot#global.background-color(#FFFFFF)
+#dot#slide.background-color(#FFFFFF)
+
+#dot#slide.background(assets/images/golang-back-empty.png)
+
+#dot#global.dash.is.transition
+#dot#slide.dash.is.transition
+#dot#slide.dash.disable.transition
+```

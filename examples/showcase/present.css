@@ -1,0 +1,27 @@
+.bx.bx-spin {
+  animation-duration: 3s
+}
+.bx.bx-tada {
+  animation-duration: 3s
+}
+.bx.bx-flashing {
+  animation-duration: 3s
+}
+.bx.rotate-cw {
+  animation-duration: 3s
+}
+.bx.rotate-ccw {
+  animation-duration: 3s
+}
+
+#webcam {
+  width: 70vw; /* 80% of the viewport width */
+  height: 70vh; /* 80% of the viewport height */
+  position: absolute;
+  top: 15svh;
+  right: 0svw;
+}
+
+pre.mermaid .plot rect {
+  fill: steelblue;
+}

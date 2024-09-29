@@ -1,0 +1,22 @@
+.// code
+.// show code from filesystem (use relative to file, for sharing purposes)
+.block.source(filename).path(/path/to/code)
+.// show(From:To) will only display lines From:To - human readable line numbers, first line has index 1
+.block.source(filename).show(0:1000).path(/path/to/code).lang(go)
+.block.edit.source(filename).show(0:1000).path(/path/to/code).lang(go)
+
+.// cast
+.cast.path(dir).run(cmd)
+.cast.path(dir).run(${go run .})
+.cast.save(filename).run(cmd)
+.cast.save(main.go).run(go run .)
+.cast.edit.save(filename).run(cmd)
+.cast.edit.save(main.go).run(go run .).before(go mod init x)
+.cast.stream.edit.save(filename).run(cmd)
+.cast.stream.edit.save(main.go).run(go run .).before(go mod init x)
+.cast.stream.edit.show{0:1000}.path(/path/to/code).save(filename).run(cmd).before(cmd).after(cmd)
+.cast.stream.edit.show{0:1000}.path(dir).save(main.go).run(go run .).before(go mod init x).after()
+
+.// index needs to be a number (starting from index 1)
+.run{index}(md-data)
+.run{1}(md-data)

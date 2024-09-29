@@ -1,0 +1,139 @@
+.TITLE{pools - `experimental`}
+.slide.font-size(10svh)
+
+.table
+.tr
+.td
+.image(assets/images/1.png 15svw:15svh)
+.td
+.api.pool.1a.🐱{🐱}
+.td
+.api.pool.1a.🐶{🐶}
+.td
+.{font-size:5svh;}(open presentation in multiple browsers)
+.table.end
+
+.table
+.tr
+.td
+.css{width: 48svw}
+.graph.pool.pie{1a}(44svh)
+.css.end
+.td
+.css{width: 48svw}
+.graph.pool.bar{1a}(44svh)
+.css.end
+.table.end
+.{position: absolute; top: 18000svh; left: -24svw; }(.image(assets/images/1.png 85svw:85svh))
+.// ============================
+.admin
+.TITLE{pools - `experimental`}
+
+.style "max-height: 50svh!important; display: inline-table; width: 65svw; "
+.graph.pool.1.bar
+.style.end
+
+.table
+.tr
+.td
+.td
+.raw
+<video id="webcam" autoplay></video>
+<script>
+    const video = document.getElementById('webcam');
+
+    // Request access to the webcam
+    navigator.mediaDevices.getUserMedia({ video: true })
+        .then(stream => {
+            video.srcObject = stream;
+            video.setAttribute('autoplay', true);
+        })
+        .catch(error => {
+            console.error('Error accessing webcam:', error);
+        });
+</script>
+.raw.end
+.table.end
+.admin.end
+
+.================================
+.TITLE{Graphs - chart.js - bar - `experimental`}
+.raw
+<div style="height: 80svh;">
+  <canvas id="myChart1"></canvas>
+</div>
+<script>
+  const ctx1 = document.getElementById('myChart1');
+
+  new Chart(ctx1, {
+    type: 'bar',
+    data: {
+      labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'opt 1'],
+      datasets: [{
+        label: '# of Votes',
+        data: [12, 19, 3, 5, 2, 4],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+</script>
+.raw.end
+.================================
+.TITLE{Graphs - chart.js - pie - `experimental`}
+.raw
+<div style="height: 80svh;">
+  <canvas id="myChart2"></canvas>
+</div>
+<script>
+  const ctx2 = document.getElementById('myChart2');
+
+  config = {
+    type: 'pie',
+    data: {
+        labels: ['Red', 'Green', 'Blue'],
+        datasets: [{
+        label: 'My Dataset',
+        data: [300, 50, 100],
+        backgroundColor: ['red', 'green', 'blue']
+        }]
+    },
+    options: {
+        plugins: {
+
+      legend: {
+        labels: {
+          font: {
+            size: 64
+          }
+        }
+      }
+        }
+    }
+  };
+
+  new Chart(ctx2, config);
+</script>
+.raw.end
+.================================
+```mermaid
+%%{init: {'theme': 'default', 'themeVariables': { 'fontSize': '7svh' }}}%%
+xychart-beta
+    title "🐱 vs 🐶"
+    x-axis ["🐱", "🐶", na]
+    y-axis "" 0 --> 2
+    bar [1, 2, 1]
+
+```
+```mermaid
+pie title cats vs dogs
+    "cat" : 2
+    "dog" : 2
+    "rust" : 1
+```

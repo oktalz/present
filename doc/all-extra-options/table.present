@@ -1,0 +1,26 @@
+.// 1x2
+.table
+.tr
+.td
+markdown-1
+.td
+markdown-2
+.table.end
+
+.// 2x3
+.table
+.tr
+.td
+markdown-1
+.td
+markdown-2
+.td
+markdown-3
+.tr
+.td
+markdown-4
+.td
+markdown-5
+.td
+markdown-6
+.table.end

@@ -1,0 +1,165 @@
+.TITLE{Code}
+
+.notes
+code blocks are also supported,
+and standard coloring is applied to them
+.notes.end
+
+### Go
+
+```go
+package main
+
+import (
+  "fmt"
+)
+
+func main() {
+    fmt.Println("hello present")
+}
+```
+.================================
+.TITLE{Code}
+
+### Python
+
+```python
+x = 1
+if x == 1:
+    # indented four spaces
+    print("x is 1.")
+```
+.================================
+.TITLE{Code - Running Example (editable)}
+.notes
+when we have those commands, a small button
+to run the code will be displayed
+also run can be triggered with simply pressing 'r'
+
+after running the code, result will be displayed
+in the window on top of the presentation
+.notes.end
+
+.slide.font-size(4.3svh)
+
+.CAST
+```go
+package main
+
+import (
+  "fmt"
+  "slices"
+)
+
+func main() {
+  s1 := []string{"a", "b", "c"}
+  s2 := []string{"d", "e"}
+  s3 := []string{"f"}
+  res := slices.Concat(s1, s2, s3)
+  fmt.Println(res)
+}
+```
+
+📜 use `r` key to run the code and `c` to close the terminal
+.================================
+.TITLE{Code - Omitting the code}
+.slide.font-size(4.35svh)
+.notes
+as said before, we can show only specific part of the code
+to show only `fmt.Println("hello world")`line needs to be set before code block:
+.notes.end
+
+.cast.edit.save(main.go).run(go run .).before(go mod init x).show(8:8)
+```go
+package main
+
+import (
+  "fmt"
+)
+
+func main() {
+  fmt.Println("hello world")
+}
+```
+.================================
+.TITLE{Code - templates - `sh`}
+
+.notes
+if we do repetitive code calls, we can create template and use that.
+for example terminal call, go code examples and many more
+.notes.end
+
+.TERMINAL
+```sh
+pwd
+```
+.================================
+.TITLE{Code - templates - `go`}
+
+.notes
+if we do repetitive code calls, we can create template and use that.
+for example terminal call, go code examples and many more
+.notes.end
+
+.CAST_SHOW{From}(7){To}(9)
+```go
+package main
+
+import (
+  "fmt"
+)
+
+func main() {
+  fmt.Println("hello world")
+}
+```
+.================================
+.TITLE{Code - stream result}
+.notes
+code is usually executed and returned
+sometimes is useful to show how much time
+execution of specific commands took
+.notes.end
+.slide.font-size(4.33svh)
+
+.cast.edit.stream.save(main.go).run(go run .).before(go mod init x).show(9:11)
+```go
+package main
+
+import (
+  "fmt"
+  "time"
+)
+
+func main() {
+  fmt.Println("hello")
+  time.Sleep(3 * time.Second)
+  fmt.Println("world")
+}
+```
+.================================
+.TITLE{Code - Running code from folder}
+.notes
+since some examples can be complex,
+commands can be executed from specific folder
+that is prepared in advance
+
+this does not require showing of the code on screen
+of course, in order to execution to work properly,
+all applications used needs to be installed.
+for example, shown command is not able to be executed
+if *Go* is not installed
+
+any kind of terminal command can be executed
+.notes.end
+
+- command to execute specific command in specified folder and return result
+
+.cast.path(hello-world).run(go run .)
+```txt
+#dot#cast.path(hello-world).run(go run .)
+```
+- no need to have code displayed
+
+:warning: example does not work if *Go* is not installed
+:warning: any kind of terminal command can be executed

@@ -1,0 +1,116 @@
+.global.font-size(5svh)
+.title(Present - Go tutorial)
+
+.replace.after{#space#}(&nbsp;)
+.replace.after{#dot#}(.)
+.================================
+# Style - center align
+
+.center
+text that is **Bold** and centered
+
+a second line
+.center.end
+
+```txt
+#dot#center
+text that is **Bold**
+
+a second line
+#dot#center.end
+```
+.================================
+# Style - center align
+
+.center
+text that is **Bold** and centered
+
+a second line
+.center.end
+
+```txt
+#dot#center
+text that is **Bold**
+
+a second line
+#dot#center.end
+```
+.================================
+# Style - html styles
+
+.{text-shadow: 0 0 3px #FFFFFF, 0 0 15px #000000;}(**Go + VUE**)
+
+```md
+#dot#{text-shadow: 0 0 3px #FFFFFF, 0 0 15px #000000;}(**Go + VUE**)
+```
+
+.{color: red}(**Go + VUE**)
+
+```md
+#dot#{color: red}(**Go + VUE**)
+```
+
+.{color: white;background-color: green}(**Go + VUE**)
+
+```md
+#dot#{color: white; background-color: green}(**Go + VUE**)
+```
+
+.================================
+# Style - html styles - div
+
+.div{text-shadow: 0 0 3px #FFFFFF, 0 0 15px #000000;}(**Go + VUE**)
+
+```md
+#dot#div{text-shadow: 0 0 3px #FFFFFF, 0 0 15px #000000;}(**Go + VUE**)
+```
+
+.div{color: red}(**Go + VUE**)
+
+```md
+#dot#div{color: red}(**Go + VUE**)
+```
+
+.div{color: white;background-color: green}(**Go + VUE**)
+
+```md
+#dot#div{color: white; background-color: green}(**Go + VUE**)
+```
+
+.================================
+# Style - html styles - for block
+
+.css{text-shadow: 0 0 3px #FFFFFF, 0 0 15px #000000;}
+**Go + VUE**
+.css.end
+
+```md
+#dot#css{text-shadow: 0 0 3px #FFFFFF, 0 0 15px #000000;}
+**Go + VUE**
+#dot#css.end
+```
+
+#space#
+
+.css{color: white;background-color: aqua; text-align: right}
+**Go + VUE**
+.css.end
+
+.css{overflow: hidden}
+```md
+#dot#style color: gray;background-color: aqua; text-align: right
+**Go + VUE**
+#dot#style.end
+```
+.css.end
+
+.================================
+# Style - html styles - absolute
+
+.{position: absolute; top: 60svh; right: 10svw;}(absolute position 1)
+.{position: absolute; top: 80svh; right: 50svw;}(absolute position 2)
+
+```md
+#dot#{position: absolute; top: 60svh; right: 10svw;}(absolute position 1)
+#dot#{position: absolute; top: 80svh; right: 50svw;}(absolute position 2)
+```

@@ -1,0 +1,38 @@
+#https://taskfile.dev/
+version: '3'
+
+includes:
+  ci:
+    taskfile: taskfile-ci.yml
+    flatten: true
+  go:
+    taskfile: taskfile-go.yml
+    flatten: true
+  external:
+    taskfile: taskfile-external.yml
+    flatten: true
+
+tasks:
+
+  tools:
+    desc: 'Install all tools used in this project'
+    cmds:
+      - task: gofumpt
+      - task: lint-version
+
+  generate:
+    desc: 'generate the project documentation/README'
+    cmds:
+      - cat doc/README-start.md > README.md
+      - go run . --help >> README.md
+      - cat doc/README-end.md >> README.md
+
+  ci:
+    desc: 'do all the checks'
+    cmds:
+      - task: tidy
+      - task: format
+      - task: licenses
+      - task: generate
+      - task: lint
+      - task: test

@@ -1,0 +1,427 @@
+body {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100svh;
+
+  overflow: hidden;
+  font-family: 'Open Sans', Arial, sans-serif;
+}
+
+a, a:visited {
+  color: blue;
+  text-decoration: underline
+}
+
+#app {
+  width: 100%;
+  height: 100%;
+}
+
+.page-header-present{
+  top: 0svh;
+  margin: 0;
+  padding: 0;
+  position:absolute;
+  font-style: oblique;
+  right: 0;
+  margin-right: 2svw;
+  font-size: 3svh;
+  z-index: 10;
+}
+
+.page-footer-present{
+  bottom: 0px;
+  margin: 0;
+  padding: 0;
+  position:absolute;
+  font-style: oblique;
+  right: 0;
+  margin-right: 2svw;
+  font-size: 3svh;
+}
+
+code {
+  max-height: 80svh;
+  overflow: auto; /* Optional: Add scrollbars if content exceeds the height */
+}
+pre code.hljs {
+  padding: 0.5em !important;
+}
+
+
+.presenter-time {
+  margin-left: 0px;
+  bottom: 0px;
+  position:absolute;
+  left : 51svw;
+  padding-top: 1svh;
+  padding-right: 1svh;
+  color: rgb(107, 109, 109);
+  font-size: 12svh;
+  background-color: bisque;
+  z-index: 69242;
+}
+
+.presenter-current-time {
+  margin-left: 0px;
+  bottom: 0svh;
+  position:absolute;
+  right : 51svw;
+  padding-top: 1svh;
+  padding-right: 1svh;
+  color: rgb(107, 109, 109);
+  font-size: 12svh;
+  background-color: bisque;
+  z-index: 69242;
+}
+
+.presenter-comment {
+  margin-right: 0px;
+  top: 0px;
+  position:absolute;
+  right : 5px;
+  padding-top: 1svh;
+  padding-left: 1svh;
+  padding-right: 1svh;
+  color: rgb(107, 109, 109);
+  font-size: 5svh;
+  background-color: bisque;
+  z-index: 69242;
+}
+
+.menu{
+  margin-right: 0px;
+  top: 0px;
+  position:absolute;
+  right : 0;
+  padding-top: 1svh;
+  padding-left: 1svh;
+  padding-right: 1svh;
+  color: rgb(0, 0, 0);
+  font-size: 3.5svh;
+  background-color: #00ADD8;
+  z-index: 69142;
+  overflow-y: auto !important;
+  height: 100%;
+}
+
+.menu-hidden {
+  display: none;
+}
+
+p {
+  margin-block-start: 1svh;
+  margin-block-end: 1svh;
+}
+pre {
+  margin-block-start: 1svh;
+  margin-block-end: 1svh;
+}
+
+.slide {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100svh;
+  width: 100svw;
+  max-width: 100svw;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  margin: 0;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.screen-data {
+  height: 100svh;
+  width: 100svw;
+  max-width: 100svw;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  margin-top: 0svh;
+  margin-bottom: 0svh;
+  margin-left: 0svw;
+  margin-right: 0svw;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.slide-content {
+  height: 100svh;
+  width: 96svw;
+  max-width: 96svw;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  margin-top: 0svh;
+  margin-bottom: 0svh;
+  margin-left: 2svw;
+  margin-right: 2svw;
+  position: relative;
+  display: inline;
+  flex-direction: column;
+}
+.box-overflow {
+  overflow-y: auto;
+}
+.slide-footer{
+  bottom: 0px;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+}
+
+h1, h2, h3, h4, h5, h6, pre {
+  margin-top: 1svh;
+  margin-bottom: 1svh;
+}
+
+hr {
+  border: none;
+  height: 0.2svh;
+  /* Set the hr color */
+  color: #333;  /* old IE */
+  background-color: #333;  /* Modern Browsers */
+  margin: 0;
+  margin-bottom: 2svh;
+}
+
+.d2 {
+  width: 100%;
+  height: 100%;
+}
+
+.run2 {
+  display: inline-block;
+  background-color: antiquewhite;
+  font-size: 4svh;
+  font-family: cursive;
+  padding-left: 0.5svw;
+  padding-right: 0.5svw;
+  cursor: pointer;
+  border-color: black;
+  border-width: 2px;
+  border: 2px solid black;
+  border-bottom-left-radius: 1svh;
+  border-bottom-right-radius: 1svh;
+}
+
+.run {
+  display: inline-block;
+  font-size: 7svh;
+  font-family: cursive;
+  cursor: pointer;
+}
+
+.closed {
+ display: none;
+}
+
+.closed-permanently {
+ display: none;
+}
+
+.terminal {
+  margin-right: 1svw;
+  bottom: 1svh;
+  position:absolute;
+  right : 2svw;
+  color: rgb(214, 84, 48);
+  background-color: rgb(253, 246, 227);
+  min-width: 17ch !important;
+  min-height: 6ch !important;
+  max-height: 80svh;
+  width: max-content;
+  min-width: calc(15ch + env(screen-min-width));
+  max-width: 92svw;
+  padding: 15px;
+  border-radius: 20px;
+  border-color: black;
+  border-width: 2px;
+  font-family: 'Consolas';
+  font-style: normal;
+  font-size: 6svh;
+  border:3px solid black;
+  overflow: auto;
+  overflow-x: auto;
+  overflow-y: auto;
+  z-index: 69042;
+}
+
+.terminal-x {
+  position: absolute;
+  right: 0.6svw;
+  bottom: 0.5svh;
+  font-size: 2.5svw;
+  cursor: pointer;
+  z-index: 69042;
+}
+
+.rotate-cw {
+  animation: rotate-cw 3s infinite linear; /* Rotate for 3 seconds infinitely */
+}
+
+.rotate-ccw {
+  animation: rotate-ccw 3s infinite linear; /* Rotate in reverse */
+}
+
+@keyframes rotate-cw {
+  from {
+    transform: rotate(0deg); /* Start from 0 degrees */
+  }
+  to {
+    transform: rotate(360deg); /* End at 360 degrees (full rotation) */
+  }
+}
+
+@keyframes rotate-ccw {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+ul {
+  margin-block-start: 1svh;
+  margin-block-end: 1svh;
+  margin-left: 0.2em;
+}
+ol {
+  margin-block-start: 1svh;
+  margin-block-end: 1svh;
+  margin-left: 0.2em;
+}
+
+.tablinks {
+  font-size: 3.5svh;
+  border-left: 2px solid rgb(190, 190, 190) !important;
+  border-top: 2px solid rgb(190, 190, 190) !important;
+  border-right: 2px solid rgb(190, 190, 190) !important;
+  border-top-left-radius: 1svh;
+  border-top-right-radius: 1svh;
+  color: black;
+  background-color: #fdf6e3;
+  text-align: center;
+  cursor: pointer;
+}
+
+.tab {
+  display: flex;
+  width: fit-content;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: rgb(0, 0, 0);
+  text-align: center;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+  font-family: monospace;
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+  background-color: white;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding-left: 0.5svw;
+  padding-right: 0.5svw;
+  padding-top: 0.5svh;
+  transition: 0.3s;
+  margin-left: 0.5svw;
+}
+.tabs pre {
+  margin-block-start: 0;
+}
+.tabcontent pre {
+  margin-top: 0;
+}
+.hidden-tab {
+  display: none;
+}
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #ddd;
+}
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: #bababa;
+}
+
+pre > svg {
+  max-width: 94svw!important;
+  max-height: 94svh!important;
+}
+
+@media print {
+  html, body {
+    /* This rule is empty deliberately */
+  }
+  body {
+    overflow: hidden; /* Hide scrollbar */
+  }
+  @page {
+    size: landscape;
+  }
+  head, title, a[href]:after {
+      display: none;
+  }
+  .page-break {
+    page-break-after: always;
+  }
+  .hidden {
+    overflow: hidden;
+  }
+  .run {
+    display: none;
+  }
+  .page-not-print-visible{
+    display: none;
+  }
+  .menu {
+    display: none;
+  }
+  .presenter-current-time {
+    display: none;
+  }
+  .presenter-time {
+    display: none;
+  }
+  .presenter-comment {
+    display: none;
+  }
+}
+
+@media screen {
+  .hidden {
+    height: 0px;
+    max-height: 0;
+    margin: 0;
+  }
+  .page-not-print-visible{
+    /* This rule is empty deliberately */
+  }
+}
+
+/* scrollbar */
+::-webkit-scrollbar {
+  width: 1svh;
+  height: 1svh;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+  background: #93999d;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+  width: 3svh;
+  height: 3svh;
+}
+/* scrollbar end */

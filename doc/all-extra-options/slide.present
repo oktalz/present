@@ -1,0 +1,22 @@
+.// start new slide with .=== (3 is minimum)
+.================================
+
+.// on slide entering run this js code
+.slide.actions.js(myJSFunc())
+
+.// print settings
+.slide.print.disable
+.slide.print.only
+
+.// links
+.slide.link(#slideID#)
+.slide.link.next(#slideID#)
+.slide.link.previous(#slideID#)
+.// link to specific slide
+.link{#slideID#}(markdown)
+
+.// create a transition, allow modifiers of data
+.transition
+.transition.clean
+.transition{#OldID#}{#NewID#}
+.transition{#OldID#}{#NewID#}.transition{#OldID#}{#NewID#}

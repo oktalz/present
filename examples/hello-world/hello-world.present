@@ -1,0 +1,58 @@
+.global.font-size(5svh)
+.title(Present - Go tutorial)
+
+.================================
+# Examples
+
+text that is **Bold**
+
+```txt
+text that is **Bold**
+```
+
+text that is *Italics*
+
+```txt
+text that is *Italics*
+```
+
+text that is `highlighted`
+
+```txt
+text that is `highlighted`
+```
+
+text that is ~strikethrough~
+```txt
+text that is ~strikethrough~
+```
+.================================
+# Headers
+
+# Size 1
+## Size 2
+### Size 3
+#### Size 4
+
+```md
+# Size 1
+## Size 2
+### Size 3
+#### Size 4
+```
+.================================
+# Bullet points
+
+- One
+  - Two
+- Three
+  - Four
+    - Five
+
+```md
+- One
+  - Two
+- Three
+  - Four
+    - Five
+```

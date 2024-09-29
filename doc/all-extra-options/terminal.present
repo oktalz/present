@@ -1,0 +1,9 @@
+.// set values globally
+.global.terminal.font-size(5svh)
+.global.terminal.font-color(5svh)
+.global.terminal.background-color(color)
+
+.// set values per slide
+.slide.terminal.font-size(5svh)
+.slide.terminal.font-color(5svh)
+.slide.terminal.background-color(color)

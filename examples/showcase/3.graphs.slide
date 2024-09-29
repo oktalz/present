@@ -1,0 +1,75 @@
+.================================
+.TITLE{Graphs - mermaid}
+
+.block.path(graphs).source(k8sIC.mermaid).lang(mermaid)
+
+```txt
+#dot#block.path(graphs)#dot#source(k8sIC.mermaid).lang(mermaid)
+```
+
+.{color:blue}(.bx{bxs-info-circle}) `.lang(mermaid)` is not needed if extension matches block type
+
+.================================
+.TITLE{Graphs - d2}
+
+.css{width: 100svw; height: 60svh; overflow: hidden; font-size: 4svh!important;}
+.block.path(graphs).source({graphs}scheduler.d2)
+.css.end
+
+.slide.font-size(3.78svh)
+```txt
+#dot#css{width: 100svw; height: 75svh; overflow: hidden; font-size: 4svh!important;}
+#dot#block.path(graphs).source(scheduler.d2)
+#dot#css.end
+```
+.================================
+.//# Emoji
+.slide.font-size(4.9svh)
+.TITLE{Emoji}
+
+:joy: :star: :exclamation: :fire: :+1:
+:speech_balloon: :thought_balloon: :warning: :construction:
+
+😂 ⭐ ❗ 🔥 👍 💬 💭 ⚠️ 🚧
+
+```txt
+:joy: :star: :exclamation: :fire: :+1:
+:speech_balloon: :thought_balloon: :warning: :construction:
+
+😂 ⭐ ❗ 🔥 👍 💬 💭 ⚠️ 🚧
+```
+
+in general its better to use unicode characters directly
+list can be found here [https://unicode.org/emoji/charts/full-emoji-list.html](https://unicode.org/emoji/charts/full-emoji-list.html)
+
+🙈🙉🙊
+.================================
+.TITLE{Icons}
+.slide.font-size(4.5svh)
+
+- Integrated support for [https://boxicons.com/](https://boxicons.com/)
+
+you can also use icons like .bx{bx-extension}
+.{color:red}(.bx{bx-info-circle}) .{color:blue}(.bx{bx-plus}) .bx{bxl-graphql}
+
+```txt
+you can also use icons like .bx#brace#bx-extension}
+.#brace#color:red}(.bx#brace#bx-info-circle})
+.#brace#color:blue}(.bx#brace#bx-plus}) .bx#brace#bxl-graphql}
+```
+.transition
+
+additionally `rotate-cw` and `rotate-ccw` can be used to rotate icon
+
+.{color:green}(.bx{bx-loader-circle rotate-cw})
+.{color:green}(.bx{bx-loader-circle rotate-ccw})
+.{color:green}(.bx{bx-refresh rotate-cw})
+.{color:green}(.bx{bx-refresh rotate-ccw})
+```txt
+additionally `rotate-ccw` can be used to rotate icon
+
+.#brace#color:green}(.bx#brace#bx-loader-circle rotate-ccw})
+.#brace#color:green}(.bx#brace#bx-loader-circle rotate-ccw})
+.#brace#color:green}(.bx#brace#bx-refresh rotate-cw})
+.#brace#color:green}(.bx#brace#bx-refresh rotate-ccw})
+```

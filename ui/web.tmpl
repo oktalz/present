@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="author" content="{{ or .Title "present" }}">
+  <link rel="icon" type="image/png" href="/icon.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ or .Title "present - tool for creating presentations" }}</title>
+  <style>
+    {{template "css" .}}
+    {{ if .CSS }}
+        {{ .CSS }}
+    {{ end }}
+  </style>
+  <link rel="stylesheet" href="highlight.min.css">
+  <script src="highlight.min.js"></script>
+  <script src="chart.js"></script>
+  <script src="mermaid.min.js"></script>
+  <script src="boxicons.js"></script>
+  <link href="boxicons.min.css" rel='stylesheet'>
+  <script>
+    hljs.highlightAll();
+    maxPage = {{len .Slides }} - 1;
+    let nextPageKeys = [{{range $index, $element := .PageNext}}{{if $index}}, {{end}}"{{$element}}"{{end}}]
+    let previousPageKeys = [{{range $index, $element := .PagePrevious}}{{if $index}}, {{end}}"{{$element}}"{{end}}]
+    let terminalCast = [{{range $index, $element := .TerminalCast}}{{if $index}}, {{end}}"{{$element}}"{{end}}]
+    let terminalClose = [{{range $index, $element := .TerminalClose}}{{if $index}}, {{end}}"{{$element}}"{{end}}]
+    let menuKey = [{{range $index, $element := .MenuKey}}{{if $index}}, {{end}}"{{$element}}"{{end}}]
+  </script>
+  <script>
+    {{template "js" .}}
+  </script>
+  <script>mermaid.initialize({startOnLoad: true});</script>
+  <script>
+  window.getPageDown = function(start, target) {
+  {{- range .Slides -}}
+    {{if ne .LinkPrev ""}}
+    if (start == {{.PageIndex}}) { return {{ .LinkPrev }} };
+    {{end}}
+  {{- end -}}
+    return target;
+  };
+  window.getPageUp = function(start, target) {
+  {{- range .Slides -}}
+    {{if ne .LinkNext ""}}
+    if (start == {{.PageIndex}}) { return {{ .LinkNext }} };
+    {{end}}
+  {{- end -}}
+    return target;
+  };
+  </script>
+</head>
+<body>
+<div id="app">
+  <div class="" id="spinner"></div>
+  {{template "notes" .}}
+  {{template "menu" .}}
+  {{- range .Slides -}}
+    {{template "slide" .}}
+  {{- end -}}
+</div>
+</body>
+<script>
+{{ if .JS -}}
+  {{ .JS }}
+{{ end -}}
+onPageChange = function() {
+    {{- range .Slides -}}
+      {{if ne .JS ""}}
+      if (page == {{.PageIndex}}){
+        {{ .JS }}
+      }
+      {{end}}
+    {{- end -}}
+      return;
+    };
+</script
+</html>
+
+{{ define "slide" }}
+  <div class="slide hidden {{- if .PrintDisable }} page-not-print-visible{{ end -}}" {{if not .PrintOnly}}id="slide-{{.PageIndex}}"{{end}} style="font-size: {{.FontSize}}; background-color: {{.BackgroundColor}}; background-image: url('{{.BackgroundImage}}');">
+  <div class="presenter-comment closed" id="notes-{{.PageIndex}}">
+    {{.Notes}}
+  </div>
+  <div class="page-header-present">
+    {{- if .HasCast }}
+    <div class="run {{- if .HideRunButton }} closed-permanently{{ end -}}" id="run-{{.PageIndex}}">
+      <i class='bx bxs-right-arrow' id="run-icon-{{.PageIndex}}" style="color: #00ADD8;"></i>
+    </div>
+    <div class="run closed" id="run-{{.PageIndex}}-refresh">
+      <i class='bx bx-loader-circle rotate-cw' style="color: #00ADD8;"></i>
+    </div>
+    {{- end }}
+  </div>
+  <div class="screen-data">
+    <div class="slide-header">
+      {{.Page.Header.HTML}}
+    </div>
+    <div class="slide-content {{- if .EnableOverflow }} box-overflow{{ end -}}">
+    {{if .IsAdmin}}
+      {{if .Admin.HTML}}
+        {{.Admin.HTML}}
+      {{else}}
+        {{.Page.Data.HTML}}
+      {{end}}
+    {{- else }}
+      {{.Page.Data.HTML}}
+    {{end}}
+    </div>
+    <div class="slide-footer">
+      {{.Page.Footer.HTML}}
+    </div>
+  </div>
+  <div class="page-footer-present">
+    {{- if .HasCast }}
+      <div class="terminal closed" id="terminal-{{.PageIndex}}" style="background-color: {{.TerminalBackgroundColor}}; color: {{.TerminalFontColor}};  font-size: {{.TerminalFontSize}};">{{ .HasCast }}</div>
+      <div id="terminalx-{{.PageIndex}}" class='closed terminal-x' >
+        <i class='bx bxs-x-square closed' onclick='closeTerminal()'></i>
+      </div>
+    {{- end }}
+    {{- if not .PrintDisable }}
+      {{- if not .HidePageNumber }}
+        {{.PagePrint }}
+      {{- end }}
+    {{- else }}
+      &nbsp;
+    {{- end }}
+  </div>
+  </div>
+  {{- if not .PrintDisable}}
+  <div class="page-break"></div>
+  {{- end}}
+{{ end }}
+
+{{ define "menu" }}
+  <div class="menu menu-hidden" id="menu">
+    <table>
+      {{- range .Menu -}}
+      <tr id="menu-{{.PageIndex}}">
+          <td onclick="setPageWithUpdate({{.PageIndex}})" style="cursor: pointer;">{{.PagePrint}}</td>
+          <td>&nbsp;&nbsp;&nbsp;</td>
+          <td onclick="setPageWithUpdate({{.PageIndex}})" style="cursor: pointer;">{{.Title}}</td>
+      </tr>
+      {{- end}}
+    </table>
+  </div>
+{{ end }}
+
+{{ define "notes" }}
+  <div class="presenter-time closed" id="presenter-time-top">
+    <span style="cursor: pointer;">
+      <i class='bx bx-pause' onclick="notesPause=true"></i>
+      <i class='bx bx-play' onclick="notesPause=false"></i>
+      <i class='bx bx-reset' onclick="notesCounter=0;document.getElementById('presenter-time').innerHTML='00:00'"></i>
+    </span>
+    <span id="presenter-time"></span>
+  </div>
+  <div class="presenter-current-time closed" id="presenter-current-time">
+
+  </div>
+{{ end }}

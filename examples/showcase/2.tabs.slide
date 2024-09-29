@@ -1,0 +1,40 @@
+.================================
+.replace{#active#}(active)
+.replace{#empty#}()
+.replace{#tab1#}(active)
+.replace{#tab2#}()
+.replace{#tab3#}()
+.TITLE{Tabs}
+
+.tabs
+.tab{#tab1#}(go.mod)
+.cast.save(go.mod)
+```go
+module hello
+
+go 1.23
+```
+.tab{#tab2#}(go.sum)
+.cast.save(go.sum)
+```go
+github.com/fsnotify/fsnotify v1.7.0 h1:8JEhPFa5W2WU7YfeZzPNqzMP6Lwt7L2715Ggo0nosvA=
+github.com/fsnotify/fsnotify v1.7.0/go.mod h1:40Bi/Hjc2AVfZrqy+aj+yEI+/bRxZnMJyTJwOpGvigM=
+golang.org/x/sys v0.18.0 h1:DBdB3niSjOA/O0blCZBqDefyWNYveAYMNF1Wum0DYQ4=
+golang.org/x/sys v0.18.0/go.mod h1:/VUhepiaJMQUp4+oa/7Zr1D23ma6VTLIYjOOTFZPUcA=
+```
+.tab{#tab3#}(main.go)
+.cast.stream.edit.save(main.go).run(go run .).show(0:9)
+```go
+package main
+
+import (
+	"fmt"
+)
+
+func main() {
+	fmt.Println("hello world")
+}
+```
+.tabs.end
+.transition{#tab1#}(#empty#).transition{#tab2#}(#active#)
+.transition{#active#}(#empty#).transition{#tab3#}(#active#)

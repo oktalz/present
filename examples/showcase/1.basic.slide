@@ -1,0 +1,613 @@
+.================================
+.center
+.notes
+Hello,
+this is a new tool called present written in Go
+pages are generated with Go templates and displayed in browser.
+For printing, general idea is to use printing in browser, but unfortunately,
+this will only work in chromium like browsers.
+Before we start, I need to mention that if you open it in multiple tabs simultaneously
+it will synchronize your presentation.
+
+Lets show some of the features
+.notes.end
+.slide.title(Present)
+#space#
+
+.{font-size: 20svh;text-shadow: 0 0 3px #FFFFFF, 0 0 15px #000000;}(**Present**)
+
+.image(https://go.dev/images/gophers/biplane.svg 25svw:25svh)
+
+.center.end
+
+.{position: absolute; top: 35svh; right: 15svh; transform: rotate(15deg);}(.image(assets/images/3.png :50svh))
+.{position: absolute; bottom: 0svh; left: 45svw;}(.image(assets/images/4.png 10svw:10svw))
+.{position: absolute; top: 35svh; left: 15svh; transform: rotate(-15deg);}(.image(assets/images/3.png :50svh))
+
+.================================
+.slide.title(Info)
+#space#
+
+.notes
+
+
+
+
+
+As is says on the screen, most of examples will show a code block
+that will demonstrate how to write the code,
+but best way is of course to see the source directly.
+.notes.end
+
+Most examples will have a demo with effects and
+a code (in code block)
+
+```txt
+Most examples will have a demo with effects and
+a code (in code block)
+```
+.================================
+.slide.title(Markdown Support)
+#space#
+
+.notes
+basically everything supported in common mark
+(sort of standard for markdown format is supported here)
+plus there are some additional features needed for presentations
+and some helper functions that will help with writing presentation
+.notes.end
+
+text that is **Bold**
+
+```txt
+text that is **Bold**
+```
+
+text that is *Italics*
+
+```txt
+text that is *Italics*
+```
+
+text that is `highlighted`
+
+```txt
+text that is `highlighted`
+```
+
+text that is ~strikethrough~
+```txt
+text that is ~strikethrough~
+```
+
+.================================
+.// # Headers
+.slide.title(Headers)
+
+# Size 1
+## Size 2
+### Size 3
+#### Size 4
+
+#space#
+
+```md
+# Size 1
+## Size 2
+### Size 3
+#### Size 4
+```
+.================================
+# Bullet points
+
+- One
+  - Two
+- Three
+  - Four
+    - Five
+
+
+```md
+- One
+  - Two
+- Three
+  - Four
+    - Five
+```
+.================================
+#space#
+
+.notes
+what you will notice is that most of 'special' commands
+start with a dot in front of them
+(so its clear they are not part of the standard markdown)
+
+so first one present, is here to help
+with centering the information.
+
+beside starting of block, to end it
+you need to write .center.end
+
+compared to standard markdown, new line is a new line,
+similar what is github doing
+.notes.end
+
+.center
+text that is **Bold** and centered
+
+a second line
+
+For space between paragraph use empty line.
+line two is its own line (github like parsing)
+.center.end
+
+```txt
+#dot#center
+text that is **Bold**
+
+a second line
+
+For space between paragraph use empty line.
+line two is its own line (github like parsing)
+#dot#center.end
+```
+.================================
+# style
+
+.notes
+second one is style, style can be used in tow ways:
+first one you see here, where after the keyword
+quotation marks are surrounding the HTML style and
+everything after the quotation marks is
+data on which style will be applied
+
+please note that double quotation mark (") is not mandatory,
+but can be used to create more readable source
+.notes.end
+.global.font-size(4.5svh)
+
+```txt
+#dot#{css}(text to format)
+#dot#div{css}(text to format)
+#dot#css{css}
+text to format (multiline)
+#dot#css.end
+```
+
+.{text-shadow: 0 0 3px #FFFFFF, 0 0 15px #000000;}(**Go + VUE**)
+
+```md
+#dot#{text-shadow: 0 0 3px #FFFFFF, 0 0 15px #000000;}(**Go + VUE**)
+```
+
+.{"color: red"}(**Go + VUE**)
+
+```md
+#dot#{"color: red"}(**Go + VUE**)
+```
+
+.{"color: white;background-color: green"}(**Go + VUE**)
+
+```md
+#dot#{"color: white; background-color: green"}(**Go + VUE**)
+```
+.================================
+# transitions
+.notes
+this is an example of transitions
+.notes.end
+
+- transitions are also available
+.transition
+- you can add new content to the same page
+.transition
+- last line
+.notes
+where with `cut` you can add content to the screen,
+but page does not change
+.notes.end
+
+use `.transition` (needs to be on start of the line).
+slide content will be split to two pages
+(only last one seen when printing )
+
+```txt
+- transitions are also available
+#dot#transition
+- you can add new content to the same page
+#dot#transition
+- last line
+```
+.================================
+# transitions
+.notes
+instead of adding new content, you can also replace the content
+.notes.end
+
+- transitions are also available
+.transition.clean
+# transitions
+- but you can 'reset the state of the screen'
+.transition.clean
+# transitions
+- but you can 'reset the state of the screen' - second time
+.notes
+where with `cut` you can add content to the screen,
+but page does not change
+.notes.end
+
+use `.transition.clean` (needs to be on start of the line)
+
+```txt
+ # transitions
+ - transitions are also available
+ .transition.clean
+ # transitions
+ - but you can 'reset the state of the screen'
+ .transition.clean
+ # transitions
+ - but you can 'reset the state of the screen' - second time
+```
+
+.================================
+# #dot#replace
+
+.notes
+but for replacing things, there is a better way
+
+replace is used when same text needs
+to be used in multiple places, so instead of
+copying text you can write it once.
+
+also as I will show soon, this can be used with transitions
+to have some kind of dynamic changes on slide
+
+key can be anything, but readability  i use hashtag as shown in this example
+.notes.end
+
+### one line template
+
+```txt
+#dot#replace{<name>}(text to set, just one line, optional)
+```
+
+### example:
+
+.replace{#hello2#}(and then use them)
+
+you can define mini templates #hello2# in sentence
+
+```txt
+#dot#replace{#hello1#}(and then use them)
+
+you can define mini templates #hello1# in sentence
+```
+
+.================================
+# transitions - advanced -1
+
+.replace{#empty#}()
+.replace{#check1#}(:white_check_mark:)
+.notes
+so lets see how we can use replace with transitions
+we have two options, and we want to show that one is the correct one
+.notes.end
+
+- option one #empty#
+- option two
+.transition{#empty#}(#check1#)
+
+.transition
+`.transition{ORIGINAL}(RESULT)` -> replaces one template with another on transition
+`.transition(ORIGINAL){RESULT}` -> alternative
+.notes
+we can use cut and after that keyword mention what replace command is
+replaced with new content.
+in this case we define two replace blocks,
+one that is empty and second one
+that contains checkmark
+.notes.end
+```txt
+#dot#replace{-hashtag-empty-hashtag-}()
+#dot#replace{-hashtag-check-hashtag-}(:white_check_mark:)
+
+- option one -hashtag-empty-hashtag-
+- option two
+#dot#transition{-hashtag-empty-hashtag-}(-hashtag-check-hashtag-)
+```
+.================================
+# transitions - advanced - 2
+.notes
+let see another more complex example
+
+yes, this start to look like a code now, not a text,
+but some effects require that, especially one with animations
+.notes.end
+
+.replace{#spinner#}(.{color:green}(.bx{bx-loader-circle bx-spin}))
+.replace{#check#}(.{color:green}(.bx{bx-check}))
+.replace{#empty#}()
+.replace{#done#}( is done.)
+
+#spinner# topic one #empty#
+.transition{#spinner#}(#check#).transition{#empty#}(#done#)
+
+#spinner# topic two
+.transition{#spinner#}(#check#)
+
+`.transition{ORIGINAL}(RESULT).transition{ORIGINAL2}(RESULT2)` -> more than one replaces can be used (in one line to be in same transition)
+.notes
+each cut or transition can have multiple replaces,
+and effect of the first change must be
+accounted for on second one
+
+just as a note, multiple replaces can be used on one transition
+.notes.end
+```txt
+#dot#replace{-hashtag-spinner-hashtag-}(#dot#bx{bx-loader-circle bx-spin})
+#dot#replace{-hashtag-check-hashtag-}(#dot#{color:green}(#dot#bx{bx-check})
+
+.{color:green}(-hashtag-spinner-hashtag-) topic one  #empty#
+#dot#transition{-hashtag-spinner-hashtag-}(-hashtag-check-hashtag-)#dot#transition{#dot#empty#}(#done#)
+
+.{color:green}(-hashtag-spinner-hashtag-) topic two
+#dot#transition{-hashtag-spinner-hashtag-}(-hashtag-check-hashtag-)
+```
+.================================
+## Tables
+.notes
+even though tables are not officially part of the
+markdown specification, they can be used and format
+is the same as on most popular implementations
+.notes.end
+
+| First Header  | Second Header |
+|:-------------:| -------------:|
+| Content Cell 1 | Content Cell 2 |
+| Content Cell 3 | Content Cell 4 |
+
+```text
+| First Header  | Second Header |
+|:-------------:| -------------:|
+| Content Cell 1 | Content Cell 2 |
+| Content Cell 3 | Content Cell 4 |
+```
+
+| |
+|:-:| -:|
+| 5 | 6 |
+| 7| 8|
+
+```text
+| |
+|:-:| -:|
+| 5 | 6 |
+| 7 | 8 |
+```
+.================================
+## Tables
+.notes
+however, additional format was added
+that is more HTML like, but this one does not allow formatting
+.notes.end
+.slide.font-size(4.3svh)
+
+.table
+.tr
+.td table row 1 column 1
+.td 2
+.tr
+.td 3
+.td
+table row 2 column 2
+.tr
+.td 5
+.td 6
+.table.end
+
+```txt
+#dot#table
+#dot#tr
+#dot#td table row 1 column 1
+#dot#td 2
+#dot#tr
+#dot#td 3
+#dot#td
+table row 1 column 2
+#dot#tr
+#dot#td 5
+#dot#td 6
+#dot#table.end
+```
+
+.================================
+# Images
+.notes
+images can be defined with keyword image, there is a specific format
+where after the image, width and height are specified,
+its important to note that size can be define in any html format
+like pixels, but due to scaling, units relative to screen are best
+.notes.end
+
+.image(https://go.dev/images/gophers/biplane.svg 25svw:25svh)
+
+
+  image(url width:height) -> use `svw` & `svh` (relative to screen)
+
+```txt
+#dot#image(https://go.dev/images/gophers/biplane.svg 25svw:25svh)
+```
+
+.================================
+# Images
+
+.notes
+of course, combination of different keywords can be used
+.notes.end
+
+.center
+.image(assets/images/1.png 25svw:25svh)
+.center.end
+
+```txt
+#dot#center
+#dot#image(assets/images/1.png 25svw:25svh)
+#dot#center.end
+```
+
+.================================
+# Images - full screen
+.notes
+if we want to keep image size relative to width or height
+that is also possible, we can just omit the width or height
+.notes.end
+
+```txt
+#dot#center
+#dot#image(assets/images/2.png :100svh)
+#dot#center.end
+```
+.================================
+.center
+.image(assets/images/2.png :100svh)
+.center.end
+.================================
+# Images - centered
+```txt
+#dot#center
+#dot#image(assets/images/2.png :60svh)
+#dot#image(assets/images/3.png :60svh)
+#dot#center.end
+```
+.================================
+# Images - centered
+
+.center
+.image(assets/images/2.png :60svh)
+.image(assets/images/3.png :60svh)
+.center.end
+.================================
+# Images - absolute position & transition
+.slide.font-size(3.7svh)
+
+.notes
+in some occasions, more complex style can be used
+to exactly specify where image is shown.
+as seen here, even absolute position is used
+.notes.end
+
+```txt
+#dot#{"position: absolute; top: 51svh; left: 37svw; transform: rotate(180deg);""}(
+  #dot#image(assets/images/4.png :52svh)
+)
+#dot#{"position: absolute; bottom: -2svh; left: 15svh; transform: rotate(-15deg);"}(
+  #dot#image(assets/images/3.png :50svh)
+)
+#dot#{"position: absolute; bottom: 2svh; right: 15svh; transform: rotate(35deg);""}(
+  #dot#image(assets/images/3.png :50svh)
+)
+```
+
+.{"position: absolute; top: 51svh; left: 36svw; transform: rotate(180deg);""}(
+  .image(assets/images/4.png :52svh)
+)
+.{"position: absolute; bottom: -2svh; left: 15svh; transform: rotate(-15deg);"}(
+  .image(assets/images/3.png :50svh)
+)
+.{"position: absolute; bottom: 2svh; right: 15svh; transform: rotate(35deg);""}(
+  .image(assets/images/3.png :50svh)
+)
+.================================
+.template{MYTITLE}
+.{"font-size: 5svh"}(## {{ . }})
+<hr>
+.template.end
+.MYTITLE Templates - part one
+
+.notes
+we have shown replace directive, that is used to replace part of text
+but only as a single line.
+in ordered to have more complex system, Templates keyword is added.
+
+this allows you to create more complex solution.
+one of the obvious applications is using them with headers of the page
+in a way, this allows you to add custom keywords
+
+as seen here, you first define template specify its name and content
+to use it, you have to use the newly defined template keyword and
+content that will replaced.
+
+standard golang templates can be used here
+.notes.end
+
+```txt
+#dot#template MYTITLE
+#dot#{font-size: 5svh}(## {{ . }})
+<hr>
+#dot#template.end
+
+#dot#MYTITLE Templates - part one
+```
+
+- templates can be defined on start page and used in all others
+.================================
+.notes
+since Go templates also allows using multiple params
+we can do that here too,
+you define what are they, and then on call,
+you can write text separated by space.
+this is one limitation of this system, but if space is needed,
+HTML non breaking space can be used
+.notes.end
+
+.template{GOTITLE}(Title,Extra,Last)
+.{font-size: 5svh}(## {{ .Title }} - `"{{ .Extra }}"` {{ .Last }})
+<hr>
+.template.end
+
+.GOTITLE{Title}(Templates Go#space#News \o/)
+
+```txt
+#dot#template GOTITLE .Title .Extra .Last
+#dot#{font-size: 5svh}(## {{ .Title }} - `"{{ .Extra }}"` {{ .Last }})
+<hr>
+#dot#template.end
+
+#dot#replace.after{-hashtag-space#}(&nbsp;)
+
+#dot#GOTITLE Templates Go-hashtag-space#News \o/
+```
+
+- Go templates can be used
+- multiple attributes are separated by `space`
+  - when params do not exist, whole line is used for `{{.}}`
+  - replace can be used to add 'space'
+.================================
+.notes
+when we talk about templates, the most obvious example is title,
+because we want to have same look and feel on all pages,
+but on same topic, footer and headers are usually mentioned too.
+
+notice, that compared to code we created, that has margins,
+for headers and footers we need to specify it.
+that can be sees in this example, where header have such margin, but footer does not
+
+this does not need to specified like, this. we can do that with css settings.
+but more on that on example that specializes on templates
+.notes.end
+.FOOTER_TITLE Footers, Headers
+
+```txt
+#dot#template TITLE
+
+#dot#header
+#dot#style "font-size: 5svh; margin-left: 2svw;" ## {{ . }}
+<hr>
+#dot#header.end
+
+#dot#footer
+my footer
+#dot#footer.end
+
+#dot#template.end
+```

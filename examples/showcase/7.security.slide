@@ -1,0 +1,8 @@
+.TITLE{Security}
+.slide.link.previous(#MENU#)
+.slide.link(#security#)
+
+- presentation are usually run on local machine
+- option to run them *online* is also possible
+  - ⚠️- running in `localhost` mode - need reverse proxy
+  - ☣️- remote code execution !!! (needs additional options)

@@ -1,0 +1,10 @@
+
+.// font size
+.global.font-size(5svh)
+.slide.font-size(5svh)
+
+.// boxicon icons - https://boxicons.com/
+.bx{bx[ls]-name}
+.{color:HTML-color}(.bx{bx[ls]-name})
+.{color:HTML-color}(.bx{bx[ls]-name rotate-ccw})
+.{color:HTML-color}(.bx{bx[ls]-name rotate-cw})

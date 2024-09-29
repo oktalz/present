@@ -1,0 +1,35 @@
+.// inject raw data
+.raw{HTML}
+
+.// inject raw data - multiline
+.raw
+HTML
+.raw.end
+
+.// tabs, first tab active
+.tabs
+.tab{"active"}(tab-name-1)
+data
+.tab{}(tab-name-2)
+data
+.tabs.end
+
+.// tabs + Transitions
+.// first add replace directives to change active tab
+.replace{#active#}(active)
+.replace{#empty#}()
+.replace{#tab1#}(active)
+.replace{#tab2#}()
+.replace{#tab3#}()
+.// then add tabs
+.tabs
+.tab{#tab1#}(tab-name-1)
+data
+.tab{#tab2#}(tab-name-2)
+data
+.tab{#tab3#}(tab-name-3)
+data
+.tabs.end
+.// add transformers to the slide
+.transition{#tab1#}(#empty#).transition{#tab2#}(#active#)
+.transition{#active#}(#empty#).transition{#tab3#}(#active#)

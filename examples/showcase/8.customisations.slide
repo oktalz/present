@@ -1,0 +1,65 @@
+.================================
+.TITLE{Customizations}
+settings available for customization, create a `.env` file
+```txt
+ADMIN_PWD=AdminPassword123 - able to run examples
+ADMIN_PWD_DISABLE=true - disable automatic creating of admin password if ADMIN_PWD is not set
+USER_PWD=present - not needed, but available to limit access
+ASK_USERNAME=true - ask for username on login (for example to view attendance)
+PORT=8080
+NEXT_PAGE=ArrowRight,ArrowDown,PageDown,Space,e
+PREVIOUS_PAGE=ArrowLeft,ArrowUp,PageUp
+TERMINAL_CAST=r,b
+TERMINAL_CLOSE=c
+MENU=m
+```
+.================================
+.TITLE{Customizations}
+few settings available to tune it, create a `slide.css` file
+```css
+.bx.bx-spin {
+  animation-duration: 3s
+}
+.bx.bx-tada {
+  animation-duration: 3s
+}
+.bx.bx-flashing {
+  animation-duration: 3s
+}
+```
+.================================
+.TITLE{.raw}
+
+additionally, we can inject pure raw html content
+
+.raw{<br><br>&nbsp;&nbsp;} &lt;br>&lt;br> + two spaces
+```txt
+#dot#raw{<br><br>&nbsp;&nbsp;} &lt;br>&lt;br> + two spaces
+````
+additionally
+
+```txt
+#dot#raw
+  for more complex data
+#dot#raw.end
+```
+
+
+.================================
+.TITLE{Building a presentation}
+
+- live reloads
+- `_.slide` - prepended to all `.slide` files
+- `present.css` - used to inject css rules
+- `present.js` - used to inject js code
+- `present.env` - settings for running application
+- `.env` - setting for running application
+
+.================================
+.TITLE{Presentation sharing}
+
+- best way using `tar.gz`
+  1. enter folder, run `present zip`, this will create `present.tar.gz`
+  2. share file
+  3. `go install github.com/oktalz/present@latest`
+  4. `present present.tar.gz`

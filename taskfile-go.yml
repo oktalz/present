@@ -1,0 +1,20 @@
+#https://taskfile.dev/
+version: '3'
+
+tasks:
+
+  test:
+    desc: 'run Go tests'
+    cmds:
+      - CGO_ENABLED=1 go test -race -v ./...
+
+  install:
+    desc: 'build the project'
+    cmds:
+      - go build
+      - go install
+
+  run:
+    desc: 'run the project'
+    cmds:
+      - go run .
