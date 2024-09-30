@@ -25,37 +25,6 @@
 .css.end
 .table.end
 .{position: absolute; top: 18000svh; left: -24svw; }(.image(assets/images/1.png 85svw:85svh))
-.// ============================
-.admin
-.TITLE{pools - `experimental`}
-
-.style "max-height: 50svh!important; display: inline-table; width: 65svw; "
-.graph.pool.1.bar
-.style.end
-
-.table
-.tr
-.td
-.td
-.raw
-<video id="webcam" autoplay></video>
-<script>
-    const video = document.getElementById('webcam');
-
-    // Request access to the webcam
-    navigator.mediaDevices.getUserMedia({ video: true })
-        .then(stream => {
-            video.srcObject = stream;
-            video.setAttribute('autoplay', true);
-        })
-        .catch(error => {
-            console.error('Error accessing webcam:', error);
-        });
-</script>
-.raw.end
-.table.end
-.admin.end
-
 .================================
 .TITLE{Graphs - chart.js - bar - `experimental`}
 .raw

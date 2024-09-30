@@ -9,13 +9,14 @@ import (
 	"time"
 
 	"github.com/coder/websocket"
+	configuration "github.com/oktalz/present/config"
 	"github.com/oktalz/present/data"
 	"github.com/oktalz/present/exec"
 )
 
 var CurrentSlide = int64(-10)
 
-func WS(server data.Server, adminPwd string) http.Handler { //nolint:funlen,gocognit
+func WS(server data.Server, config configuration.Config) http.Handler { //nolint:funlen,gocognit
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		conn, err := websocket.Accept(w, r, &websocket.AcceptOptions{
 			InsecureSkipVerify: true,
@@ -27,7 +28,7 @@ func WS(server data.Server, adminPwd string) http.Handler { //nolint:funlen,goco
 		defer conn.Close(websocket.StatusAbnormalClosure, "error? ")
 
 		userID := cookieIDValue(w, r)
-		isAdmin := (adminPwd == "") || cookieAdminAuth(adminPwd, r)
+		isAdmin := (config.Security.AdminPwd == "") || cookieAdminAuth(config.Security.AdminPwd, r)
 		// register with server
 		serverEvent, err := server.Register(userID, isAdmin, atomic.LoadInt64(&CurrentSlide)) //nolint:varnamelen
 		if err != nil {

@@ -6,10 +6,13 @@ import (
 	"time"
 
 	"github.com/mileusna/useragent"
+	configuration "github.com/oktalz/present/config"
 	"github.com/oktalz/present/hash"
 )
 
-func APILogin(userPwd, adminPwd string) http.Handler {
+func APILogin(config configuration.Config) http.Handler {
+	userPwd := config.Security.UserPwd
+	adminPwd := config.Security.AdminPwd
 	users = make(map[string]User)
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		user, pass, _ := r.BasicAuth()

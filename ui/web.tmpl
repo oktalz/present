@@ -84,7 +84,7 @@ onPageChange = function() {
   </div>
   <div class="page-header-present">
     {{- if .HasCast }}
-    <div class="run {{- if .HideRunButton }} closed-permanently{{ end -}}" id="run-{{.PageIndex}}">
+    <div class="run {{- if not .IsAdmin }} closed-permanently{{ end }} {{ if .HideRunButton }} closed-permanently{{ end -}}" id="run-{{.PageIndex}}">
       <i class='bx bxs-right-arrow' id="run-icon-{{.PageIndex}}" style="color: #00ADD8;"></i>
     </div>
     <div class="run closed" id="run-{{.PageIndex}}-refresh">

@@ -23,14 +23,14 @@ func configureServer(config configuration.Config) {
 	data.Init(wsServer, config)
 
 	// http.Handle("/cast", handlers.Cast())
-	http.Handle("/cast", handlers.CastWS(wsServer, config.Security.AdminPwd))
-	http.Handle("/ws", handlers.WS(wsServer, config.Security.AdminPwd))
+	http.Handle("/cast", handlers.CastWS(wsServer, config))
+	http.Handle("/ws", handlers.WS(wsServer, config))
 
 	http.Handle("/{$}", handlers.Homepage(config))
 	http.Handle("/login", handlers.Login(loginPage))
-	http.Handle("GET /api/login", handlers.APILogin(config.Security.UserPwd, config.Security.AdminPwd))
-	http.Handle("GET /api/users", handlers.APIUsers(config.Security.AdminPwd))
-	http.Handle("GET /api/cmd/", handlers.APICmd(config.Security.AdminPwd))
+	http.Handle("GET /api/login", handlers.APILogin(config))
+	http.Handle("GET /api/users", handlers.APIUsers(config))
+	http.Handle("GET /api/cmd/", handlers.APICmd(config))
 
 	sub, err := fs.Sub(dist, "ui/static")
 	if err != nil {

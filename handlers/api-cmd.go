@@ -6,13 +6,15 @@ import (
 	"strings"
 	"time"
 
+	configuration "github.com/oktalz/present/config"
 	"github.com/oktalz/present/data"
 	"github.com/oktalz/present/exec"
 )
 
-func APICmd(adminPwd string) http.Handler {
+func APICmd(config configuration.Config) http.Handler {
 	users = make(map[string]User)
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		adminPwd := config.Security.AdminPwd
 		adminPrivileges := cookieAdminAuth(adminPwd, r)
 		if adminPwd != "" && !adminPrivileges {
 			http.Error(w, "not authorized", http.StatusUnauthorized)

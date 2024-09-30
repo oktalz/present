@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/mileusna/useragent"
+	configuration "github.com/oktalz/present/config"
 	"github.com/oktalz/present/hash"
 )
 
@@ -24,7 +25,7 @@ var (
 	muUsers = &sync.Mutex{}
 )
 
-func APIUsers(adminPwd string) http.Handler {
+func APIUsers(config configuration.Config) http.Handler {
 	users = make(map[string]User)
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		cookie, err := r.Cookie("present")
@@ -35,7 +36,7 @@ func APIUsers(adminPwd string) http.Handler {
 			pass = cookie.Value
 		}
 
-		passwordOK := hash.Equal(pass, adminPwd)
+		passwordOK := hash.Equal(pass, config.Security.AdminPwd)
 		log.Println("passwordOK", passwordOK)
 		if !passwordOK {
 			http.Redirect(w, r, "/login", http.StatusFound)

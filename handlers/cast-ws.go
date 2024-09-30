@@ -11,12 +11,13 @@ import (
 	"time"
 
 	"github.com/coder/websocket"
+	configuration "github.com/oktalz/present/config"
 	"github.com/oktalz/present/data"
 	"github.com/oktalz/present/exec"
 	"github.com/oktalz/present/types"
 )
 
-func CastWS(server data.Server, adminPwd string) http.Handler { //nolint:funlen,gocognit,revive
+func CastWS(server data.Server, config configuration.Config) http.Handler { //nolint:funlen,gocognit,revive
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		conn, err := websocket.Accept(w, r, nil)
 		if err != nil {
@@ -48,6 +49,7 @@ func CastWS(server data.Server, adminPwd string) http.Handler { //nolint:funlen,
 			return
 		}
 		// userID := cookieIDValue(w, r)
+		adminPwd := config.Security.AdminPwd
 		adminPrivileges := cookieAdminAuth(adminPwd, r)
 		if adminPwd != "" && !adminPrivileges {
 			err = conn.Write(context.Background(), mt, []byte("presenter<br>option only<br>🤷 💥 💔<br>")) //nolint:contextcheck

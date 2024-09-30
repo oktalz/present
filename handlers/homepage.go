@@ -12,7 +12,10 @@ func Homepage(config configuration.Config) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		_ = cookieIDValue(w, r)
 		userOK, adminPrivileges := cookieAuth(config.Security.UserPwd, config.Security.AdminPwd, r)
-		if config.Security.UserPwd != "" {
+		if config.Security.AdminPwdDisable && !adminPrivileges {
+			adminPrivileges = true
+		}
+		if config.Security.UserPwd != "" && !adminPrivileges {
 			if !(userOK) {
 				http.Redirect(w, r, "/login", http.StatusFound)
 				return
