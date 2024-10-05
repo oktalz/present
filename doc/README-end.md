@@ -26,8 +26,17 @@
   TERMINAL_CLOSE=c
   MENU=m
   ```
-- if `ADMIN_PWD` is set, only users authorised with that password can execute the code
+- if `ADMIN_PWD` is set, only users authorized with that password can execute the code
   - if `ADMIN_PWD` is not provided, it will be generated and written on console
     - with `ADMIN_PWD_DISABLE=true` you can remove need for admin password
+  - admin password can be entered on `/login` url (for example http://localhost:8080/login)
 - if `USER_PWD` is set, all 'users' will need to enter password to see the presentation
 - rest are pretty self explanatory (also in examples are defaults for all options)
+
+## IDE - syntax highlighter & code snippets
+
+- syntax highlighting is both available for VS Code and VSCodium
+
+  - [Visual Studio Code Marketplace](https://marketplace.visualstudio.com/items?itemName=ZlatkoBratkovic.vscode-oktalz-present)
+
+  - [Open VSX Marketplace](https://open-vsx.org/extension/ZlatkoBratkovic/vscode-oktalz-present)
