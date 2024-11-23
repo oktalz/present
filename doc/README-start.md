@@ -13,7 +13,10 @@ tool for viewing presentations written in markdown like format
 slides are written in text friendly format and follow all standard
 markdown rules with some additions
 
-main purpose of application is to view presentation in browsers
+main purpose of application is:
+- view presentation in browsers
+- have option to run code directly from presentation
+  - support for any language, no sandbox, "run on your machine principle"
 
 ## Installation
 Use the following command to download and install this tool:
