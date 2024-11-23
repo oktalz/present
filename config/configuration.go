@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/go-git/go-git/v5"
+	"github.com/go-git/go-git/v5/plumbing/transport/ssh"
 	"github.com/oklog/ulid/v2"
 	"github.com/oktalz/present/archive"
 	"github.com/peterbourgon/ff/v4"
@@ -20,6 +21,7 @@ type Config struct {
 	Compress string `ff:"short: c, long: compress, usage: 'compress current folder'"`
 	File     string `ff:"short: f, long: file,     usage: 'file to open (.tar.gz format)'"`
 	GIT      string `ff:"short: g, long: git,      usage: 'git repository URL'"`
+	GITKey   string `ff:"          long: key,      usage: 'ssh key used for git clone auth'"`
 	Dir      string `ff:"short: d, long: dir,      usage: 'directory to open'"`
 	Help     bool   `ff:"          long: help,     usage: 'help'"`
 
@@ -89,6 +91,9 @@ func Get() Config {
 	if setAsEmpty {
 		configuration.Address = host
 	}
+	configuration.GIT = strings.Trim(configuration.GIT, " ")
+	configuration.Compress = strings.Trim(configuration.Compress, " ")
+	configuration.Dir = strings.Trim(configuration.Dir, " ")
 	return configuration
 }
 
@@ -120,7 +125,7 @@ func (c *Config) CompressPresentation() {
 
 func (c *Config) Git() {
 	// https://github.com/oktalz/present.git
-	if !strings.HasPrefix(c.GIT, "https://") {
+	if !strings.HasPrefix(c.GIT, "https://") && !strings.HasPrefix(c.GIT, "git@") {
 		c.GIT = "https://" + c.GIT
 	}
 	if !strings.HasSuffix(c.GIT, ".git") {
@@ -132,10 +137,33 @@ func (c *Config) Git() {
 		panic(err)
 	}
 	log.Println("Created temporary directory:", tmpDir)
-	_, err = git.PlainClone(tmpDir, false, &git.CloneOptions{
+	cloneOptions := &git.CloneOptions{
 		URL:      c.GIT,
 		Progress: os.Stdout,
-	})
+	}
+	if strings.HasPrefix(c.GIT, "git@") {
+		authMethod, err := ssh.DefaultAuthBuilder("git")
+		if err != nil {
+			var publicKey *ssh.PublicKeys
+			homeDir, err := os.UserHomeDir()
+			if err != nil {
+				panic(err)
+			}
+			keyPath := path.Join(homeDir, ".ssh", "id_rsa")
+			if c.GITKey != "" {
+				keyPath = c.GITKey
+			}
+			key, _ := os.ReadFile(keyPath)
+			publicKey, err = ssh.NewPublicKeys("git", key, "")
+			if err != nil {
+				panic(err)
+			}
+			authMethod = publicKey
+		}
+		_ = authMethod
+		cloneOptions.Auth = authMethod
+	}
+	_, err = git.PlainClone(tmpDir, false, cloneOptions)
 	if err != nil {
 		panic(err)
 	}

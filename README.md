@@ -48,6 +48,7 @@ FLAGS
   -c, --compress STRING         compress current folder
   -f, --file STRING             file to open (.tar.gz format)
   -g, --git STRING              git repository URL
+      --key STRING              ssh key used for git clone auth
   -d, --dir STRING              directory to open
       --help                    help
   -h, --host STRING             address that present will listen on (default: 127.0.0.1)
