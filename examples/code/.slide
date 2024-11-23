@@ -29,7 +29,7 @@
 .template.end
 
 .template{CAST}
-.cast.stream.edit.save(mai1n.go).run(go run .).before(go mod init x)
+.cast.stream.edit.save(main.go).run(go run .).before(go mod init x)
 .template.end
 
 .template{CAST_SHOW}(From,To)

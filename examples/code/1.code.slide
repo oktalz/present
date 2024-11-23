@@ -155,7 +155,7 @@ any kind of terminal command can be executed
 
 - command to execute specific command in specified folder and return result
 
-.cast.path(hello-world).run(go run .)
+.cast.path(hello-world).run(go run .).before(go mod init)
 ```txt
 #dot#cast.path(hello-world).run(go run .)
 ```
