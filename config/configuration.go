@@ -185,6 +185,7 @@ func (c *Config) CheckPasswords() {
 			c.Security.AdminPwd = ulid.Make().String()
 			log.Println("admin token is not set, created one is:", c.Security.AdminPwd)
 		}
+		log.Println("use /login url to enter admin password")
 	}
 	if c.Security.UserPwd != "" {
 		log.Println("user password is set")
