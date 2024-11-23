@@ -24,7 +24,7 @@ go install github.com/oktalz/present@latest
 ## Binaries
   prebuilt binaries can be found on [releases](https://github.com/oktalz/present/releases) page
 
-## Example
+## Running
 
 - enter examples folder, type `present`
   - program should read all files and start web server on port 8080 (default)

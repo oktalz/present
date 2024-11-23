@@ -24,7 +24,7 @@ go install github.com/oktalz/present@latest
 ## Binaries
   prebuilt binaries can be found on [releases](https://github.com/oktalz/present/releases) page
 
-## Example
+## Running
 
 - enter examples folder, type `present`
   - program should read all files and start web server on port 8080 (default)
@@ -105,3 +105,13 @@ FLAGS
   - [Visual Studio Code Marketplace](https://marketplace.visualstudio.com/items?itemName=ZlatkoBratkovic.vscode-oktalz-present)
 
   - [Open VSX Marketplace](https://open-vsx.org/extension/ZlatkoBratkovic/vscode-oktalz-present)
+
+## Examples
+
+- please see (and run) examples in [examples](examples) folder
+
+- simple styling
+![style](assets/examples/style.png)
+
+- display code that is editable and runnable
+![code](assets/examples/code.png)
