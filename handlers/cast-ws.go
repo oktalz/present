@@ -19,6 +19,10 @@ import (
 
 func CastWS(server data.Server, config configuration.Config) http.Handler { //nolint:funlen,gocognit,revive
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		origin := r.Header.Get("Origin")
+		if origin != "" {
+			w.Header().Set("Access-Control-Allow-Origin", origin)
+		}
 		conn, err := websocket.Accept(w, r, nil)
 		if err != nil {
 			log.Print("upgrade:", err)

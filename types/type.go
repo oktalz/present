@@ -88,8 +88,13 @@ type Menu struct {
 	Title     string
 }
 
+type PresentationOptions struct {
+	AspectRatio string
+}
+
 type Presentation struct {
 	CSS       string
+	Options   PresentationOptions
 	JS        string
 	Slides    []Slide
 	Menu      []Menu
@@ -105,6 +110,8 @@ type TerminalOutputLine struct {
 
 type ReadOptions struct {
 	DefaultFontSize                string
+	AspectRatio                    string
+	ForceAspectRatio               bool
 	DefaultBackgroundColor         string
 	EveryDashIsATransition         bool
 	DefaultTerminalFontSize        string

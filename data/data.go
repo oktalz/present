@@ -85,6 +85,9 @@ func Init(server Server, config configuration.Config) { //nolint:funlen,gocognit
 		for range filesModified {
 			muPresentation.Lock()
 			presentation = reader.ReadFiles()
+			if presentation.Options.AspectRatio != "" {
+				config.AspectRatio.ValueChanged <- presentation.Options.AspectRatio
+			}
 			var err error
 			for i := range presentation.Slides {
 				var adminHTML string

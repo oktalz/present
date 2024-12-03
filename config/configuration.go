@@ -15,18 +15,23 @@ import (
 	"github.com/peterbourgon/ff/v4/ffhelp"
 )
 
-type Config struct {
-	Version  bool   `ff:"short: v, long: version,  usage: 'show version'"`
-	Tag      bool   `ff:"short: t, long: tag,      usage: 'show tag'"`
-	Compress string `ff:"short: c, long: compress, usage: 'compress current folder'"`
-	File     string `ff:"short: f, long: file,     usage: 'file to open (.tar.gz format)'"`
-	GIT      string `ff:"short: g, long: git,      usage: 'git repository URL'"`
-	GITKey   string `ff:"          long: key,      usage: 'ssh key used for git clone auth'"`
-	Dir      string `ff:"short: d, long: dir,      usage: 'directory to open'"`
-	Help     bool   `ff:"          long: help,     usage: 'help'"`
+type AspectRatio struct {
+	AspectRatio  string
+	ValueChanged chan string
+}
 
-	Address string `ff:"short: h, long:host, default: 127.0.0.1, usage: 'address that present will listen on'"`
-	Port    int    `ff:"short: p, long:port, default: 8080, usage: 'port that present will listen on'"`
+type Config struct {
+	Version     bool   `ff:"short: v, long: version,                      usage: 'show version'"`
+	Address     string `ff:"short: h, long: host,     default: 127.0.0.1, usage: 'address that present will listen on'"`
+	Port        int    `ff:"short: p, long: port,     default: 8080,      usage: 'port that present will listen on'"`
+	Tag         bool   `ff:"short: t, long: tag,                          usage: 'show tag'"`
+	Compress    string `ff:"short: c, long: compress,                     usage: 'compress current folder'"`
+	File        string `ff:"short: f, long: file,                         usage: 'file to open (.tar.gz format)'"`
+	GIT         string `ff:"short: g, long: git,                          usage: 'git repository URL'"`
+	GITKey      string `ff:"          long: key,                          usage: 'ssh key used for git clone auth'"`
+	Dir         string `ff:"short: d, long: dir,                          usage: 'directory to open'"`
+	Help        bool   `ff:"          long: help,                         usage: 'help'"`
+	AspectRatio AspectRatio
 
 	Security Security
 	Controls Controls
@@ -48,7 +53,11 @@ type Controls struct {
 }
 
 func Get() Config {
-	configuration := Config{}
+	configuration := Config{
+		AspectRatio: AspectRatio{
+			ValueChanged: make(chan string),
+		},
+	}
 	security := Security{}
 	controls := Controls{}
 	update := Update{}

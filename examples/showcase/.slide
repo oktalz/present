@@ -1,4 +1,5 @@
 .global.font-size(5svh)
+.global.aspect-ratio(16x9)
 .title(Present - example slides)
 
 .replace.after{#space#}(&nbsp;)
