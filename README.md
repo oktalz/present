@@ -47,6 +47,8 @@ NAME
 
 FLAGS
   -v, --version                 show version
+  -h, --host STRING             address that present will listen on (default: 127.0.0.1)
+  -p, --port INT                port that present will listen on (default: 8080)
   -t, --tag                     show tag
   -c, --compress STRING         compress current folder
   -f, --file STRING             file to open (.tar.gz format)
@@ -54,8 +56,6 @@ FLAGS
       --key STRING              ssh key used for git clone auth
   -d, --dir STRING              directory to open
       --help                    help
-  -h, --host STRING             address that present will listen on (default: 127.0.0.1)
-  -p, --port INT                port that present will listen on (default: 8080)
       --admin-pwd STRING        admin password
       --user-pwd STRING         user password
       --admin-pwd-disable       disable admin password
@@ -75,6 +75,13 @@ FLAGS
 - send file
   - user can start presentation with `present -f present.tar.gz`
   - user can unpack file, enter folder and execute `present`
+
+## Browser paths
+
+when presentation is opened in browser few paths exists:
+- `/` -> show presentation in selected aspect ratio
+- `/print` -> presentation without forced aspect ratio (use for printing)
+- `/login` -> path to log in admin credentials
 
 ## Customizations & security
 
