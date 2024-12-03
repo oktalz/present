@@ -42,6 +42,11 @@ func (s *fallbackFileServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	origin := r.Header.Get("Origin")
+	if origin != "" {
+		w.Header().Set("Access-Control-Allow-Origin", origin)
+	}
+
 	rw := responseWriter{ //nolint:exhaustruct
 		CustomHeader: make(http.Header),
 		StatusCode:   http.StatusOK,

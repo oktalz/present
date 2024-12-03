@@ -8,7 +8,7 @@ import (
 	"github.com/oktalz/present/data"
 )
 
-func Homepage(config configuration.Config) http.Handler {
+func NoLayout(config configuration.Config) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		_ = cookieIDValue(w, r)
 		userOK, adminPrivileges := cookieAuth(config.Security.UserPwd, config.Security.AdminPwd, r)
@@ -20,6 +20,15 @@ func Homepage(config configuration.Config) http.Handler {
 				http.Redirect(w, r, "/login", http.StatusFound)
 				return
 			}
+		}
+
+		origin := r.Header.Get("Origin")
+		if origin != "" {
+			w.Header().Set("Access-Control-Allow-Origin", origin)
+		}
+		w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
+		if r.Method == http.MethodOptions {
+			return
 		}
 
 		var response []byte

@@ -14,14 +14,16 @@ import (
 
 func ReadFiles() types.Presentation { //nolint:funlen,gocognit,gocyclo,cyclop,maintidx
 	ro := types.ReadOptions{
-		DefaultFontSize:                "5vh",
+		DefaultFontSize:                "5svh",
 		EveryDashIsATransition:         false,
-		DefaultTerminalFontSize:        "6vh",
+		DefaultTerminalFontSize:        "6svh",
 		DefaultBackgroundColor:         "white",
 		DefaultTerminalFontColor:       "black",
 		DefaultTerminalBackgroundColor: "rgb(253, 246, 227)",
 		HidePageNumber:                 true,
 		KeepPagePrintOnCut:             false,
+		AspectRatio:                    "",
+		ForceAspectRatio:               false,
 	}
 	endpoints := map[string]types.TerminalCommand{}
 
@@ -55,6 +57,9 @@ func ReadFiles() types.Presentation { //nolint:funlen,gocognit,gocyclo,cyclop,ma
 	}
 
 	presentationFile := processSlides(buff.String(), ro)
+	if presentationFile.Options.AspectRatio != "" {
+		presentationFiles.Options.AspectRatio = presentationFile.Options.AspectRatio
+	}
 	presentationFiles.Slides = append(presentationFiles.Slides, presentationFile.Slides...)
 	if presentationFile.Title != "" {
 		presentationFiles.Title = presentationFile.Title
@@ -434,6 +439,7 @@ func ReadFiles() types.Presentation { //nolint:funlen,gocognit,gocyclo,cyclop,ma
 	}
 
 	return types.Presentation{
+		Options:   presentationFiles.Options,
 		Slides:    presentations,
 		CSS:       presentationFiles.CSS,
 		JS:        presentationFiles.JS,

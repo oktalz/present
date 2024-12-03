@@ -301,6 +301,13 @@ func processSlides(fileContent string, ro types.ReadOptions) types.Presentation 
 			lines[index] = ""
 			continue
 		}
+		if strings.HasPrefix(line, ".global.aspect-ratio(") && strings.HasSuffix(line, ")") {
+			aspect := strings.TrimPrefix(line, ".global.aspect-ratio(")
+			aspect = strings.TrimSuffix(aspect, ")")
+			ro.AspectRatio = aspect
+			lines[index] = ""
+			continue
+		}
 		if strings.HasPrefix(line, ".global.background-color(") && strings.HasSuffix(line, ")") {
 			currentBackgroundColor = strings.TrimPrefix(line, ".global.background-color(")
 			currentBackgroundColor = strings.TrimSuffix(currentBackgroundColor, ")")
@@ -612,6 +619,9 @@ func processSlides(fileContent string, ro types.ReadOptions) types.Presentation 
 		}
 	}
 	return types.Presentation{
+		Options: types.PresentationOptions{
+			AspectRatio: ro.AspectRatio,
+		},
 		Slides:    slides,
 		Title:     title,
 		Replacers: replacersAfter,
