@@ -8,6 +8,13 @@
   - user can start presentation with `present -f present.tar.gz`
   - user can unpack file, enter folder and execute `present`
 
+## Browser paths
+
+when presentation is opened in browser few paths exists:
+- `/` -> show presentation in selected aspect ratio
+- `/print` -> presentation without forced aspect ratio (use for printing)
+- `/login` -> path to log in admin credentials
+
 ## Customizations & security
 
 - present will watch for three files:
@@ -49,5 +56,4 @@
 ![style](assets/examples/style.png)
 
 - display code that is editable and runnable
-
 ![code](assets/examples/code.png)
