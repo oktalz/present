@@ -16,8 +16,9 @@ import (
 )
 
 type AspectRatio struct {
-	AspectRatio  string
-	ValueChanged chan string
+	AspectRatio        string
+	ValueChanged       chan string
+	DisableAspectRatio bool
 }
 
 type Config struct {

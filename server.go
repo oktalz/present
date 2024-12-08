@@ -20,16 +20,14 @@ import (
 
 func configureServer(config configuration.Config) {
 	wsServer := data.NewServer()
-	data.Init(wsServer, config)
+	data.Init(wsServer, &config)
 
-	http.Handle("/cast", handlers.CastWS(wsServer, config))
-	http.Handle("/ws", handlers.WS(wsServer, config))
-
-	// http.Handle("/{$}", handlers.NoLayout(config))
-	http.Handle("/{$}", handlers.IFrame(config))
+	http.Handle("/{$}", handlers.Homepage(config))
+	http.Handle("POST /cast", handlers.CastSSE(wsServer, config))
 	http.Handle("/print", handlers.NoLayout(config))
 	http.Handle("/iframe", handlers.IFrame(config))
 	http.Handle("/login", handlers.Login(loginPage))
+	http.Handle("/events", handlers.SSE(wsServer, config))
 	http.Handle("GET /api/login", handlers.APILogin(config))
 	http.Handle("GET /api/users", handlers.APIUsers(config))
 	http.Handle("GET /api/cmd/", handlers.APICmd(config))

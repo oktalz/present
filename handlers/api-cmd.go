@@ -28,7 +28,7 @@ func APICmd(config configuration.Config) http.Handler {
 			return
 		}
 		ch := make(chan string)
-		go exec.CmdStreamWS(cmd, ch, 10*time.Second, true) //nolint:contextcheck
+		go exec.CmdStreamWS(cmd, ch, 10*time.Second, true)
 		lines := []string{}
 		for line := range ch {
 			lines = append(lines, line)

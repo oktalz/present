@@ -23,7 +23,7 @@ func ReadFiles() types.Presentation { //nolint:funlen,gocognit,gocyclo,cyclop,ma
 		HidePageNumber:                 true,
 		KeepPagePrintOnCut:             false,
 		AspectRatio:                    "",
-		ForceAspectRatio:               false,
+		DisableAspectRatio:             false,
 	}
 	endpoints := map[string]types.TerminalCommand{}
 
@@ -59,6 +59,9 @@ func ReadFiles() types.Presentation { //nolint:funlen,gocognit,gocyclo,cyclop,ma
 	presentationFile := processSlides(buff.String(), ro)
 	if presentationFile.Options.AspectRatio != "" {
 		presentationFiles.Options.AspectRatio = presentationFile.Options.AspectRatio
+	}
+	if presentationFile.Options.DisableAspectRatio {
+		presentationFiles.Options.DisableAspectRatio = presentationFile.Options.DisableAspectRatio
 	}
 	presentationFiles.Slides = append(presentationFiles.Slides, presentationFile.Slides...)
 	if presentationFile.Title != "" {

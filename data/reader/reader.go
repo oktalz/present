@@ -308,6 +308,11 @@ func processSlides(fileContent string, ro types.ReadOptions) types.Presentation 
 			lines[index] = ""
 			continue
 		}
+		if line == ".global.disable.aspect-ratio" {
+			ro.DisableAspectRatio = true
+			lines[index] = ""
+			continue
+		}
 		if strings.HasPrefix(line, ".global.background-color(") && strings.HasSuffix(line, ")") {
 			currentBackgroundColor = strings.TrimPrefix(line, ".global.background-color(")
 			currentBackgroundColor = strings.TrimSuffix(currentBackgroundColor, ")")
@@ -620,7 +625,8 @@ func processSlides(fileContent string, ro types.ReadOptions) types.Presentation 
 	}
 	return types.Presentation{
 		Options: types.PresentationOptions{
-			AspectRatio: ro.AspectRatio,
+			AspectRatio:        ro.AspectRatio,
+			DisableAspectRatio: ro.DisableAspectRatio,
 		},
 		Slides:    slides,
 		Title:     title,

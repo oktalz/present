@@ -42,26 +42,14 @@ if x == 1:
 
 .================================
 .notes
-what is new here though is you can specify additional commands
-before the block
-we can see here list of all possible options
+what is new here though is you can specify
+additional commands before the block.
+we can see here list of some options.
 
-first of all. we need to start with cast, after cast keyword,
-in same line we can specify multiple attributes
-
-as we see, file is here to save code to a file,
-some programming languages are sensitive to extensions we need to use.
-by default code is executed and just returned
-we can use stream that allows you to demonstrate time sensitive operations.
-edit is a nice feature that allows you to edit code in browser.
-before and after allow you to execute commands before and after code block
-(to prepare environment, for example setting right context in k8s)
-parallel allows you to run code in parallel to yours,
-a good example of that is having server in background
-and running client to connect to it.
+all options can be seen in documentation
+or with editor extensions.
 
 let's see some examples
-
 .notes.end
 .TITLE{Code - Running blocks}
 .slide.font-size(3.7svh)

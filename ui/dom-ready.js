@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function() {
         codeElement.style.backgroundColor = "#f8f8f8";
     }
   });
-  startWebsocket();
+  startSSESession();
   notesPause = false
   notesCounter = 0
 

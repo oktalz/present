@@ -1,33 +1,8 @@
-let port = location.port
-if (port == "") {
-  if (location.protocol == "https:") {
-    port = 443
-  }else {
-    port = 80
-  }
-}
-const baseUrl = window.location.hostname+':'+port
-let webSocketType = "ws"
-if (location.protocol == "https:") {
-  webSocketType = "wss"
-}
-socket = null
-
-function startWebsocket() {
-    socket = new WebSocket(webSocketType+'://'+baseUrl+"/ws");
-
-    // Connection opened
-    socket.addEventListener('open', () => {
-      console.log("connection established")
-      //let body = JSON.stringify({slide: this.state.page, code: codeText})
-      //console.log(body)
-      //socket.send(body);
-    });
-
-    // Listen for messages
-    socket.addEventListener('message', (event) => {
-        console.log('Message from server: ', event.data);
-        const data = JSON.parse(event.data)
+function startSSESession() {
+    const eventSource = new EventSource('/events');
+    // Listen for messages from the server
+    eventSource.onmessage = function(event) {
+      const data = JSON.parse(event.data)
         if (data.Data != "" && data.Data != null) {
           if (data.Pool != '') {
             updateGraph(data.Pool, data.Data)
@@ -51,27 +26,23 @@ function startWebsocket() {
             }
           }
         }
-    });
-
-    socket.onclose = () => {
-      console.log('Socket is closed');
-      socket.close();
-      socket = null
-      myID = ""
-      setTimeout(startWebsocket, 5000)
     };
-  }
+    // Handle errors
+    eventSource.onerror = function(event) {
+      console.error('Error occurred:', event);
+     };
+}
 
   function updateData(data) {
+    fetch('/events', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+    .catch(error => {
+      console.error('Error occurred when sending data:', error);
+    })
     console.log("updateData send", data)
-
-    if (socket === null) {
-      console.log("socket is null, skipping send")
-      return
-    }
-    if (socket.readyState === WebSocket.CLOSED || socket.readyState === WebSocket.CLOSING) {
-      console.log("WebSocket is closed or closing, skipping send")
-      return
-    }
-    socket.send(JSON.stringify(data))
 };

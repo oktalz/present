@@ -3,7 +3,6 @@ module github.com/oktalz/present
 go 1.23
 
 require (
-	github.com/coder/websocket v1.8.12
 	github.com/fsnotify/fsnotify v1.8.0
 	github.com/go-git/go-git/v5 v5.12.0
 	github.com/joho/godotenv v1.5.1

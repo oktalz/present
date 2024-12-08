@@ -7,6 +7,8 @@ import (
 	"github.com/oktalz/present/data"
 )
 
+var CurrentSlide = int64(-10)
+
 func api(w http.ResponseWriter, _ *http.Request) {
 	err := json.NewEncoder(w).Encode(data.Presentation())
 	if err != nil {

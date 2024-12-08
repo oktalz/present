@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/oklog/ulid/v2"
@@ -15,7 +14,7 @@ func cookieIDValue(w http.ResponseWriter, r *http.Request) string {
 	cookie, err := r.Cookie("present-id")
 	if err == nil {
 		// Cookie exists, you can access its value using cookie.Value
-		fmt.Println("present-id", cookie.Value)
+		// log.Println("present-id", cookie.Value)
 		return cookie.Value
 	}
 	cookieID := http.Cookie{

@@ -89,7 +89,8 @@ type Menu struct {
 }
 
 type PresentationOptions struct {
-	AspectRatio string
+	AspectRatio        string
+	DisableAspectRatio bool
 }
 
 type Presentation struct {
@@ -111,7 +112,7 @@ type TerminalOutputLine struct {
 type ReadOptions struct {
 	DefaultFontSize                string
 	AspectRatio                    string
-	ForceAspectRatio               bool
+	DisableAspectRatio             bool
 	DefaultBackgroundColor         string
 	EveryDashIsATransition         bool
 	DefaultTerminalFontSize        string

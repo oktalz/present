@@ -1,7 +1,8 @@
 package handlers
 
 import (
-	"context"
+	"fmt"
+	"io"
 	"log"
 	"net/http"
 	"os"
@@ -10,61 +11,55 @@ import (
 	"strings"
 	"time"
 
-	"github.com/coder/websocket"
 	configuration "github.com/oktalz/present/config"
 	"github.com/oktalz/present/data"
 	"github.com/oktalz/present/exec"
 	"github.com/oktalz/present/types"
 )
 
-func CastWS(server data.Server, config configuration.Config) http.Handler { //nolint:funlen,gocognit,revive
+func CastSSE(server data.Server, config configuration.Config) http.Handler { //nolint:funlen,gocognit,revive
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		flusher, ok := w.(http.Flusher)
+		if !ok {
+			http.Error(w, "Streaming not supported!", http.StatusInternalServerError)
+			return
+		}
+
+		w.Header().Set("Content-Type", "text/event-stream")
+		w.Header().Set("Cache-Control", "no-cache")
+		w.Header().Set("Connection", "keep-alive")
 		origin := r.Header.Get("Origin")
 		if origin != "" {
 			w.Header().Set("Access-Control-Allow-Origin", origin)
 		}
-		conn, err := websocket.Accept(w, r, nil)
-		if err != nil {
-			log.Print("upgrade:", err)
+
+		userID := cookieIDValue(w, r)
+		isAdmin := (config.Security.AdminPwd == "") || cookieAdminAuth(config.Security.AdminPwd, r)
+		if !isAdmin {
+			http.Error(w, "not authorized", http.StatusUnauthorized)
 			return
 		}
-		defer conn.Close(websocket.StatusNormalClosure, "bye")
-		log.Println("connected")
+		log.Println("cast", userID)
 
-		ch := make(chan string, 10)
-		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-		defer cancel()
-
-		mt, bodyBytes, err := conn.Read(ctx) //nolint:contextcheck // ??? linter is weird
+		bodyBytes, err := io.ReadAll(r.Body)
 		if err != nil {
-			err = conn.Write(context.Background(), mt, []byte(err.Error())) //nolint:contextcheck
-			if err != nil {
-				log.Println("write:", err)
-			}
+			http.Error(w, "cannot read body", http.StatusInternalServerError)
 			return
 		}
-		defer r.Body.Close()
 		payload, err := parseJSONData(string(bodyBytes))
 		if err != nil {
-			err = conn.Write(context.Background(), mt, []byte(err.Error())) //nolint:contextcheck
-			if err != nil {
-				log.Println("write:", err)
-			}
+			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-		// userID := cookieIDValue(w, r)
-		adminPwd := config.Security.AdminPwd
-		adminPrivileges := cookieAdminAuth(adminPwd, r)
-		if adminPwd != "" && !adminPrivileges {
-			err = conn.Write(context.Background(), mt, []byte("presenter<br>option only<br>🤷 💥 💔<br>")) //nolint:contextcheck
-			if err != nil {
-				log.Println("write:", err)
-			}
+		ch := make(chan string, 10)
+		rc := http.NewResponseController(w) //nolint:bodyclose
+		err = rc.SetWriteDeadline(time.Time{})
+		if err != nil {
 			return
 		}
 
-		log.Println("recv: " + strconv.Itoa(payload.Slide))
-		log.Printf("recv: %s", payload.Code)
+		// log.Println("recv: " + strconv.Itoa(payload.Slide))
+		// log.Printf("recv: %s", payload.Code)
 
 		slideIndex := int64(payload.Slide)
 		slides := data.Presentation().Slides
@@ -121,47 +116,53 @@ func CastWS(server data.Server, config configuration.Config) http.Handler { //no
 		if len(tcBefore) > 0 {
 			for i := range tcBefore {
 				if tcBefore[i].DirFixed {
-					go exec.CmdStream(tcBefore[i]) //nolint:contextcheck
+					go exec.CmdStream(tcBefore[i])
 					time.Sleep(500 * time.Millisecond)
 				} else {
 					tcBefore[i].Dir = workingDir
-					exec.CmdStream(tcBefore[i]) //nolint:contextcheck
+					exec.CmdStream(tcBefore[i])
 				}
 			}
 		}
-		// for _, cmd := range terminalCommand {
 		for i := len(terminalCommand) - 1; i >= 0; i-- {
 			cmd := terminalCommand[i]
 			cmd.Dir = workingDir
 			if cmd.App == "" {
 				continue
 			}
-			go exec.CmdStreamWS(cmd, ch, 100*time.Second, false) //nolint:contextcheck ///todo 100s
+			go exec.CmdStreamWS(cmd, ch, 1000*time.Second, false)
 			if slide.HasCastStreamed {
 				// this is for streaming
+				first := true
+				var data string
 				for line := range ch {
-					err = conn.Write(context.Background(), mt, []byte(line)) //nolint:contextcheck
-					if err != nil {
-						log.Println("write:", err)
-						return
+					if first {
+						first = false
+						data = line + "\n\n"
+					} else {
+						data = "<br>" + line + "\n\n"
 					}
+					fmt.Fprint(w, data)
+					flusher.Flush()
 				}
 			} else {
 				lines := []string{}
 				for line := range ch {
 					lines = append(lines, line)
 				}
-				err = conn.Write(context.Background(), mt, []byte(strings.Join(lines, "<br>"))) //nolint:contextcheck
+				_, err := fmt.Fprintf(w, "%s\n\n", strings.Join(lines, "<br>"))
 				if err != nil {
-					log.Println("write:", err)
 					return
 				}
+				flusher.Flush()
 			}
 			break
 		}
 		for i := range tcAfter {
 			tcAfter[i].Dir = workingDir
-			exec.CmdStream(tcAfter[i]) //nolint:contextcheck
+			exec.CmdStream(tcAfter[i])
 		}
+		// alow flusher to send full data
+		time.Sleep(100 * time.Millisecond)
 	})
 }

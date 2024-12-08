@@ -73,7 +73,7 @@ type Message struct {
 	Data   any
 }
 
-func Init(server Server, config configuration.Config) { //nolint:funlen,gocognit
+func Init(server Server, config *configuration.Config) { //nolint:funlen,gocognit
 	filesModified := fsnotify.FileWatcher()
 
 	// initial read
@@ -81,12 +81,24 @@ func Init(server Server, config configuration.Config) { //nolint:funlen,gocognit
 		filesModified <- struct{}{}
 	}()
 
+	firstRun := true
+	var wg sync.WaitGroup
+	wg.Add(1)
+
 	go func() {
 		for range filesModified {
 			muPresentation.Lock()
 			presentation = reader.ReadFiles()
 			if presentation.Options.AspectRatio != "" {
-				config.AspectRatio.ValueChanged <- presentation.Options.AspectRatio
+				go func() {
+					config.AspectRatio.ValueChanged <- presentation.Options.AspectRatio
+				}()
+			}
+			if presentation.Options.DisableAspectRatio {
+				config.AspectRatio.DisableAspectRatio = true
+				go func() {
+					config.AspectRatio.ValueChanged <- presentation.Options.AspectRatio
+				}()
 			}
 			var err error
 			for i := range presentation.Slides {
@@ -156,14 +168,14 @@ func Init(server Server, config configuration.Config) { //nolint:funlen,gocognit
 
 			markdown.ResetBlocks()
 
-			hTMLNormal, err = regenerateHTML(presentation, config, false)
+			hTMLNormal, err = regenerateHTML(presentation, *config, false)
 			if err != nil {
 				log.Println(err)
 			} else {
 				eTagHTMLNormal = ulid.Make().String()
 			}
 
-			hTMLAdmin, err = regenerateHTML(presentation, config, true)
+			hTMLAdmin, err = regenerateHTML(presentation, *config, true)
 			if err != nil {
 				log.Println(err)
 			} else {
@@ -174,6 +186,12 @@ func Init(server Server, config configuration.Config) { //nolint:funlen,gocognit
 				Reload: true,
 			})
 			muPresentation.Unlock()
+			if firstRun {
+				firstRun = false
+				wg.Done()
+			}
 		}
 	}()
+
+	wg.Wait()
 }

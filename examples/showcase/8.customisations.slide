@@ -49,7 +49,6 @@ additionally
 .TITLE{Building a presentation}
 
 - live reloads
-- `_.slide` - prepended to all `.slide` files
 - `present.css` - used to inject css rules
 - `present.js` - used to inject js code
 - `present.env` - settings for running application
@@ -59,7 +58,7 @@ additionally
 .TITLE{Presentation sharing}
 
 - best way using `tar.gz`
-  1. enter folder, run `present zip`, this will create `present.tar.gz`
+  1. enter folder, run `present -c present.tar.gz`, this will create `present.tar.gz`
   2. share file
   3. `go install github.com/oktalz/present@latest`
   4. `present present.tar.gz`
