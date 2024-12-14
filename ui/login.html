@@ -8,17 +8,18 @@
   <style>
 
 .login-page {
-  width: 360px;
-  padding: 8% 0 0;
+  max-width: 768px;
+  width: fit-content;
+  padding: 3svh 0 0;
   margin: auto;
 }
+
 .form {
   position: relative;
   z-index: 1;
   background: #FFFFFF;
-  max-width: 360px;
-  margin: 0 auto 100px;
-  padding: 45px;
+  max-width: 80svw;
+  padding: 5svh;
   text-align: center;
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
 }
@@ -62,6 +63,8 @@ body {
 <div class="login-page">
   <div class="form">
     <form class="login-form">
+      <input type="user" name="user" placeholder="user" value="" />
+      <input type="data" name="email" placeholder="email" value="" />
       <input type="password" placeholder="password"/>
       <button>login</button>
     </form>
@@ -69,10 +72,20 @@ body {
 </div>
 
 <script>
+  const urlParams = new URLSearchParams(window.location.search);
+
   document.querySelector('form').addEventListener('submit', function(event) {
     event.preventDefault();
 
-    const username = 'present';
+    let username = 'present';
+
+    const userInput = document.querySelector('input[type="user"]');
+    if (userInput !== null) {
+      username = userInput.value
+    }
+    if (document.querySelector('input[type="data"]') != null) {
+      username += ", "+document.querySelector('input[type="data"]').value;
+    }
     const password = document.querySelector('input[type="password"]').value;
 
     const headers = new Headers();
@@ -81,7 +94,11 @@ body {
     fetch('/api/login', { method: 'GET', headers: headers })
       .then(response => {
         if (response.ok) {
-          window.location.href = '/';
+          let origin = "/"
+          if (urlParams.get('origin') !== null) {
+            origin = urlParams.get('origin')
+          }
+          window.location.href = origin;
         } else {
           alert('Invalid username or password');
         }
