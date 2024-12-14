@@ -14,3 +14,7 @@ func Login(loginPage []byte) http.Handler {
 		}
 	})
 }
+
+func LoginRedirect(w http.ResponseWriter, r *http.Request, origin string) {
+	http.Redirect(w, r, "/login?origin="+origin, http.StatusFound)
+}

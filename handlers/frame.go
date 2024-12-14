@@ -53,7 +53,7 @@ func IFrame(config configuration.Config) http.Handler { //nolint:funlen
 		}
 		if config.Security.UserPwd != "" && !adminPrivileges {
 			if !(userOK) {
-				http.Redirect(w, r, "/login", http.StatusFound)
+				LoginRedirect(w, r, "/")
 				return
 			}
 		}
@@ -129,7 +129,9 @@ var page = `
 	  widthRatio = 16
 	  heightRatio = 9
 	  console.log(location.origin)
-	  document.getElementById('present-iframe').src = location.origin+'/print';
+	  const urlParams = new URLSearchParams(window.location.search);
+	  const newSrc = location.origin + "/print?" + urlParams.toString();
+	  document.getElementById("present-iframe").src = newSrc;
 	  calcAspectRatioFit = function() {
 		expectedRatio = widthRatio / heightRatio
 		currentRatio = window.innerWidth / window.innerHeight

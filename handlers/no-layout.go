@@ -17,7 +17,7 @@ func NoLayout(config configuration.Config) http.Handler {
 		}
 		if config.Security.UserPwd != "" && !adminPrivileges {
 			if !(userOK) {
-				http.Redirect(w, r, "/login", http.StatusFound)
+				LoginRedirect(w, r, "/")
 				return
 			}
 		}
