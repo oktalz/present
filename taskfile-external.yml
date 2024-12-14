@@ -3,9 +3,9 @@ version: '3'
 
 vars:
   BOXICONS_VERSION: 2.1.4
-  HIGHLIGHT_JS_VERSION: 11.10.0
-  MERMAID_JS_VERSION: 11.2.1
-  CHART_JS_VERSION: 4.4.4
+  HIGHLIGHT_JS_VERSION: 11.11.0
+  MERMAID_JS_VERSION: 11.4.1
+  CHART_JS_VERSION: 4.4.7
 
 tasks:
   mermaidjs-check-latest-version:
