@@ -18,6 +18,9 @@ var dist embed.FS
 //go:embed ui/login.html
 var loginPage []byte
 
+//go:embed ui/stats.html
+var statsPage []byte
+
 func main() { //nolint:funlen
 	_ = godotenv.Load("present.env")
 	_ = godotenv.Overload(".env")

@@ -24,7 +24,8 @@ func APILogin(config configuration.Config) http.Handler {
 			return
 		}
 
-		passwordOK := hash.Equal(pass, userPwd) || hash.Equal(pass, adminPwd)
+		adminOK := hash.Equal(pass, adminPwd)
+		passwordOK := hash.Equal(pass, userPwd) || adminOK
 		if !passwordOK {
 			http.Error(w, http.StatusText(http.StatusUnauthorized), http.StatusUnauthorized)
 			return
@@ -38,8 +39,10 @@ func APILogin(config configuration.Config) http.Handler {
 		muUsers.Lock()
 		users[user] = User{
 			Username:  user,
+			Admin:     adminOK,
 			IP:        ip,
 			LoginTime: time.Now(),
+			UA:        ua,
 		}
 		defer muUsers.Unlock()
 

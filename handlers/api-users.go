@@ -1,13 +1,12 @@
 package handlers
 
 import (
-	"encoding/json"
-	"fmt"
-	"log"
 	"net/http"
+	"sort"
 	"sync"
 	"time"
 
+	"github.com/goccy/go-json"
 	"github.com/mileusna/useragent"
 	configuration "github.com/oktalz/present/config"
 	"github.com/oktalz/present/hash"
@@ -15,6 +14,7 @@ import (
 
 type User struct {
 	Username  string              `json:"username"`
+	Admin     bool                `json:"admin"`
 	IP        string              `json:"ip"`
 	UA        useragent.UserAgent `json:"ua"`
 	LoginTime time.Time           `json:"login_time"`
@@ -32,14 +32,13 @@ func APIUsers(config configuration.Config) http.Handler {
 		var pass string
 		if err == nil {
 			// Cookie exists, you can access its value using cookie.Value
-			fmt.Println("Cookie value:", cookie.Value)
+			// log.Println("Cookie value:", cookie.Value)
 			pass = cookie.Value
 		}
 
-		passwordOK := hash.Equal(pass, config.Security.AdminPwd)
-		log.Println("passwordOK", passwordOK)
-		if !passwordOK {
-			http.Redirect(w, r, "/login", http.StatusFound)
+		adminOK := hash.Equal(pass, config.Security.AdminPwd)
+		if !adminOK {
+			LoginRedirect(w, r, "/")
 			return
 		}
 
@@ -49,6 +48,10 @@ func APIUsers(config configuration.Config) http.Handler {
 		for _, v := range users {
 			usersSlice = append(usersSlice, v)
 		}
+		sort.Slice(usersSlice, func(i, j int) bool {
+			return usersSlice[i].LoginTime.Before(usersSlice[j].LoginTime)
+		})
+
 		err = json.NewEncoder(w).Encode(usersSlice)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)

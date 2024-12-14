@@ -82,6 +82,7 @@ when presentation is opened in browser few paths exists:
 - `/` -> show presentation in selected aspect ratio
 - `/print` -> presentation without forced aspect ratio (use for printing)
 - `/login` -> path to log in admin credentials
+- `/stats` -> path to log in admin credentials
 
 ## Customizations & security
 
@@ -93,7 +94,6 @@ when presentation is opened in browser few paths exists:
   ```txt
   ADMIN_PWD=AdminPassword123
   USER_PWD=user
-  ASK_USERNAME=false
   PORT=8080
   NEXT_PAGE=ArrowRight,ArrowDown,PageDown,Space,e
   PREVIOUS_PAGE=ArrowLeft,ArrowUp,PageUp

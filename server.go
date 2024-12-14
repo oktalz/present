@@ -27,6 +27,7 @@ func configureServer(config configuration.Config) {
 	http.Handle("/print", handlers.NoLayout(config))
 	http.Handle("/iframe", handlers.IFrame(config))
 	http.Handle("/login", handlers.Login(loginPage))
+	http.Handle("/stats", handlers.Stats(statsPage, config))
 	http.Handle("/events", handlers.SSE(wsServer, config))
 	http.Handle("GET /api/login", handlers.APILogin(config))
 	http.Handle("GET /api/users", handlers.APIUsers(config))

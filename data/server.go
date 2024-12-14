@@ -46,6 +46,7 @@ func (s *server) Register(userID string, isAdmin bool, currentSlide int64) (ch c
 		s.clients[userID] = ch
 		log.Println("registered", userID)
 	}
+
 	s.clients[userID] = ch
 	go func() {
 		ch <- Message{
