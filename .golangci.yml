@@ -18,7 +18,6 @@ linters:
     - nlreturn
     - wsl
     - wrapcheck
-    - gomnd
     - varnamelen
     - musttag
     - ireturn
@@ -31,7 +30,6 @@ linters:
     - mnd
     - tagliatelle
     - depguard
-    - execinquery # deprecated
     - exportloopref # deprecated
 
 issues:
