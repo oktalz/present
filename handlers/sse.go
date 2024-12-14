@@ -1,12 +1,13 @@
 package handlers
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
 	"sync/atomic"
 	"time"
+
+	"github.com/goccy/go-json"
 
 	configuration "github.com/oktalz/present/config"
 	"github.com/oktalz/present/data"

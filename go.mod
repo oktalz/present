@@ -5,6 +5,7 @@ go 1.23
 require (
 	github.com/fsnotify/fsnotify v1.8.0
 	github.com/go-git/go-git/v5 v5.12.0
+	github.com/goccy/go-json v0.10.4
 	github.com/joho/godotenv v1.5.1
 	github.com/mileusna/useragent v1.3.5
 	github.com/oklog/ulid/v2 v2.1.0

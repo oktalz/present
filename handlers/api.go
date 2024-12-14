@@ -1,8 +1,9 @@
 package handlers
 
 import (
-	"encoding/json"
 	"net/http"
+
+	"github.com/goccy/go-json"
 
 	"github.com/oktalz/present/data"
 )

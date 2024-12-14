@@ -1,6 +1,6 @@
 package handlers
 
-import "encoding/json"
+import "github.com/goccy/go-json"
 
 type RequestPayload struct {
 	Slide int      `json:"slide"`
