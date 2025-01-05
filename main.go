@@ -21,7 +21,7 @@ var loginPage []byte
 //go:embed ui/stats.html
 var statsPage []byte
 
-func main() { //nolint:funlen
+func main() {
 	_ = godotenv.Load("present.env")
 	_ = godotenv.Overload(".env")
 	homeDir, err := os.UserHomeDir()

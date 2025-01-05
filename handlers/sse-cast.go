@@ -52,7 +52,7 @@ func CastSSE(server data.Server, config configuration.Config) http.Handler { //n
 			return
 		}
 		ch := make(chan string, 10)
-		rc := http.NewResponseController(w) //nolint:bodyclose
+		rc := http.NewResponseController(w)
 		err = rc.SetWriteDeadline(time.Time{})
 		if err != nil {
 			return

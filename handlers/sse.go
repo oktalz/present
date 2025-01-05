@@ -83,7 +83,7 @@ func SSE(server data.Server, config configuration.Config) http.Handler { //nolin
 		// Create a channel for client disconnection
 		clientGone := r.Context().Done()
 
-		rc := http.NewResponseController(w) //nolint:bodyclose
+		rc := http.NewResponseController(w)
 		err = rc.SetWriteDeadline(time.Time{})
 		if err != nil {
 			return

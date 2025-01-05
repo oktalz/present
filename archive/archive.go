@@ -13,7 +13,7 @@ import (
 var ErrMaxSizeExceeded = errors.New("file size exceeds the maximum limit of 1 GB")
 
 // Gzip compresses the files in the srcDir directory and writes the compressed data to the destTar file.
-func Gzip(srcDir string, destTar string) error { //nolint:funlen
+func Gzip(srcDir string, destTar string) error {
 	tarFile, err := os.Create(destTar)
 	if err != nil {
 		return err
@@ -81,7 +81,7 @@ func Gzip(srcDir string, destTar string) error { //nolint:funlen
 
 // UnGzip decompresses the .tar.gz file specified by srcTarGz and unpacks it to a temporary directory.
 // It then sets the temporary directory as the current working directory.
-func UnGzip(srcTarGz string) error { //nolint:funlen
+func UnGzip(srcTarGz string) error {
 	const maxArchiveSize = 1024 * 1024 * 1024
 
 	// Open the gzip file
