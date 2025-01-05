@@ -22,10 +22,12 @@ func configureServer(config configuration.Config) {
 	wsServer := data.NewServer()
 	data.Init(wsServer, &config)
 
-	http.Handle("/{$}", handlers.Homepage(config))
+	iframeHandler := handlers.IFrame(config)
+
+	http.Handle("/{$}", handlers.Homepage(iframeHandler, config))
 	http.Handle("POST /cast", handlers.CastSSE(wsServer, config))
 	http.Handle("/print", handlers.NoLayout(config))
-	http.Handle("/iframe", handlers.IFrame(config))
+	http.Handle("/iframe", iframeHandler)
 	http.Handle("/login", handlers.Login(loginPage))
 	http.Handle("/stats", handlers.Stats(statsPage, config))
 	http.Handle("/events", handlers.SSE(wsServer, config))

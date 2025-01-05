@@ -16,9 +16,27 @@ import (
 )
 
 type AspectRatio struct {
-	AspectRatio        string
-	ValueChanged       chan string
-	DisableAspectRatio bool
+	Width  int
+	Height int
+}
+
+func (a AspectRatio) String() string {
+	if a.Width == 0 || a.Height == 0 {
+		return ""
+	}
+	return fmt.Sprintf("%dx%d", a.Width, a.Height)
+}
+
+type AspectRatioData struct {
+	Width        int
+	Height       int
+	ValueChanged chan AspectRatio
+}
+
+type AspectRatios struct {
+	Min     AspectRatioData
+	Max     AspectRatioData
+	Disable bool
 }
 
 type Config struct {
@@ -32,7 +50,7 @@ type Config struct {
 	GITKey      string `ff:"          long: key,                          usage: 'ssh key used for git clone auth'"`
 	Dir         string `ff:"short: d, long: dir,                          usage: 'directory to open'"`
 	Help        bool   `ff:"          long: help,                         usage: 'help'"`
-	AspectRatio AspectRatio
+	AspectRatio AspectRatios
 
 	Security Security
 	Controls Controls
@@ -55,8 +73,17 @@ type Controls struct {
 
 func Get() Config {
 	configuration := Config{
-		AspectRatio: AspectRatio{
-			ValueChanged: make(chan string),
+		AspectRatio: AspectRatios{
+			Min: AspectRatioData{
+				Width:        16,
+				Height:       9,
+				ValueChanged: make(chan AspectRatio),
+			},
+			Max: AspectRatioData{
+				Width:        16,
+				Height:       9,
+				ValueChanged: make(chan AspectRatio),
+			},
 		},
 	}
 	security := Security{}

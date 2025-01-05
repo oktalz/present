@@ -3,8 +3,10 @@ package reader
 import (
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 
+	configuration "github.com/oktalz/present/config"
 	"github.com/oktalz/present/parsing"
 	"github.com/oktalz/present/types"
 )
@@ -304,11 +306,70 @@ func processSlides(fileContent string, ro types.ReadOptions) types.Presentation 
 		if strings.HasPrefix(line, ".global.aspect-ratio(") && strings.HasSuffix(line, ")") {
 			aspect := strings.TrimPrefix(line, ".global.aspect-ratio(")
 			aspect = strings.TrimSuffix(aspect, ")")
-			ro.AspectRatio = aspect
+			aspectRatio := strings.Split(aspect, ":")
+			if len(aspectRatio) == 1 {
+				aspectRatio = strings.Split(aspect, "x")
+			}
+			if len(aspectRatio) == 2 {
+				width, errW := strconv.Atoi(aspectRatio[0])
+				height, errH := strconv.Atoi(aspectRatio[1])
+				if errW == nil && errH == nil {
+					ro.AspectRatioMin = configuration.AspectRatio{
+						Width:  width,
+						Height: height,
+					}
+					ro.AspectRatioMax = configuration.AspectRatio{
+						Width:  width,
+						Height: height,
+					}
+				}
+			}
+			lines[index] = ""
+			continue
+		}
+		if strings.HasPrefix(line, ".global.aspect-ratio-min(") && strings.HasSuffix(line, ")") {
+			aspect := strings.TrimPrefix(line, ".global.aspect-ratio-min(")
+			aspect = strings.TrimSuffix(aspect, ")")
+			aspectRatio := strings.Split(aspect, ":")
+			if len(aspectRatio) == 1 {
+				aspectRatio = strings.Split(aspect, "x")
+			}
+			if len(aspectRatio) == 2 {
+				width, errW := strconv.Atoi(aspectRatio[0])
+				height, errH := strconv.Atoi(aspectRatio[1])
+				if errW == nil && errH == nil {
+					ro.AspectRatioMin = configuration.AspectRatio{
+						Width:  width,
+						Height: height,
+					}
+				}
+			}
+			lines[index] = ""
+			continue
+		}
+		if strings.HasPrefix(line, ".global.aspect-ratio-max(") && strings.HasSuffix(line, ")") {
+			aspect := strings.TrimPrefix(line, ".global.aspect-ratio-max(")
+			aspect = strings.TrimSuffix(aspect, ")")
+			aspectRatio := strings.Split(aspect, ":")
+			if len(aspectRatio) == 1 {
+				aspectRatio = strings.Split(aspect, "x")
+			}
+			if len(aspectRatio) == 2 {
+				width, errW := strconv.Atoi(aspectRatio[0])
+				height, errH := strconv.Atoi(aspectRatio[1])
+				if errW == nil && errH == nil {
+					ro.AspectRatioMax = configuration.AspectRatio{
+						Width:  width,
+						Height: height,
+					}
+				}
+			}
 			lines[index] = ""
 			continue
 		}
 		if line == ".global.disable.aspect-ratio" {
+			ro.AspectRatioMin = configuration.AspectRatio{}
+			ro.AspectRatioMax = configuration.AspectRatio{}
 			ro.DisableAspectRatio = true
 			lines[index] = ""
 			continue
@@ -625,7 +686,8 @@ func processSlides(fileContent string, ro types.ReadOptions) types.Presentation 
 	}
 	return types.Presentation{
 		Options: types.PresentationOptions{
-			AspectRatio:        ro.AspectRatio,
+			AspectRatioMin:     ro.AspectRatioMin,
+			AspectRatioMax:     ro.AspectRatioMax,
 			DisableAspectRatio: ro.DisableAspectRatio,
 		},
 		Slides:    slides,

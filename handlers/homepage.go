@@ -6,9 +6,9 @@ import (
 	configuration "github.com/oktalz/present/config"
 )
 
-func Homepage(config configuration.Config) http.Handler {
-	if config.AspectRatio.DisableAspectRatio {
+func Homepage(iframeHandler http.Handler, config configuration.Config) http.Handler {
+	if config.AspectRatio.Disable {
 		return NoLayout(config)
 	}
-	return IFrame(config)
+	return iframeHandler
 }

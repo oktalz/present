@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/oklog/ulid/v2"
+	configuration "github.com/oktalz/present/config"
 	"github.com/oktalz/present/markdown"
 	"github.com/oktalz/present/parsing"
 	"github.com/oktalz/present/types"
@@ -22,7 +23,8 @@ func ReadFiles() types.Presentation { //nolint:funlen,gocognit,gocyclo,cyclop,ma
 		DefaultTerminalBackgroundColor: "rgb(253, 246, 227)",
 		HidePageNumber:                 true,
 		KeepPagePrintOnCut:             false,
-		AspectRatio:                    "",
+		AspectRatioMin:                 configuration.AspectRatio{},
+		AspectRatioMax:                 configuration.AspectRatio{},
 		DisableAspectRatio:             false,
 	}
 	endpoints := map[string]types.TerminalCommand{}
@@ -57,8 +59,11 @@ func ReadFiles() types.Presentation { //nolint:funlen,gocognit,gocyclo,cyclop,ma
 	}
 
 	presentationFile := processSlides(buff.String(), ro)
-	if presentationFile.Options.AspectRatio != "" {
-		presentationFiles.Options.AspectRatio = presentationFile.Options.AspectRatio
+	if presentationFile.Options.AspectRatioMin.String() != "" {
+		presentationFiles.Options.AspectRatioMin = presentationFile.Options.AspectRatioMin
+	}
+	if presentationFile.Options.AspectRatioMax.String() != "" {
+		presentationFiles.Options.AspectRatioMax = presentationFile.Options.AspectRatioMax
 	}
 	if presentationFile.Options.DisableAspectRatio {
 		presentationFiles.Options.DisableAspectRatio = presentationFile.Options.DisableAspectRatio

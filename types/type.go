@@ -1,5 +1,7 @@
 package types
 
+import configuration "github.com/oktalz/present/config"
+
 type Code struct {
 	Header  string
 	Code    string
@@ -89,7 +91,8 @@ type Menu struct {
 }
 
 type PresentationOptions struct {
-	AspectRatio        string
+	AspectRatioMin     configuration.AspectRatio
+	AspectRatioMax     configuration.AspectRatio
 	DisableAspectRatio bool
 }
 
@@ -111,7 +114,8 @@ type TerminalOutputLine struct {
 
 type ReadOptions struct {
 	DefaultFontSize                string
-	AspectRatio                    string
+	AspectRatioMin                 configuration.AspectRatio
+	AspectRatioMax                 configuration.AspectRatio
 	DisableAspectRatio             bool
 	DefaultBackgroundColor         string
 	EveryDashIsATransition         bool

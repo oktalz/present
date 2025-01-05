@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	_ "embed"
+	"fmt"
 	"hash/fnv"
 	"log"
 	"net/http"
@@ -19,18 +21,11 @@ func IFrame(config configuration.Config) http.Handler { //nolint:funlen
 		mu.Lock()
 		defer mu.Unlock()
 		pageResult = page
-		if config.AspectRatio.AspectRatio != "" {
-			aspectRatio := strings.Split(config.AspectRatio.AspectRatio, ":")
-			if len(aspectRatio) == 1 {
-				aspectRatio = strings.Split(config.AspectRatio.AspectRatio, "x")
-			}
-			if len(aspectRatio) == 2 {
-				width, _ := strconv.Atoi(aspectRatio[0])
-				height, _ := strconv.Atoi(aspectRatio[1])
-				pageResult = strings.Replace(pageResult, "widthRatio = 16", "widthRatio = "+strconv.Itoa(width), 1)
-				pageResult = strings.Replace(pageResult, "heightRatio = 9", "heightRatio = "+strconv.Itoa(height), 1)
-			}
-		}
+		fmt.Println("Aspect ratio changed", config.AspectRatio.Min.Width, config.AspectRatio.Min.Height, config.AspectRatio.Max.Width, config.AspectRatio.Max.Height)
+		pageResult = strings.Replace(pageResult, "widthRatioMin = 16", "widthRatioMin = "+strconv.Itoa(config.AspectRatio.Min.Width)+" // custom", 1)
+		pageResult = strings.Replace(pageResult, "widthRatioMax = 16", "widthRatioMax = "+strconv.Itoa(config.AspectRatio.Max.Width)+" // custom", 1)
+		pageResult = strings.Replace(pageResult, "heightRatioMin = 9", "heightRatioMin = "+strconv.Itoa(config.AspectRatio.Min.Height)+" // custom", 1)
+		pageResult = strings.Replace(pageResult, "heightRatioMax = 9", "heightRatioMax = "+strconv.Itoa(config.AspectRatio.Max.Height)+" // custom", 1)
 		hasher := fnv.New64a()
 		hasher.Write([]byte(pageResult))
 		eTagFrame = strconv.FormatUint(hasher.Sum64(), 16)
@@ -39,8 +34,21 @@ func IFrame(config configuration.Config) http.Handler { //nolint:funlen
 	aspectRatioChange()
 	go func() {
 		for {
-			aspectRatio := <-config.AspectRatio.ValueChanged
-			config.AspectRatio.AspectRatio = aspectRatio
+			aspectRatio := <-config.AspectRatio.Min.ValueChanged
+			mu.Lock()
+			config.AspectRatio.Min.Height = aspectRatio.Height
+			config.AspectRatio.Min.Width = aspectRatio.Width
+			mu.Unlock()
+			aspectRatioChange()
+		}
+	}()
+	go func() {
+		for {
+			aspectRatio := <-config.AspectRatio.Max.ValueChanged
+			mu.Lock()
+			config.AspectRatio.Max.Height = aspectRatio.Height
+			config.AspectRatio.Max.Width = aspectRatio.Width
+			mu.Unlock()
 			aspectRatioChange()
 		}
 	}()
@@ -89,74 +97,5 @@ func IFrame(config configuration.Config) http.Handler { //nolint:funlen
 	})
 }
 
-var page = `
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        .iframe-container {
-            max-height: 100vh;
-			max-width: 100vw;
-            position: relative;
-			margin: auto;
-        }
-
-        .iframe-container iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-		body {
-			margin: 0;
-			padding: 0;
-			width: 100vw;
-			height: 100vh;
-			overflow: hidden;
-		}
-    </style>
-</head>
-<body>
-    <div class="iframe-container">
-        <iframe src="/print" id="present-iframe" name="present-iframe" sandbox="allow-scripts allow-same-origin allow-storage-access-by-user-activation"></iframe>
-    </div>
-	<script>
-	  widthRatio = 16
-	  heightRatio = 9
-	  console.log(location.origin)
-	  const urlParams = new URLSearchParams(window.location.search);
-	  const newSrc = location.origin + "/print?" + urlParams.toString();
-	  document.getElementById("present-iframe").src = newSrc;
-	  calcAspectRatioFit = function() {
-		expectedRatio = widthRatio / heightRatio
-		currentRatio = window.innerWidth / window.innerHeight
-		if (widthRatio >= heightRatio) {
-			if (currentRatio < expectedRatio) {
-				document.querySelector('.iframe-container').style.width = '100svw';
-				document.querySelector('.iframe-container').style.height = (window.innerWidth * heightRatio / widthRatio) + 'px';
-			} else {
-				document.querySelector('.iframe-container').style.width = (window.innerHeight * widthRatio / heightRatio) + 'px';
-				document.querySelector('.iframe-container').style.height = '100svh';
-			}
-		} else {
-			if (currentRatio < expectedRatio) {
-				document.querySelector('.iframe-container').style.width = '100svw';
-				document.querySelector('.iframe-container').style.height = (window.innerWidth * heightRatio / widthRatio) + 'px';
-			} else {
-				document.querySelector('.iframe-container').style.width = (window.innerHeight * widthRatio / heightRatio) + 'px';
-				document.querySelector('.iframe-container').style.height = '100svh';
-			}
-		}
-	  }
-	  calcAspectRatioFit()
-	  window.addEventListener("resize", calcAspectRatioFit);
-	</script>
-</body>
-</html>
-
-`
+//go:embed frame.html
+var page string

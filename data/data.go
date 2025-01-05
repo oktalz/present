@@ -89,15 +89,20 @@ func Init(server Server, config *configuration.Config) { //nolint:funlen,gocogni
 		for range filesModified {
 			muPresentation.Lock()
 			presentation = reader.ReadFiles()
-			if presentation.Options.AspectRatio != "" {
+			if presentation.Options.AspectRatioMin.String() != "" {
 				go func() {
-					config.AspectRatio.ValueChanged <- presentation.Options.AspectRatio
+					config.AspectRatio.Min.ValueChanged <- presentation.Options.AspectRatioMin
+				}()
+			}
+			if presentation.Options.AspectRatioMax.String() != "" {
+				go func() {
+					config.AspectRatio.Max.ValueChanged <- presentation.Options.AspectRatioMax
 				}()
 			}
 			if presentation.Options.DisableAspectRatio {
-				config.AspectRatio.DisableAspectRatio = true
+				config.AspectRatio.Disable = true
 				go func() {
-					config.AspectRatio.ValueChanged <- presentation.Options.AspectRatio
+					config.AspectRatio.Min.ValueChanged <- presentation.Options.AspectRatioMin
 				}()
 			}
 			var err error

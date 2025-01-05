@@ -77,6 +77,10 @@ func ProcessReplaceMiddle(fileContent string, pattern parsing.PatternMiddle, pro
 		result = CreateCleanRAW(result).String()
 		what := pattern.Start + part1 + pattern.Middle + part2 + pattern.End
 		// fileContent = strings.ReplaceAll(fileContent, "\n"+what+"\n", result)
+		found := strings.Index(fileContent, what)
+		if found == -1 {
+			return fileContent
+		}
 		fileContent = strings.ReplaceAll(fileContent, "\n"+what, result)
 		fileContent = strings.ReplaceAll(fileContent, what, result)
 	}
