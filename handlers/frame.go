@@ -2,7 +2,6 @@ package handlers
 
 import (
 	_ "embed"
-	"fmt"
 	"hash/fnv"
 	"log"
 	"net/http"
@@ -21,7 +20,7 @@ func IFrame(config configuration.Config) http.Handler { //nolint:funlen
 		mu.Lock()
 		defer mu.Unlock()
 		pageResult = page
-		fmt.Println("Aspect ratio changed", config.AspectRatio.Min.Width, config.AspectRatio.Min.Height, config.AspectRatio.Max.Width, config.AspectRatio.Max.Height)
+		// fmt.Println("Aspect ratio changed", config.AspectRatio.Min.Width, config.AspectRatio.Min.Height, config.AspectRatio.Max.Width, config.AspectRatio.Max.Height)
 		pageResult = strings.Replace(pageResult, "widthRatioMin = 16", "widthRatioMin = "+strconv.Itoa(config.AspectRatio.Min.Width)+" // custom", 1)
 		pageResult = strings.Replace(pageResult, "widthRatioMax = 16", "widthRatioMax = "+strconv.Itoa(config.AspectRatio.Max.Width)+" // custom", 1)
 		pageResult = strings.Replace(pageResult, "heightRatioMin = 9", "heightRatioMin = "+strconv.Itoa(config.AspectRatio.Min.Height)+" // custom", 1)
