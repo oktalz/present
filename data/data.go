@@ -56,6 +56,7 @@ func Presentation() types.Presentation {
 		JS:        presentation.JS,
 		Menu:      menu,
 		Title:     presentation.Title,
+		Author:    presentation.Author,
 		Endpoints: presentation.Endpoints,
 	}
 	return result

@@ -17,6 +17,7 @@ type TemplateData struct {
 	JS            string
 	Menu          []types.Menu
 	Title         string
+	Author        string
 	Port          int
 	PageNext      []string
 	PagePrevious  []string
@@ -52,6 +53,7 @@ func regenerateHTML(presentation types.Presentation, config configuration.Config
 		CSS:           presentation.CSS,
 		JS:            presentation.JS,
 		Title:         presentation.Title,
+		Author:        presentation.Author,
 		Menu:          presentation.Menu,
 		PageNext:      strings.Split(pageNextStr, ","),
 		PagePrevious:  strings.Split(pagePreviousStr, ","),

@@ -38,6 +38,7 @@ func readSlideFile(filename string) (string, error) {
 
 func processSlides(fileContent string, ro types.ReadOptions) types.Presentation { //nolint:funlen,gocognit,maintidx,gocyclo,cyclop
 	var title string
+	var author string
 	slides := []types.Slide{}
 
 	var slide strings.Builder
@@ -503,6 +504,17 @@ func processSlides(fileContent string, ro types.ReadOptions) types.Presentation 
 			lines[index] = ""
 			continue
 		}
+		if strings.HasPrefix(line, ".author(") && strings.HasSuffix(line, ")") {
+			author1 := strings.TrimPrefix(line, ".author(")
+			author1 = strings.TrimSuffix(author1, ")")
+			if author == "" {
+				author = author1
+			} else {
+				author = author + ", " + author1
+			}
+			lines[index] = ""
+			continue
+		}
 		if strings.HasPrefix(line, ".slide.background-color(") && strings.HasSuffix(line, ")") {
 			currentBackgroundColor = strings.TrimPrefix(line, ".slide.background-color(")
 			currentBackgroundColor = strings.TrimSuffix(currentBackgroundColor, ")")
@@ -692,6 +704,7 @@ func processSlides(fileContent string, ro types.ReadOptions) types.Presentation 
 		},
 		Slides:    slides,
 		Title:     title,
+		Author:    author,
 		Replacers: replacersAfter,
 	}
 }

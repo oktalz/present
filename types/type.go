@@ -103,6 +103,7 @@ type Presentation struct {
 	Slides    []Slide
 	Menu      []Menu
 	Title     string
+	Author    string
 	Replacers map[string]string
 	Endpoints map[string]TerminalCommand
 }

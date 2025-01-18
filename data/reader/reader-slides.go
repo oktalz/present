@@ -72,6 +72,9 @@ func ReadFiles() types.Presentation { //nolint:funlen,gocognit,gocyclo,cyclop,ma
 	if presentationFile.Title != "" {
 		presentationFiles.Title = presentationFile.Title
 	}
+	if presentationFile.Author != "" {
+		presentationFiles.Author = presentationFile.Author
+	}
 	if presentationFiles.Replacers == nil {
 		presentationFiles.Replacers = make(map[string]string)
 	}
@@ -453,6 +456,7 @@ func ReadFiles() types.Presentation { //nolint:funlen,gocognit,gocyclo,cyclop,ma
 		JS:        presentationFiles.JS,
 		Menu:      menu,
 		Title:     presentationFiles.Title,
+		Author:    presentationFiles.Author,
 		Replacers: presentationFiles.Replacers,
 		Endpoints: endpoints,
 	}

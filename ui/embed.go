@@ -5,7 +5,7 @@ import (
 	"sync"
 )
 
-//go:embed web.tmpl
+//go:embed web.go.tmpl
 var webTemplate []byte
 
 //go:embed web.css
