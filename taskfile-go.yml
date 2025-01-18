@@ -18,3 +18,14 @@ tasks:
     desc: 'run the project'
     cmds:
       - go run .
+
+  govulncheck:
+    desc: 'run Go vulnerability scanner'
+    cmds:
+      - govulncheck -show verbose ./...
+
+  update:
+    desc: 'update golang.org/x/ dependencies'
+    cmds:
+      - go get -u golang.org/x/...
+      - task: tidy

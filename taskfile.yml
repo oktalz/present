@@ -36,3 +36,4 @@ tasks:
       - task: generate
       - task: lint
       - task: test
+      - task: govulncheck
