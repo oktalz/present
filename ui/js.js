@@ -71,8 +71,10 @@ function updateSlideVisibility(page) {
   getSlideElements().forEach(function(slide) {
     if (parseInt(slide.id.slice(6)) == page) {
       slide.classList.remove('hidden');
+      slide.classList.add('visible');
     } else {
       slide.classList.add('hidden');
+      slide.classList.remove('visible');
     }
   });
 }
