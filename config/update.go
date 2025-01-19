@@ -13,7 +13,7 @@ type Update struct {
 }
 
 func (u *Update) UpdateToLatest() bool {
-	cmd := exec.CommandContext(context.Background(), "go", "install", "github.com/oktalz/present-poc@latest")
+	cmd := exec.CommandContext(context.Background(), "go", "install", "github.com/oktalz/present@latest")
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
 		log.Printf("error getting stdout pipe: %v\n", err)
