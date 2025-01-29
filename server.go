@@ -25,7 +25,7 @@ func configureServer(config configuration.Config) {
 	iframeHandler := handlers.IFrame(config)
 
 	http.Handle("/{$}", handlers.Homepage(iframeHandler, config))
-	http.Handle("POST /cast", handlers.CastSSE(wsServer, config))
+
 	http.Handle("/print", handlers.NoLayout(config))
 	http.Handle("/iframe", iframeHandler)
 	http.Handle("/login", handlers.Login(loginPage))
@@ -70,6 +70,7 @@ func startServer(config configuration.Config) {
 		if err != nil && !errors.Is(err, http.ErrServerClosed) {
 			log.Printf("HTTP server error: %s\n", err)
 		}
+		os.Exit(1)
 	}()
 	<-signalCh
 	// Shutdown the server gracefully
@@ -77,6 +78,7 @@ func startServer(config configuration.Config) {
 	shutdownCtx, cancelShutdown := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancelShutdown()
 
+	server.SetKeepAlivesEnabled(false)
 	err := server.Shutdown(shutdownCtx)
 	if err != nil {
 		log.Printf("HTTP server shutdown error: %s\n", err)

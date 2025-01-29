@@ -21,7 +21,7 @@ func CastSSE(server data.Server, config configuration.Config) http.Handler { //n
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		flusher, ok := w.(http.Flusher)
 		if !ok {
-			http.Error(w, "Streaming not supported!", http.StatusInternalServerError)
+			http.Error(w, "Streaming not supported!", http.StatusNotAcceptable)
 			return
 		}
 

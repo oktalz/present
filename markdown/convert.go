@@ -293,13 +293,25 @@ func prepare(md goldmark.Markdown, fileContent string) string { //nolint:funlen,
 					if tdData != "" {
 						id := CreateCleanMD(prepare(md, tdData))
 						tdData = ""
-						html += id.String() + `</td></tr><tr>`
+						html += id.String() + `</td></tr>`
 					} else {
-						html += `</tr><tr>`
+						html += `</tr>`
+					}
+				} else {
+					trStarted = true
+				}
+				if len(lines) > currLine+1 && strings.HasPrefix(lines[currLine+1], "{") {
+					// find first }
+					end := strings.Index(lines[currLine+1], "}")
+					if end != -1 {
+						css := lines[currLine+1][1:end]
+						html += `<tr style="` + css + `">`
+						lines[currLine+1] = strings.Replace(lines[currLine+1], "{"+css+"}", "", 1)
+					} else {
+						html += `<tr>`
 					}
 				} else {
 					html += `<tr>`
-					trStarted = true
 				}
 				continue
 			}
@@ -307,8 +319,19 @@ func prepare(md goldmark.Markdown, fileContent string) string { //nolint:funlen,
 				line := lines[currLine]
 				if tdData != "" {
 					id := CreateCleanMD(prepare(md, tdData))
-					// solution := prepare(md, tdData)
-					html += id.String() + `</td><td>`
+					html += id.String() + `</td>`
+				}
+				// check if next line starts with {
+				if len(lines) > currLine+1 && strings.HasPrefix(lines[currLine+1], "{") {
+					// find first }
+					end := strings.Index(lines[currLine+1], "}")
+					if end != -1 {
+						css := lines[currLine+1][1:end]
+						html += `</td><td style="` + css + `">`
+						lines[currLine+1] = strings.Replace(lines[currLine+1], "{"+css+"}", "", 1)
+					} else {
+						html += `<td>`
+					}
 				} else {
 					html += `<td>`
 				}
