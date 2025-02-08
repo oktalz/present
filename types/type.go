@@ -100,6 +100,7 @@ type Presentation struct {
 	CSS       string
 	Options   PresentationOptions
 	JS        string
+	HTML      string
 	Slides    []Slide
 	Menu      []Menu
 	Title     string

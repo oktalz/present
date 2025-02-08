@@ -17,6 +17,7 @@
   <script src="chart.js"></script>
   <script src="mermaid.min.js"></script>
   <script src="boxicons.js"></script>
+  <script src="anime.min.js"></script>
   <link href="boxicons.min.css" rel='stylesheet'>
   <script>
     hljs.highlightAll();
@@ -59,6 +60,9 @@
     {{template "slide" .}}
   {{- end -}}
 </div>
+{{ if .HTML -}}
+  {{ .HTML }}
+{{ end -}}
 </body>
 <script>
 {{ if .JS -}}

@@ -54,6 +54,7 @@ func Presentation() types.Presentation {
 		Slides:    slides,
 		CSS:       presentation.CSS,
 		JS:        presentation.JS,
+		HTML:      presentation.HTML,
 		Menu:      menu,
 		Title:     presentation.Title,
 		Author:    presentation.Author,

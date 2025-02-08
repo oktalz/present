@@ -15,6 +15,7 @@ type TemplateData struct {
 	Slides        []types.Slide
 	CSS           string
 	JS            string
+	HTML          string
 	Menu          []types.Menu
 	Title         string
 	Author        string
@@ -52,6 +53,7 @@ func regenerateHTML(presentation types.Presentation, config configuration.Config
 		Slides:        slides,
 		CSS:           presentation.CSS,
 		JS:            presentation.JS,
+		HTML:          presentation.HTML,
 		Title:         presentation.Title,
 		Author:        presentation.Author,
 		Menu:          presentation.Menu,

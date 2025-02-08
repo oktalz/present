@@ -44,6 +44,10 @@ func ReadFiles() types.Presentation { //nolint:funlen,gocognit,gocyclo,cyclop,ma
 	if err == nil {
 		presentationFiles.JS = string(scriptBytes)
 	}
+	htmlBytes, err := os.ReadFile("present.html")
+	if err == nil {
+		presentationFiles.HTML = string(htmlBytes)
+	}
 
 	var buff strings.Builder
 	for _, slide := range slides {
@@ -454,6 +458,7 @@ func ReadFiles() types.Presentation { //nolint:funlen,gocognit,gocyclo,cyclop,ma
 		Slides:    presentations,
 		CSS:       presentationFiles.CSS,
 		JS:        presentationFiles.JS,
+		HTML:      presentationFiles.HTML,
 		Menu:      menu,
 		Title:     presentationFiles.Title,
 		Author:    presentationFiles.Author,
