@@ -25,7 +25,7 @@ func configureServer(config configuration.Config) {
 	iframeHandler := handlers.IFrame(config)
 
 	http.Handle("/{$}", handlers.Homepage(iframeHandler, config))
-
+	http.Handle("POST /cast", handlers.CastSSE(wsServer, config))
 	http.Handle("/print", handlers.NoLayout(config))
 	http.Handle("/iframe", iframeHandler)
 	http.Handle("/login", handlers.Login(loginPage))
