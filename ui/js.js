@@ -1,5 +1,12 @@
 var page = /^#?\d+$/.test(window.location.hash) ? parseInt(window.location.hash.slice(1), 10) : 0;
+if (window.self !== window.top) {
+  topPage = /^#?\d+$/.test(window.top.location.hash) ? parseInt(window.top.location.hash.slice(1), 10) : 0;
+  page = topPage
+}
 setPage(page);
+// window.addEventListener('hashchange', () => {
+//   console.log('Hash changed (print):', window.location.hash);
+// }, false);
 var spinner = false
 var myID = ""
 var showMenu = false

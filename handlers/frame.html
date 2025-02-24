@@ -1,96 +1,133 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        .iframe-container {
-            max-height: 100vh;
-			max-width: 100vw;
-            position: relative;
-			margin: auto;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    .iframe-container {
+      max-height: 100vh;
+      max-width: 100vw;
+      position: relative;
+      margin: auto;
+    }
 
-        .iframe-container iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
+    .iframe-container iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
 
-		body {
-			margin: 0;
-			padding: 0;
-			width: 100vw;
-			height: 100vh;
-			overflow: hidden;
-		}
-    </style>
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+    }
+  </style>
 </head>
 <body>
-    <div class="iframe-container">
-        <iframe src="/print" id="present-iframe" name="present-iframe" sandbox="allow-scripts allow-same-origin allow-storage-access-by-user-activation"></iframe>
-    </div>
-	<script>
-      // 16 / 11 = 1.4545454545454546
-      // 16 / 10 = 1.6
-	  // 16 / 9 = 1.7777777777777777
-      // 16 / 8 = 2
-	  widthRatioMin = 16
-	  widthRatioMax = 16
-	  heightRatioMin = 9
-	  heightRatioMax = 9
-      widthRatioAvg = (widthRatioMin + widthRatioMax) / 2
-      heightRatioAvg = (heightRatioMin + heightRatioMax) / 2
-	  const urlParams = new URLSearchParams(window.location.search);
-	  const newSrc = location.origin + "/print?" + urlParams.toString();
-	  document.getElementById("present-iframe").src = newSrc;
-	  calcAspectRatioFit = function() {
-		expectedRatioMin = widthRatioMin / heightRatioMin
-        expectedRatioMax = widthRatioMax / heightRatioMax
-        // in case ratios are reversed
-        if (expectedRatioMax < expectedRatioMin) {
-            let r = expectedRatioMin
-            expectedRatioMin = expectedRatioMax
-            expectedRatioMax = r
-            r = heightRatioMin
-            heightRatioMin = heightRatioMax
-            heightRatioMax = r
-            r = widthRatioMin
-            widthRatioMin = widthRatioMax
-            widthRatioMax = r
-        }
-		currentRatio = window.innerWidth / window.innerHeight
-        //console.log("currentRatio: "+currentRatio)
+  <div class="iframe-container">
+    <iframe src="/print" id="present-iframe" name="present-iframe"
+      sandbox="allow-scripts allow-same-origin allow-storage-access-by-user-activation"></iframe>
+  </div>
+  <script>
+    var iframe = document.getElementById("present-iframe");
+    var firstHash = window.location.hash;
+    if (firstHash) {
+      iframe.contentWindow.location.hash = firstHash;
+      console.log('Hash set in iframe:', firstHash);
+    }
+    // 16 / 11 = 1.4545454545454546
+    // 16 / 10 = 1.6
+    // 16 / 9 = 1.7777777777777777
+    // 16 / 8 = 2
+    const widthRatioMin = 16;
+    const widthRatioMax = 16;
+    const heightRatioMin = 9;
+    const heightRatioMax = 9;
+    const widthRatioAvg = (widthRatioMin + widthRatioMax) / 2;
+    const heightRatioAvg = (heightRatioMin + heightRatioMax) / 2;
 
-		if (widthRatioAvg >= heightRatioAvg) {
-			if (currentRatio < expectedRatioMin) {
-                document.querySelector('.iframe-container').style.width = '100svw';
-				document.querySelector('.iframe-container').style.height = (window.innerWidth * heightRatioMin / widthRatioMin) + 'px';
-			} else if (currentRatio <= expectedRatioMax) {
-                document.querySelector('.iframe-container').style.width = '100svw';
-				document.querySelector('.iframe-container').style.height = '100svh';
-			} else {
-                document.querySelector('.iframe-container').style.width = (window.innerHeight * widthRatioMax / heightRatioMax) + 'px';
-				document.querySelector('.iframe-container').style.height = '100svh';
-			}
-		} else {
-			if (currentRatio < expectedRatioMin) {
-				document.querySelector('.iframe-container').style.width = '100svw';
-				document.querySelector('.iframe-container').style.height = (window.innerWidth * heightRatioMin / widthRatioMin) + 'px';
-			} else if (currentRatio < expectedRatioMax) {
-				document.querySelector('.iframe-container').style.width = '100svw';
-				document.querySelector('.iframe-container').style.height = '100svh';
-			} else {
-				document.querySelector('.iframe-container').style.width = (window.innerHeight * widthRatioMax / heightRatioMax) + 'px';
-				document.querySelector('.iframe-container').style.height = '100svh';
-			}
-		}
-	  }
-	  calcAspectRatioFit()
-	  window.addEventListener("resize", calcAspectRatioFit);
-	</script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const newSrc = location.origin + "/print?" + urlParams.toString();
+    iframe.src = newSrc;
+
+    function calcAspectRatioFit() {
+      const expectedRatioMin = widthRatioMin / heightRatioMin;
+      const expectedRatioMax = widthRatioMax / heightRatioMax;
+      // in case ratios are reversed
+      if (expectedRatioMax < expectedRatioMin) {
+        let r = expectedRatioMin;
+        expectedRatioMin = expectedRatioMax;
+        expectedRatioMax = r;
+        r = heightRatioMin;
+        heightRatioMin = heightRatioMax;
+        heightRatioMax = r;
+        r = widthRatioMin;
+        widthRatioMin = widthRatioMax;
+        widthRatioMax = r;
+      }
+      const currentRatio = window.innerWidth / window.innerHeight;
+
+      if (widthRatioAvg >= heightRatioAvg) {
+        if (currentRatio < expectedRatioMin) {
+          document.querySelector('.iframe-container').style.width = '100svw';
+          document.querySelector('.iframe-container').style.height = window.innerWidth * heightRatioMin / widthRatioMin + 'px';
+        } else if (currentRatio <= expectedRatioMax) {
+          document.querySelector('.iframe-container').style.width = '100svw';
+          document.querySelector('.iframe-container').style.height = '100svh';
+        } else {
+          document.querySelector('.iframe-container').style.width = window.innerHeight * widthRatioMax / heightRatioMax + 'px';
+          document.querySelector('.iframe-container').style.height = '100svh';
+        }
+      } else {
+        if (currentRatio < expectedRatioMin) {
+          document.querySelector('.iframe-container').style.width = '100svw';
+          document.querySelector('.iframe-container').style.height = window.innerWidth * heightRatioMin / widthRatioMin + 'px';
+        } else if (currentRatio < expectedRatioMax) {
+          document.querySelector('.iframe-container').style.width = '100svw';
+          document.querySelector('.iframe-container').style.height = '100svh';
+        } else {
+          document.querySelector('.iframe-container').style.width = window.innerHeight * widthRatioMax / heightRatioMax + 'px';
+          document.querySelector('.iframe-container').style.height = '100svh';
+        }
+      }
+    }
+
+    calcAspectRatioFit();
+    window.addEventListener("resize", calcAspectRatioFit);
+
+    document.addEventListener('DOMContentLoaded', (event) => {
+      var iframe = document.getElementById("present-iframe");
+
+      const iframeWindow = iframe.contentWindow;
+      var firsHashChange = true;
+
+      // Listen for hash changes in the iframe
+      iframeWindow.addEventListener('hashchange', () => {
+        const newHash = iframeWindow.location.hash;
+        //console.log('Hash changed in iframe:', newHash);
+        // set newHash to current window
+        if (firsHashChange) {
+          firsHashChange = false;
+          iframeWindow.FirstPage = parseInt(firstHash.slice(1), 10);
+          iframeWindow.location.hash = firstHash
+        } else {
+          window.location.hash = newHash;
+        }
+      }, false);
+
+      // copy title from iframe to main window
+      iframeWindow.addEventListener('load', () => {
+        const iframeTitle = iframeWindow.document.title;
+        document.title = iframeTitle;
+      }, false);
+
+    });
+  </script>
 </body>
 </html>

@@ -3,7 +3,9 @@ package reader
 import (
 	"bytes"
 	"log"
+	"maps"
 	"os"
+	"slices"
 	"strings"
 
 	"github.com/oklog/ulid/v2"
@@ -11,8 +13,6 @@ import (
 	"github.com/oktalz/present/markdown"
 	"github.com/oktalz/present/parsing"
 	"github.com/oktalz/present/types"
-	"maps"
-	"slices"
 )
 
 func ReadFiles() types.Presentation { //nolint:funlen,gocognit,gocyclo,cyclop,maintidx
