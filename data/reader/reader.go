@@ -84,7 +84,7 @@ func processSlides(fileContent string, ro types.ReadOptions) types.Presentation 
 			vars := strings.FieldsFunc(data2, func(r rune) bool {
 				return r == ' ' || r == ','
 			})
-			for i := 0; i < len(vars); i++ {
+			for i := range vars {
 				if !strings.HasPrefix(vars[i], ".") {
 					vars[i] = "." + vars[i]
 				}

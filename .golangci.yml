@@ -30,7 +30,7 @@ linters:
     - mnd
     - tagliatelle
     - depguard
-    - exportloopref # deprecated
+    - tenv # deprecated
 
 issues:
   exclude:

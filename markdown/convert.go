@@ -358,7 +358,7 @@ func prepare(md goldmark.Markdown, fileContent string) string { //nolint:funlen,
 	})
 
 	lines := strings.Split(fileContent, "\n")
-	for i := 0; i < len(lines); i++ {
+	for i := range lines {
 		if i >= len(lines) {
 			break
 		}

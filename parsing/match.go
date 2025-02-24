@@ -448,10 +448,7 @@ func splitCode(code string, result *ParseResult, tc *types.TerminalCommand) {
 	for i := range result.CodeBlockShowStart {
 		Header += codeLines[i] + "\n"
 	}
-	until := result.CodeBlockShowEnd
-	if until > len(codeLines) {
-		until = len(codeLines)
-	}
+	until := min(result.CodeBlockShowEnd, len(codeLines))
 	for i := result.CodeBlockShowStart; i < until; i++ {
 		code += codeLines[i] + "\n"
 	}

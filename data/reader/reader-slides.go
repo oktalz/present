@@ -11,6 +11,8 @@ import (
 	"github.com/oktalz/present/markdown"
 	"github.com/oktalz/present/parsing"
 	"github.com/oktalz/present/types"
+	"maps"
+	"slices"
 )
 
 func ReadFiles() types.Presentation { //nolint:funlen,gocognit,gocyclo,cyclop,maintidx
@@ -82,9 +84,7 @@ func ReadFiles() types.Presentation { //nolint:funlen,gocognit,gocyclo,cyclop,ma
 	if presentationFiles.Replacers == nil {
 		presentationFiles.Replacers = make(map[string]string)
 	}
-	for k, v := range presentationFile.Replacers {
-		presentationFiles.Replacers[k] = v
-	}
+	maps.Copy(presentationFiles.Replacers, presentationFile.Replacers)
 
 	presentations := make([]types.Slide, 0)
 	defaultBackend := ""
@@ -94,8 +94,8 @@ func ReadFiles() types.Presentation { //nolint:funlen,gocognit,gocyclo,cyclop,ma
 		}
 		hasDefaultBackground := strings.Contains(slide.Page.Data.Markdown, ".global.background(")
 		if hasDefaultBackground {
-			lines := strings.Split(slide.Page.Data.Markdown, "\n")
-			for _, line := range lines {
+			lines := strings.SplitSeq(slide.Page.Data.Markdown, "\n")
+			for line := range lines {
 				if strings.HasPrefix(line, ".global.background(") {
 					slide.Page.Data.Markdown = strings.Replace(slide.Page.Data.Markdown, line, "", 1)
 					p := strings.TrimPrefix(line, ".global.background(")
@@ -108,8 +108,8 @@ func ReadFiles() types.Presentation { //nolint:funlen,gocognit,gocyclo,cyclop,ma
 		}
 		hasBackground := strings.Contains(slide.Page.Data.Markdown, ".slide.background(")
 		if hasBackground {
-			lines := strings.Split(slide.Page.Data.Markdown, "\n")
-			for _, line := range lines {
+			lines := strings.SplitSeq(slide.Page.Data.Markdown, "\n")
+			for line := range lines {
 				if strings.HasPrefix(line, ".slide.background(") {
 					slide.Page.Data.Markdown = strings.Replace(slide.Page.Data.Markdown, line, "", 1)
 					p := strings.TrimPrefix(line, ".slide.background(")
@@ -281,7 +281,7 @@ func ReadFiles() types.Presentation { //nolint:funlen,gocognit,gocyclo,cyclop,ma
 			for index, line := range lines {
 				if strings.HasPrefix(line, ".slide.print.disable") {
 					slide.PrintDisable = true
-					lines = append(lines[:index], lines[index+1:]...)
+					lines = slices.Delete(lines, index, index+1)
 					slide.Page.Data.Markdown = strings.Join(lines, "\n")
 					break
 				}
@@ -293,7 +293,7 @@ func ReadFiles() types.Presentation { //nolint:funlen,gocognit,gocyclo,cyclop,ma
 			for index, line := range lines {
 				if strings.HasPrefix(line, ".slide.print.only") {
 					slide.PrintOnly = true
-					lines = append(lines[:index], lines[index+1:]...)
+					lines = slices.Delete(lines, index, index+1)
 					slide.Page.Data.Markdown = strings.Join(lines, "\n")
 					break
 				}
@@ -308,7 +308,7 @@ func ReadFiles() types.Presentation { //nolint:funlen,gocognit,gocyclo,cyclop,ma
 					link := strings.TrimPrefix(line, ".slide.link.next(")
 					link = strings.TrimSuffix(link, ")")
 					slide.LinkNext = link
-					lines = append(lines[:index], lines[index+1:]...)
+					lines = slices.Delete(lines, index, index+1)
 					slide.Page.Data.Markdown = strings.Join(lines, "\n")
 					break
 				}
@@ -323,7 +323,7 @@ func ReadFiles() types.Presentation { //nolint:funlen,gocognit,gocyclo,cyclop,ma
 					link := strings.TrimPrefix(line, ".slide.link.previous(")
 					link = strings.TrimSuffix(link, ")")
 					slide.LinkPrev = link
-					lines = append(lines[:index], lines[index+1:]...)
+					lines = slices.Delete(lines, index, index+1)
 					slide.Page.Data.Markdown = strings.Join(lines, "\n")
 					break
 				}
@@ -338,7 +338,7 @@ func ReadFiles() types.Presentation { //nolint:funlen,gocognit,gocyclo,cyclop,ma
 					link := strings.TrimPrefix(line, ".slide.link(")
 					link = strings.TrimSuffix(link, ")")
 					slide.Link = link
-					lines = append(lines[:index], lines[index+1:]...)
+					lines = slices.Delete(lines, index, index+1)
 					slide.Page.Data.Markdown = strings.Join(lines, "\n")
 					break
 				}
@@ -405,8 +405,8 @@ func ReadFiles() types.Presentation { //nolint:funlen,gocognit,gocyclo,cyclop,ma
 		if data == "" {
 			data = p.Page.Data.Markdown
 		}
-		lines := strings.Split(data, "\n")
-		for _, line := range lines {
+		lines := strings.SplitSeq(data, "\n")
+		for line := range lines {
 			ldata := line
 			ldata = strings.ReplaceAll(ldata, "&#41;", ")")
 			ldata = strings.ReplaceAll(ldata, "&#40;", "(")
@@ -449,9 +449,7 @@ func ReadFiles() types.Presentation { //nolint:funlen,gocognit,gocyclo,cyclop,ma
 		}
 	}
 
-	for k, v := range presentationFiles.Endpoints {
-		endpoints[k] = v
-	}
+	maps.Copy(endpoints, presentationFiles.Endpoints)
 
 	return types.Presentation{
 		Options:   presentationFiles.Options,

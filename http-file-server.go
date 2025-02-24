@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"log"
+	"maps"
 	"net/http"
 	"strings"
 )
@@ -57,9 +58,7 @@ func (s *fallbackFileServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		s.secondary.ServeHTTP(w, r)
 		return
 	}
-	for k, v := range rw.CustomHeader {
-		w.Header()[k] = v
-	}
+	maps.Copy(w.Header(), rw.CustomHeader)
 	w.WriteHeader(rw.StatusCode)
 	_, err := w.Write(rw.Body.Bytes())
 	if err != nil {
