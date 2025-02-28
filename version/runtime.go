@@ -9,7 +9,6 @@ import (
 var (
 	Repo       = ""
 	Version    = "dev"
-	Tag        = "dev"
 	CommitDate = ""
 )
 
@@ -23,19 +22,12 @@ func Set() error {
 	Repo = buildinfo.Main.Path
 	CommitDate = get(buildinfo, "vcs.time")
 
-	extra := ""
 	commit := get(buildinfo, "vcs.revision")
 	if len(commit) > 8 {
 		commit = commit[:8]
-		extra = "-" + commit
 	}
 
-	if get(buildinfo, "vcs.modified") == "true" {
-		extra += "-dirty"
-	}
-
-	Version = strings.Replace(buildinfo.Main.Version, "(devel)", "dev", 1) + extra
-	Tag = strings.Replace(buildinfo.Main.Version, "(devel)", "dev", 1)
+	Version = strings.Replace(buildinfo.Main.Version, "(devel)", "dev", 1)
 
 	return nil
 }

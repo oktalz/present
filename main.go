@@ -61,7 +61,7 @@ func main() {
 	}
 
 	if config.Tag {
-		fmt.Println(version.Tag)
+		fmt.Println(version.Version)
 		os.Exit(0)
 	}
 
