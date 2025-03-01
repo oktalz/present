@@ -3,29 +3,62 @@ version: '3'
 
 tasks:
 
-  test:
-    desc: 'run Go tests'
+  check-yq-installed:
+    desc: 'check if yq is installed'
+    internal: true
+    silent: true
+    status:
+      - "{{.YQ_INSTALLED}}"
     cmds:
-      - CGO_ENABLED=1 go test -race -v ./...
+      - echo "installing yq {{.YQ_VERSION}} to /{{.TMP}}/yq/{{.YQ_VERSION}}"
+      - task: go-install
+        vars:
+          PACKAGE: 'github.com/mikefarah/yq/v4@{{.YQ_VERSION}}'
+          GOBIN: '/{{.TMP}}/yq/{{.YQ_VERSION}}'
 
-  install:
-    desc: 'build the project'
+  check-latest-version-go:
+    desc: 'check-latest-version'
+    silent: true
+    vars:
+      PKG:
+        sh: /{{.TMP}}/yq/{{.YQ_VERSION}}/yq eval '.{{.PACKAGE}}.install | sub("/cmd/.*", "")' tools-go.yml
+      LATEST_PACKAGE_VERSION:
+        sh: GO111MODULE=on go list -m -versions -json {{.PKG}} | yq -r '.Versions[-1]'
+    status:
+      - "{{ if eq .LATEST_PACKAGE_VERSION .CURRENT_VERSION }}true{{ else }}false{{ end }}"
     cmds:
-      - go build
-      - go install
+      - cmd: echo "{{.PACKAGE}} can be updated from {{.CURRENT_VERSION}} to {{.LATEST_PACKAGE_VERSION}}"
 
-  run:
-    desc: 'run the project'
+  go-install:
+    desc: ""
+    silent: true
     cmds:
-      - go run .
+      - go install {{.PACKAGE}}
+    env:
+      GOBIN: "{{.GOBIN}}"
 
-  govulncheck:
-    desc: 'run Go vulnerability scanner'
+  check-go-tool:
+    desc: 'install go tool'
+    silent: true
+    preconditions:
+      - task: check-yq-installed
+    deps:
+      - task: check-latest-version-go
+        vars:
+          PACKAGE: '{{.PACKAGE}}'
+          CURRENT_VERSION: '{{.CURRENT_VERSION}}'
+    status:
+      - "{{ if eq .CURRENT_VERSION .VERSION }}true{{ else }}false{{ end }}"
+    vars:
+      VERSION:
+        sh: /{{.TMP}}/yq/{{.YQ_VERSION}}/yq eval '.{{.PACKAGE}}.version' tools-go.yml
+      URL:
+        sh: /{{.TMP}}/yq/{{.YQ_VERSION}}/yq eval '.{{.PACKAGE}}.install' tools-go.yml
+      CURRENT_VERSION:
+        sh: go version -m /{{.TMP}}/{{.PACKAGE}}/{{.VERSION}}/{{.PACKAGE}} | awk '$1 == "mod" {print $3}'
     cmds:
-      - govulncheck -show verbose ./...
-
-  update:
-    desc: 'update golang.org/x/ dependencies'
-    cmds:
-      - go get -u golang.org/x/...
-      - task: tidy
+      - task : go-install
+        vars:
+          PACKAGE: '{{.URL}}@{{.VERSION}}'
+          GOBIN: '/{{.TMP}}/{{.PACKAGE}}/{{.VERSION}}'
+      - echo "Installed {{.PACKAGE}} {{.VERSION}} in /{{.TMP}}/{{.PACKAGE}}/{{.VERSION}}"

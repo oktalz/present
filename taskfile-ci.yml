@@ -2,70 +2,114 @@
 version: '3'
 
 env:
-  GOLANGCI_LINT_VERSION: 1.64.5
-  TMP_DIR: /tmp
+  TMP: tmp
 
 tasks:
-
-  gofumpt:
-    internal: true
-    status:
-      - which gofumpt
-    cmds:
-      - go install mvdan.cc/gofumpt@latest
-
-  lint-check-latest-version:
-      desc: 'Check if golangci-lint is up to date'
-      silent: true
-      cmds:
-        - |
-          if [ "{{.LATEST_VERSION}}" != "v{{.CURRENT_VERSION}}" ]; then
-            echo "golangci-lint can be updated from v{{.CURRENT_VERSION}} to {{.LATEST_VERSION}}"
-          fi
-      vars:
-        LATEST_VERSION:
-          sh: curl --silent "https://api.github.com/repos/golangci/golangci-lint/releases/latest" | jq -r .tag_name
-        CURRENT_VERSION:
-          sh: "{{.TMP_DIR}}/golangci-lint/{{.GOLANGCI_LINT_VERSION}}/golangci-lint --version | awk '{print $4}'"
-
-  lint-version:
-    deps:
-      - task: lint-check-latest-version
-    status:
-      - "{{.TMP_DIR}}/golangci-lint/{{.GOLANGCI_LINT_VERSION}}/golangci-lint --version | grep -q '{{.GOLANGCI_LINT_VERSION}}'"
-    cmds:
-      - curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b {{.TMP_DIR}}/golangci-lint/{{.GOLANGCI_LINT_VERSION}} "v{{.GOLANGCI_LINT_VERSION}}"
 
   tidy:
     desc: 'run Go mod tidy'
     cmds:
       - go mod tidy
 
-  lint:
-    desc: 'run Go linters'
-    deps: [lint-version]
-    cmds:
-      - "{{.TMP_DIR}}/golangci-lint/{{.GOLANGCI_LINT_VERSION}}/golangci-lint run --timeout 15m --color always --max-issues-per-linter 0 --max-same-issues 0"
-
   format:
     desc: 'formats the code'
-    deps: [gofumpt]
+    deps:
+      - task: check-yq-installed
     cmds:
-      - gofumpt -l -w .
+      - task: format-internal
 
-  licenses-check:
+  format-internal:
+    desc: 'formats the code'
     internal: true
-    status:
-      - which go-licenses
+    deps:
+      - task: check-go-tool
+        vars:
+          PACKAGE: 'gofumpt'
+      - task: check-go-tool
+        vars:
+          PACKAGE: betteralign
+    vars:
+      VERSION:
+        sh: /{{.TMP}}/yq/{{.YQ_VERSION}}/yq eval '.gofumpt.version' tools-go.yml
+      BA_VERSION:
+        sh: /{{.TMP}}/yq/{{.YQ_VERSION}}/yq eval '.betteralign.version' tools-go.yml
     cmds:
-      - go install github.com/google/go-licenses@latest
+      - go run golang.org/x/tools/gopls/internal/analysis/modernize/cmd/modernize@latest -fix -test ./...
+      - /{{.TMP}}/betteralign/{{.BA_VERSION}}/betteralign -apply ./... || true
+      - /{{.TMP}}/gofumpt/{{.VERSION}}/gofumpt -extra -l -w .
+
+  lint:
+    desc: 'run Go linters'
+    deps:
+      - task: check-yq-installed
+    cmds:
+      - task: lint-internal
+
+  lint-internal:
+    internal: true
+    desc: 'run Go linters'
+    deps:
+      - task: check-go-tool
+        vars:
+          PACKAGE: staticcheck
+      - task: check-go-tool
+        vars:
+          PACKAGE: betteralign
+      - task: check-go-tool
+        vars:
+          PACKAGE: revive
+    vars:
+      BA_VERSION:
+        sh: /{{.TMP}}/yq/{{.YQ_VERSION}}/yq eval '.betteralign.version' tools-go.yml
+      SC_VERSION:
+        sh: /{{.TMP}}/yq/{{.YQ_VERSION}}/yq eval '.staticcheck.version' tools-go.yml
+      RV_VERSION:
+        sh: /{{.TMP}}/yq/{{.YQ_VERSION}}/yq eval '.revive.version' tools-go.yml
+    cmds:
+      - go vet ./...
+      - /{{.TMP}}/revive/{{.RV_VERSION}}/revive -config revive.toml -formatter friendly -set_exit_status ./...
+      - /{{.TMP}}/staticcheck/{{.SC_VERSION}}/staticcheck ./...
+      - /{{.TMP}}/betteralign/{{.BA_VERSION}}/betteralign ./...
 
   licenses:
     desc: 'check licenses'
-    deps: [licenses-check]
+    deps:
+      - task: check-yq-installed
+    cmds:
+      - task: licenses-internal
+
+  licenses-internal:
+    desc: 'check licenses'
+    internal: true
+    deps:
+      - task: check-go-tool
+        vars:
+          PACKAGE: 'go-licenses'
+    vars:
+      VERSION:
+        sh: /{{.TMP}}/yq/{{.YQ_VERSION}}/yq eval '.go-licenses.version' tools-go.yml
     cmds:
       - |
           PROJECT="$(go list -m)"
           ALLOWED_LICENSES="$(<.allowed_license_types)"
           go-licenses report --ignore "$PROJECT" --ignore "github.com/golang/freetype/raster" --ignore "github.com/golang/freetype/truetype" --ignore "oss.terrastruct.com/d2" .
           go-licenses check --allowed_licenses="$ALLOWED_LICENSES" --ignore "$PROJECT"  --ignore "github.com/oktalz/present" --ignore "github.com/golang/freetype/raster" --ignore "github.com/golang/freetype/truetype" --ignore "oss.terrastruct.com/d2" .
+
+  govulncheck:
+    desc: 'check vulnerabilities in Go code'
+    deps:
+      - task: check-yq-installed
+    cmds:
+      - task: govulncheck-internal
+
+  govulncheck-internal:
+    internal: true
+    deps:
+      - task: check-go-tool
+        vars:
+          PACKAGE: 'govulncheck'
+    vars:
+      VERSION:
+        sh: /{{.TMP}}/yq/{{.YQ_VERSION}}/yq eval '.govulncheck.version' tools-go.yml
+    cmds:
+      - /{{.TMP}}/govulncheck/{{.VERSION}}/govulncheck -show verbose ./...

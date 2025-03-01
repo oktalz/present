@@ -11,6 +11,7 @@ tasks:
   mermaidjs-check-latest-version:
       desc: 'check if mermaid.js is up to date'
       silent: true
+      internal: true
       cmds:
         - |
           if [ "{{.LATEST_VERSION}}" != "mermaid@{{.MERMAID_JS_VERSION}}" ]; then
@@ -23,6 +24,7 @@ tasks:
   highlightjs-check-latest-version:
       desc: 'check if highlight.js is up to date'
       silent: true
+      internal: true
       cmds:
         - |
           if [ "{{.LATEST_VERSION}}" != "{{.HIGHLIGHT_JS_VERSION}}" ]; then
@@ -49,3 +51,4 @@ tasks:
       - wget -q -O ui/static/fonts/boxicons.woff2 https://cdn.jsdelivr.net/npm/boxicons@latest/fonts/boxicons.woff2
       - wget -q -O ui/static/fonts/boxicons.woff https://cdn.jsdelivr.net/npm/boxicons@latest/fonts/boxicons.woff
       - wget -q -O ui/static/fonts/boxicons.ttf https://cdn.jsdelivr.net/npm/boxicons@latest/fonts/boxicons.ttf
+      - #wget -q -O ui/static/anime.min.js https://raw.githubusercontent.com/juliangarnier/anime/refs/heads/master/lib/anime.min.js

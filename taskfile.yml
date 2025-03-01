@@ -8,17 +8,18 @@ includes:
   go:
     taskfile: taskfile-go.yml
     flatten: true
+    internal: true
   external:
     taskfile: taskfile-external.yml
     flatten: true
 
-tasks:
+vars:
+  YQ_VERSION: v4.45.1
+  YQ_INSTALLED_V:
+   sh: /{{.TMP}}/yq/{{.YQ_VERSION}}/yq --version || echo ""
+  YQ_INSTALLED: "{{ if contains .YQ_VERSION .YQ_INSTALLED_V }}true{{ else }}false{{ end }}"
 
-  tools:
-    desc: 'Install all tools used in this project'
-    cmds:
-      - task: gofumpt
-      - task: lint-version
+tasks:
 
   generate:
     desc: 'generate the project documentation/README'
@@ -29,6 +30,8 @@ tasks:
 
   ci:
     desc: 'do all the checks'
+    deps:
+      - task: check-yq-installed
     cmds:
       - task: tidy
       - task: format
@@ -37,3 +40,25 @@ tasks:
       - task: lint
       - task: test
       - task: govulncheck
+
+  test:
+    desc: 'run Go tests'
+    cmds:
+      - CGO_ENABLED=1 go test -race -v ./...
+
+  install:
+    desc: 'build the project'
+    cmds:
+      - go build
+      - go install
+
+  run:
+    desc: 'run the project'
+    cmds:
+      - go run .
+
+  update-x:
+    desc: 'update golang.org/x/ dependencies'
+    cmds:
+      - go get -u golang.org/x/...
+      - task: tidy
