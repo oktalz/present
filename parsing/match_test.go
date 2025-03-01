@@ -29,15 +29,21 @@ func TestFindData(t *testing.T) {
 			want2: "content",
 		},
 		{
-			name:  "FindData3",
-			args:  args{fileContent: ".{I have something.{s} and another.{s} .{content}}", pattern: Pattern{Start: ".{", End: "}"}},
+			name: "FindData3",
+			args: args{
+				fileContent: ".{I have something.{s} and another.{s} .{content}}",
+				pattern:     Pattern{Start: ".{", End: "}"},
+			},
 			want:  2,
 			want1: 49,
 			want2: "I have something.{s} and another.{s} .{content}",
 		},
 		{
-			name:  "FindData4",
-			args:  args{fileContent: ".{I have something.{s.{d}} and another.{s} .{content}}", pattern: Pattern{Start: ".{", End: "}"}},
+			name: "FindData4",
+			args: args{
+				fileContent: ".{I have something.{s.{d}} and another.{s} .{content}}",
+				pattern:     Pattern{Start: ".{", End: "}"},
+			},
 			want:  2,
 			want1: 53,
 			want2: "I have something.{s.{d}} and another.{s} .{content}",

@@ -10,8 +10,9 @@ func TestConvertLinks(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name:    "test links 1",
-			source:  "https://github.com/oktalz/present/releases",
+			name:   "test links 1",
+			source: "https://github.com/oktalz/present/releases",
+			//revive:disable:line-length-limit
 			want:    `<a href="https://github.com/oktalz/present/releases">https://github.com/oktalz/present/releases</a>`,
 			wantErr: false,
 		},

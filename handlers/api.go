@@ -7,7 +7,7 @@ import (
 	"github.com/oktalz/present/data"
 )
 
-var CurrentSlide = int64(-10)
+var currentSlide = int64(-10)
 
 func api(w http.ResponseWriter, _ *http.Request) {
 	err := json.NewEncoder(w).Encode(data.Presentation())
@@ -16,6 +16,6 @@ func api(w http.ResponseWriter, _ *http.Request) {
 	}
 }
 
-func API() http.Handler {
+func API() http.Handler { //revive:disable:confusing-naming
 	return AccessControlAllow(http.HandlerFunc(api))
 }

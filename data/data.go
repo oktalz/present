@@ -75,7 +75,8 @@ type Message struct {
 	Data   any
 }
 
-func Init(server Server, config *configuration.Config) { //nolint:funlen,gocognit
+//revive:disable:function-length,cognitive-complexity,cyclomatic
+func Init(server Server, config *configuration.Config) {
 	filesModified := fsnotify.FileWatcher()
 
 	// initial read
@@ -161,9 +162,12 @@ func Init(server Server, config *configuration.Config) { //nolint:funlen,gocogni
 				for index := range len(presentation.Slides) {
 					p := presentation.Slides[index]
 					linkToReplace := `#link#` + link + `#link#`
-					presentation.Slides[index].Page.Header.HTML = strings.ReplaceAll(p.Page.Header.HTML, linkToReplace, strconv.Itoa(page))
-					presentation.Slides[index].Page.Data.HTML = strings.ReplaceAll(p.Page.Data.HTML, linkToReplace, strconv.Itoa(page))
-					presentation.Slides[index].Page.Footer.HTML = strings.ReplaceAll(p.Page.Footer.HTML, linkToReplace, strconv.Itoa(page))
+					presentation.Slides[index].Page.Header.HTML = strings.ReplaceAll(
+						p.Page.Header.HTML, linkToReplace, strconv.Itoa(page))
+					presentation.Slides[index].Page.Data.HTML = strings.ReplaceAll(
+						p.Page.Data.HTML, linkToReplace, strconv.Itoa(page))
+					presentation.Slides[index].Page.Footer.HTML = strings.ReplaceAll(
+						p.Page.Footer.HTML, linkToReplace, strconv.Itoa(page))
 					if p.LinkNext == link {
 						presentation.Slides[index].LinkNext = strconv.Itoa(page)
 					}

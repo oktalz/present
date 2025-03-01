@@ -28,11 +28,13 @@ func PatternMiddleSimple(start, middle, end string) PatternMiddle {
 
 func MatchMiddle(fileContent string, pattern PatternMiddle, process func(part1, part2 string) string) string {
 	for {
-		start, end, part1 := FindData(fileContent, Pattern{Start: pattern.Start, End: pattern.Middle, AltStart: pattern.StartAlt, AltEnd: pattern.MiddleStart})
+		start, end, part1 := FindData(fileContent,
+			Pattern{Start: pattern.Start, End: pattern.Middle, AltStart: pattern.StartAlt, AltEnd: pattern.MiddleStart})
 		if start == -1 {
 			return fileContent
 		}
-		middle, _, part2 := FindData(fileContent[end:], Pattern{Start: pattern.Middle, End: pattern.End, AltStart: pattern.MiddleEnd, AltEnd: pattern.EndAlt})
+		middle, _, part2 := FindData(fileContent[end:],
+			Pattern{Start: pattern.Middle, End: pattern.End, AltStart: pattern.MiddleEnd, AltEnd: pattern.EndAlt})
 		if middle == -1 {
 			return fileContent
 		}

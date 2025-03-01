@@ -1,0 +1,24 @@
+enableAllRules = true
+
+[rule.line-length-limit]
+  arguments = [120]
+
+[rule.cyclomatic]
+  arguments = [42]
+[rule.cognitive-complexity]
+  arguments = [42]
+
+[rule.unhandled-error]
+  arguments = ["fmt.Print", "fmt.Println", "strings.Builder.WriteString", "bytes.Buffer.WriteString"]
+
+[rule.exported]
+  Disabled = true
+
+[rule.package-comments]
+  Disabled = true
+
+[rule.max-public-structs]
+  Disabled = true
+
+[rule.add-constant]
+  Disabled = true

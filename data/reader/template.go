@@ -15,7 +15,7 @@ type TemplateData struct {
 	Vars []string
 }
 
-func applyTemplate(fileContent string, templateData TemplateData) string { //nolint:funlen
+func applyTemplate(fileContent string, templateData TemplateData) string {
 	startStr := "." + templateData.Name
 	for {
 		start := strings.Index(fileContent, startStr)
@@ -40,15 +40,16 @@ func applyTemplate(fileContent string, templateData TemplateData) string { //nol
 				found := true
 				for found {
 					found = false
-					contentVars = parsing.MatchMiddle(contentVars, parsing.PatternMiddleSimple("{", "}(", ")"), func(part1, part2 string) string {
-						dataMap[part1] = part2
-						found = true
-						return ""
-					})
+					contentVars = parsing.MatchMiddle(contentVars,
+						parsing.PatternMiddleSimple("{", "}(", ")"), func(part1, part2 string) string {
+							dataMap[part1] = part2
+							found = true
+							return ""
+						})
 				}
 				data = dataMap
 			}
-		} else if strings.HasPrefix(toReplace, "(") { //nolint:revive
+		} else if strings.HasPrefix(toReplace, "(") { //revive:disable:empty-block
 		} else {
 			vars := strings.TrimPrefix(toReplace, " ")
 			if len(templateData.Vars) == 0 {

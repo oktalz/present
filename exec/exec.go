@@ -25,8 +25,8 @@ func Cmd(tc types.TerminalCommand) []byte {
 	return output
 }
 
-func DirectoryExists(path string) bool {
-	info, err := os.Stat(path)
+func DirectoryExists(dirPath string) bool {
+	info, err := os.Stat(dirPath)
 	if os.IsNotExist(err) {
 		return false
 	}
@@ -87,7 +87,8 @@ func CmdStreamWS(tc types.TerminalCommand, ch chan string, timeout time.Duration
 	go cmdStreamWS(tc, ch, timeout, raw)
 }
 
-func cmdStreamWS(tc types.TerminalCommand, ch chan string, timeout time.Duration, raw bool) { //nolint:funlen
+//revive:disable:confusing-naming,flag-parameter
+func cmdStreamWS(tc types.TerminalCommand, ch chan string, timeout time.Duration, raw bool) {
 	fmt.Println("======== executing", tc.Dir, tc.App, strings.Join(tc.Cmd, " "))
 	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer func() {

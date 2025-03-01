@@ -34,13 +34,13 @@ func ReplaceData[F ReplaceTypes](fileContent, startStr, endStr string, op F, opt
 		}
 		switch any(val).(type) { // any != any
 		case func(string) string:
-			replaceWith := any(op).(func(string) string)(raw) //nolint:forcetypeassert
+			replaceWith := any(op).(func(string) string)(raw) //revive:disable:unchecked-type-assertion
 			fileContent = strings.ReplaceAll(fileContent, startStr+raw+endStr, replaceWith)
 		case func(string):
-			any(op).(func(string))(raw) //nolint:forcetypeassert
+			any(op).(func(string))(raw)
 			fileContent = strings.ReplaceAll(fileContent, startStr+raw+endStr, "")
 		default:
-			replaceWith := any(op).(string) //nolint:forcetypeassert
+			replaceWith := any(op).(string) //revive:disable:unchecked-type-assertion
 			fileContent = strings.ReplaceAll(fileContent, startStr+raw+endStr, replaceWith)
 		}
 		if once {

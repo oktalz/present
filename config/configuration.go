@@ -113,7 +113,7 @@ func Get() Config {
 	err = ff.Parse(osArgsFF, os.Args[1:], ff.WithEnvVars())
 	if err != nil {
 		fmt.Println(ffhelp.Flags(osArgsFF))
-		os.Exit(1)
+		os.Exit(1) //revive:disable:deep-exit
 	}
 	if configuration.Help {
 		fmt.Println(ffhelp.Flags(osArgsFF))
@@ -157,7 +157,7 @@ func (c *Config) CompressPresentation() {
 	if err != nil {
 		panic(err)
 	}
-	os.Exit(0)
+	os.Exit(0) //revive:disable:deep-exit
 }
 
 func (c *Config) Git() {

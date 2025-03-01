@@ -13,7 +13,8 @@ import (
 	"github.com/oktalz/present/exec"
 )
 
-func SSE(server data.Server, config configuration.Config) http.Handler { //nolint:funlen,gocognit
+//revive:disable:function-length,cognitive-complexity
+func SSE(server data.Server, config configuration.Config) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		userID := cookieIDValue(w, r)
 		isAdmin := (config.Security.AdminPwd == "") || cookieAdminAuth(config.Security.AdminPwd, r)
@@ -74,7 +75,7 @@ func SSE(server data.Server, config configuration.Config) http.Handler { //nolin
 			userID = userID + "-" + r.RemoteAddr
 		}
 		// register with server
-		serverEvent, err := server.Register(userID, isAdmin, atomic.LoadInt64(&CurrentSlide)) //nolint:varnamelen
+		serverEvent, err := server.Register(userID, isAdmin, atomic.LoadInt64(&currentSlide)) //nolint:varnamelen
 		if err != nil {
 			log.Println("register:", err)
 			return
@@ -101,7 +102,7 @@ func SSE(server data.Server, config configuration.Config) http.Handler { //nolin
 				}
 				buf, _ := json.Marshal(msg)
 				if msg.Reload {
-					msg.Slide = int(CurrentSlide)
+					msg.Slide = int(currentSlide)
 				}
 				_, err := fmt.Fprintf(w, "data: %s\n\n", string(buf))
 				if err != nil {

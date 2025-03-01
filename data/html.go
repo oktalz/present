@@ -28,6 +28,7 @@ type TemplateData struct {
 	Admin         bool
 }
 
+//revive:disable:line-length-limit
 func regenerateHTML(presentation types.Presentation, config configuration.Config, adminPrivileges bool) ([]byte, error) {
 	slides := presentation.Slides
 	for i := range presentation.Slides {

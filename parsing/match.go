@@ -18,8 +18,8 @@ type Pattern struct {
 	AltEnd   string
 }
 
-func FindData(fileContent string, pattern Pattern) (int, int, string) {
-	start := strings.Index(fileContent, pattern.Start)
+func FindData(fileContent string, pattern Pattern) (start int, end int, result string) {
+	start = strings.Index(fileContent, pattern.Start)
 	if start == -1 {
 		return -1, -1, ""
 	}
@@ -29,7 +29,7 @@ func FindData(fileContent string, pattern Pattern) (int, int, string) {
 	if index == -1 {
 		return -1, -1, ""
 	}
-	result := content[:index]
+	result = content[:index]
 	// now we need to check if the startStr occurs before the endStr
 	count := strings.Count(result, pattern.Start)
 	if count > 0 || len(pattern.AltStart) > 0 || len(pattern.AltEnd) > 0 {
@@ -61,12 +61,12 @@ func FindData(fileContent string, pattern Pattern) (int, int, string) {
 	return start, start + len(result), result
 }
 
-func FindDataWithAlternative(fileContent string, pattern1, pattern2 Pattern) (int, int, string) {
+func FindDataWithAlternative(fileContent string, pattern1, pattern2 Pattern) (start int, end int, result string) {
 	if fileContent == "" {
 		return -1, -1, ""
 	}
 
-	start, _, result := FindData(fileContent, pattern1)
+	start, _, result = FindData(fileContent, pattern1)
 	if start == -1 {
 		start, _, result = FindData(fileContent, pattern2)
 		if start == -1 {
@@ -77,8 +77,16 @@ func FindDataWithAlternative(fileContent string, pattern1, pattern2 Pattern) (in
 	return start, start + len(result), result
 }
 
-func FindDataWithCode(fileContent, startStr, endStr string) (int, int, string, string, string) {
-	start := strings.Index(fileContent, startStr)
+// FindDataWithCode searches for content delimited by startStr and endStr within
+// fileContent. It also extracts any code block following the found content.
+// Returns the start and end indexes of the found content, the content itself,
+// the code block, and the code's language if specified. If the start or end
+// strings are not found, or if the code block is not properly terminated,
+// returns -1 for indexes and empty strings for content, code, and language.
+//
+//revive:disable:function-result-limit
+func FindDataWithCode(fileContent, startStr, endStr string) (start, end int, result, codeBlock, language string) {
+	start = strings.Index(fileContent, startStr)
 	if start == -1 {
 		return -1, -1, "", "", ""
 	}
@@ -88,7 +96,7 @@ func FindDataWithCode(fileContent, startStr, endStr string) (int, int, string, s
 	if index == -1 {
 		return -1, -1, "", "", ""
 	}
-	result := content[:index]
+	result = content[:index]
 	// now we need to check if the startStr occures before the endStr
 	count := strings.Count(result, startStr)
 	if count > 0 {
@@ -121,7 +129,7 @@ func FindDataWithCode(fileContent, startStr, endStr string) (int, int, string, s
 	if codeStart == -1 {
 		codeStart = 0
 	}
-	language := code[:codeStart]
+	language = code[:codeStart]
 	code = code[codeStart+1 : codeEnd]
 	return start, start + len(result), result, code, language
 }
@@ -165,7 +173,7 @@ func NewShortPattern(start, end string) Pattern {
 	}
 }
 
-func ParseCast(cast string, code string) ParseResult { //nolint:funlen,gocognit,maintidx,gocyclo,cyclop
+func ParseCast(cast string, code string) ParseResult { //revive:disable:function-length,cognitive-complexity,cyclomatic
 	// .cast
 	// + .stream
 	// + .edit
@@ -190,7 +198,7 @@ func ParseCast(cast string, code string) ParseResult { //nolint:funlen,gocognit,
 	}
 	result.IsStream = strings.Contains(cast, ".stream")
 	result.IsEdit = strings.Contains(cast, ".edit")
-	IsBlock := strings.Contains(cast, ".save") || strings.Contains(cast, ".source")
+	isBlock := strings.Contains(cast, ".save") || strings.Contains(cast, ".source")
 	var start int
 	var end int
 	var data string
@@ -201,7 +209,8 @@ func ParseCast(cast string, code string) ParseResult { //nolint:funlen,gocognit,
 
 	data = cast
 	for {
-		start, end, content = FindDataWithAlternative(data, NewShortPattern(".endpoint(", ")"), NewShortPattern(".endpoint{", "}"))
+		start, end, content = FindDataWithAlternative(data,
+			NewShortPattern(".endpoint(", ")"), NewShortPattern(".endpoint{", "}"))
 		if start == -1 {
 			break
 		}
@@ -237,7 +246,8 @@ func ParseCast(cast string, code string) ParseResult { //nolint:funlen,gocognit,
 
 	data = cast
 	for {
-		start, end, content = FindDataWithAlternative(data, NewShortPattern(".path(", ")"), NewShortPattern(".path{", "}"))
+		start, end, content = FindDataWithAlternative(data,
+			NewShortPattern(".path(", ")"), NewShortPattern(".path{", "}"))
 		if start == -1 {
 			break
 		}
@@ -249,7 +259,8 @@ func ParseCast(cast string, code string) ParseResult { //nolint:funlen,gocognit,
 
 	data = cast
 	for {
-		start, end, content = FindDataWithAlternative(data, NewShortPattern(".lang(", ")"), NewShortPattern(".lang{", "}"))
+		start, end, content = FindDataWithAlternative(data,
+			NewShortPattern(".lang(", ")"), NewShortPattern(".lang{", "}"))
 		if start == -1 {
 			break
 		}
@@ -261,7 +272,8 @@ func ParseCast(cast string, code string) ParseResult { //nolint:funlen,gocognit,
 
 	data = cast
 	for {
-		start, end, content = FindDataWithAlternative(data, NewShortPattern(".source(", ")"), NewShortPattern(".source{", "}"))
+		start, end, content = FindDataWithAlternative(data,
+			NewShortPattern(".source(", ")"), NewShortPattern(".source{", "}"))
 		if start == -1 {
 			break
 		}
@@ -296,7 +308,8 @@ func ParseCast(cast string, code string) ParseResult { //nolint:funlen,gocognit,
 
 	data = cast
 	for {
-		start, end, content = FindDataWithAlternative(data, NewShortPattern(".show(", ")"), NewShortPattern(".show{", "}"))
+		start, end, content = FindDataWithAlternative(data,
+			NewShortPattern(".show(", ")"), NewShortPattern(".show{", "}"))
 		if start == -1 {
 			break
 		}
@@ -313,7 +326,8 @@ func ParseCast(cast string, code string) ParseResult { //nolint:funlen,gocognit,
 
 	data = cast
 	for {
-		start, end, content = FindDataWithAlternative(data, NewShortPattern(".before(", ")"), NewShortPattern(".before{", "}"))
+		start, end, content = FindDataWithAlternative(data,
+			NewShortPattern(".before(", ")"), NewShortPattern(".before{", "}"))
 		if start == -1 {
 			break
 		}
@@ -328,7 +342,7 @@ func ParseCast(cast string, code string) ParseResult { //nolint:funlen,gocognit,
 			break
 		}
 		tc := ParseCommand(content)
-		if IsBlock {
+		if isBlock {
 			splitCode(code, &result, &tc)
 		} else {
 			tc.Code = types.Code{
@@ -340,12 +354,13 @@ func ParseCast(cast string, code string) ParseResult { //nolint:funlen,gocognit,
 		hasRun = len(result.Cmd) - 1
 		// data = data[end+1:]
 		// only one run is allowed per cast
-		break //nolint: staticcheck
+		break //lint:ignore U1000,SA4004 // done intentionally
 	}
 
 	data = cast
 	for {
-		start, end, content = FindDataWithAlternative(data, NewShortPattern(".after(", ")"), NewShortPattern(".after{", "}"))
+		start, end, content = FindDataWithAlternative(data,
+			NewShortPattern(".after(", ")"), NewShortPattern(".after{", "}"))
 		if start == -1 {
 			break
 		}
@@ -355,7 +370,8 @@ func ParseCast(cast string, code string) ParseResult { //nolint:funlen,gocognit,
 
 	data = cast
 	for {
-		start, end, content = FindDataWithAlternative(data, NewShortPattern(".parallel(", ")"), NewShortPattern(".parallel{", "}"))
+		start, end, content = FindDataWithAlternative(data,
+			NewShortPattern(".parallel(", ")"), NewShortPattern(".parallel{", "}"))
 		if start == -1 {
 			break
 		}
@@ -366,7 +382,8 @@ func ParseCast(cast string, code string) ParseResult { //nolint:funlen,gocognit,
 
 	data = cast
 	for {
-		start, end, content = FindDataWithAlternative(data, NewShortPattern(".save(", ")"), NewShortPattern(".save{", "}"))
+		start, end, content = FindDataWithAlternative(data,
+			NewShortPattern(".save(", ")"), NewShortPattern(".save{", "}"))
 		if start == -1 {
 			break
 		}
@@ -384,7 +401,8 @@ func ParseCast(cast string, code string) ParseResult { //nolint:funlen,gocognit,
 	}
 
 	for {
-		start, end, content = FindDataWithAlternative(data, NewShortPattern(".source(", ")"), NewShortPattern(".source{", "}"))
+		start, end, content = FindDataWithAlternative(data,
+			NewShortPattern(".source(", ")"), NewShortPattern(".source{", "}"))
 		if start == -1 {
 			break
 		}
@@ -435,8 +453,8 @@ func ParseCommand(command string) types.TerminalCommand {
 }
 
 func splitCode(code string, result *ParseResult, tc *types.TerminalCommand) {
-	var Header string
-	var Footer string
+	var header string
+	var footer string
 	codeLines := strings.Split(code, "\n")
 	code = ""
 	if result.CodeBlockShowStart > len(codeLines) {
@@ -446,14 +464,14 @@ func splitCode(code string, result *ParseResult, tc *types.TerminalCommand) {
 		result.CodeBlockShowEnd = len(codeLines)
 	}
 	for i := range result.CodeBlockShowStart {
-		Header += codeLines[i] + "\n"
+		header += codeLines[i] + "\n"
 	}
 	until := min(result.CodeBlockShowEnd, len(codeLines))
 	for i := result.CodeBlockShowStart; i < until; i++ {
 		code += codeLines[i] + "\n"
 	}
 	for i := result.CodeBlockShowEnd; i < len(codeLines); i++ {
-		Footer += codeLines[i] + "\n"
+		footer += codeLines[i] + "\n"
 	}
 	// for {
 	// 	if strings.HasSuffix(code, "\n") {
@@ -474,9 +492,9 @@ func splitCode(code string, result *ParseResult, tc *types.TerminalCommand) {
 		}
 	}
 	tc.Code = types.Code{
-		Header: Header,
+		Header: header,
 		Code:   code,
-		Footer: Footer,
+		Footer: footer,
 	}
 	if tc.Code.Header == "" && tc.Code.Code == "" && tc.Code.Footer == "" {
 		tc.Code.IsEmpty = true

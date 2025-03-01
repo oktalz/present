@@ -59,13 +59,13 @@ func FileWatcher() chan struct{} {
 
 	wd, err := os.Getwd()
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal(err) //revive:disable:deep-exit
 	}
 
 	// Add a path.
 	err = watcher.Add(wd)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal(err) //revive:disable:deep-exit
 	}
 
 	return filesModified

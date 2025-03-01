@@ -12,7 +12,7 @@ type Update struct {
 	Latest bool `ff:"long: latest, usage: 'update to latest version if go is installed'"`
 }
 
-func (u *Update) UpdateToLatest() bool {
+func (u *Update) UpdateToLatest() bool { //revive:disable:unused-receiver
 	cmd := exec.CommandContext(context.Background(), "go", "install", "github.com/oktalz/present@latest")
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {

@@ -16,7 +16,7 @@ type Server interface {
 	Pool(msg Message)
 }
 
-func NewServer() *server { //nolint:revive
+func NewServer() *server { //revive:disable:unexported-return
 	server := &server{
 		clients:    make(map[string]chan Message),
 		admins:     make(map[string]chan Message),
@@ -35,7 +35,8 @@ type server struct {
 	updatePool chan string
 }
 
-func (s *server) Register(userID string, isAdmin bool, currentSlide int64) (ch chan Message, err error) { //nolint:nonamedreturns
+//revive:disable:flag-parameter,function-length,cognitive-complexity,cyclomatic
+func (s *server) Register(userID string, isAdmin bool, currentSlide int64) (ch chan Message, err error) {
 	muWS.Lock()
 	defer muWS.Unlock()
 	ch = make(chan Message)
@@ -48,7 +49,7 @@ func (s *server) Register(userID string, isAdmin bool, currentSlide int64) (ch c
 	}
 
 	s.clients[userID] = ch
-	go func() {
+	go func() { //revive:disable:datarace
 		ch <- Message{
 			ID:     userID,
 			Author: "SERVER",

@@ -15,7 +15,7 @@ import (
 	"github.com/oktalz/present/types"
 )
 
-func ReadFiles() types.Presentation { //nolint:funlen,gocognit,gocyclo,cyclop,maintidx
+func ReadFiles() types.Presentation { //revive:disable:function-length,cognitive-complexity,cyclomatic
 	ro := types.ReadOptions{
 		DefaultFontSize:                "5svh",
 		EveryDashIsATransition:         false,
@@ -191,9 +191,7 @@ func ReadFiles() types.Presentation { //nolint:funlen,gocognit,gocyclo,cyclop,ma
 		markdownData = slide.Page.Data.Markdown
 		start, end, data, code, language := parsing.FindDataWithCode(markdownData, ".cast", "\n")
 		for start != -1 {
-			// .cast.stream.edit.before{go mod init}.show{0:8}.file{main.go}.run{go run .}.after{echo "done"}.path{/path/to/code}.lang{go}
 			pc := parsing.ParseCast(data, code)
-			// fmt.Println(pc)
 			slide.TerminalCommandBefore = append(slide.TerminalCommandBefore, pc.Before...)
 			slide.TerminalCommand = append(slide.TerminalCommand, pc.Cmd...)
 			slide.TerminalCommandAfter = append(slide.TerminalCommandAfter, pc.After...)
@@ -345,11 +343,13 @@ func ReadFiles() types.Presentation { //nolint:funlen,gocognit,gocyclo,cyclop,ma
 			}
 		}
 		// .link{#link1#}(:cat:) .link{#link2#}(:dog:)
-		slide.Page.Data.Markdown = parsing.MatchMiddle(slide.Page.Data.Markdown, parsing.PatternMiddleSimple(".link{", "}(", ")"), func(page, data string) string {
-			id := markdown.CreateCleanMD(data)
-			page = `#link#` + page + `#link#`
-			return `<span onclick="setPageWithUpdate(` + page + `)" style="cursor: pointer;">` + id.String() + `</span>`
-		})
+		slide.Page.Data.Markdown = parsing.MatchMiddle(slide.Page.Data.Markdown,
+			parsing.PatternMiddleSimple(".link{", "}(", ")"), func(page, data string) string {
+				id := markdown.CreateCleanMD(data)
+				page = `#link#` + page + `#link#`
+				return `<span onclick="setPageWithUpdate(` + page + `)" style="cursor: pointer;">` +
+					id.String() + `</span>`
+			})
 
 		data = strings.ReplaceAll(slide.Page.Data.Markdown, "\n", "")
 		if !(slide.Page.Header.Markdown == "" && data == "" && slide.Page.Footer.Markdown == "") {
@@ -372,19 +372,17 @@ func ReadFiles() types.Presentation { //nolint:funlen,gocognit,gocyclo,cyclop,ma
 			// find first before, first after and set links (if not set already)
 			indexBefore := index - 1
 			for indexBefore > 0 {
-				if presentations[indexBefore].PrintOnly {
-					indexBefore--
-				} else {
+				if !presentations[indexBefore].PrintOnly {
 					break
 				}
+				indexBefore--
 			}
 			indexAfter := index + 1
 			for indexAfter < len(presentations)-1 {
-				if presentations[indexAfter].PrintOnly {
-					indexAfter++
-				} else {
+				if !presentations[indexAfter].PrintOnly {
 					break
 				}
+				indexAfter++
 			}
 			if presentations[indexBefore].Link == "" {
 				presentations[indexBefore].Link = ulid.Make().String()

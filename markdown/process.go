@@ -34,6 +34,7 @@ func ProcessReplace(fileContent, startStr, endStr string, process func(data stri
 	}
 }
 
+//revive:disable:confusing-naming
 func processReplace(fileContent, startStr, endStr string, process func(data string) string) string {
 	for {
 		var raw string
@@ -62,14 +63,30 @@ func processReplace(fileContent, startStr, endStr string, process func(data stri
 	}
 }
 
-func ProcessReplaceMiddle(fileContent string, pattern parsing.PatternMiddle, process func(part1, part2 string) string) string {
+func ProcessReplaceMiddle(
+	fileContent string,
+	pattern parsing.PatternMiddle,
+	process func(part1, part2 string) string,
+) string {
 	for {
-		start, end, part1 := parsing.FindData(fileContent, parsing.Pattern{Start: pattern.Start, End: pattern.Middle, AltStart: pattern.StartAlt, AltEnd: pattern.MiddleStart})
+		start, end, part1 := parsing.FindData(fileContent,
+			parsing.Pattern{
+				Start:    pattern.Start,
+				End:      pattern.Middle,
+				AltStart: pattern.StartAlt,
+				AltEnd:   pattern.MiddleStart,
+			})
 		if start == -1 {
 			return fileContent
 		}
 		tmp := fileContent[end:]
-		middle, _, part2 := parsing.FindData(tmp, parsing.Pattern{Start: pattern.Middle, End: pattern.End, AltStart: pattern.MiddleEnd, AltEnd: pattern.EndAlt})
+		middle, _, part2 := parsing.FindData(tmp,
+			parsing.Pattern{
+				Start:    pattern.Middle,
+				End:      pattern.End,
+				AltStart: pattern.MiddleEnd,
+				AltEnd:   pattern.EndAlt,
+			})
 		if middle == -1 {
 			return fileContent
 		}

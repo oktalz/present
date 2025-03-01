@@ -91,7 +91,8 @@ func Convert(source string) (string, error) {
 	return res, nil
 }
 
-func prepare(md goldmark.Markdown, fileContent string) string { //nolint:funlen,gocognit,maintidx,gocyclo,cyclop
+//revive:disable:function-length,cognitive-complexity,cyclomatic
+func prepare(md goldmark.Markdown, fileContent string) string {
 	fileContent = processReplace(fileContent, ".raw", ".raw.end", func(data string) string {
 		return data
 	})
@@ -126,7 +127,8 @@ func prepare(md goldmark.Markdown, fileContent string) string { //nolint:funlen,
 			tabName = strings.Trim(tabName, "() ")
 			tab = tab[firstNewLine+1:]
 			contentID := CreateCleanMD(prepare(md, tab))
-			header += `<button class="tablinks` + tabActive + `" onclick="tabChangeGlobal('` + tabID + `')" id='tab-` + tabID + `'>` + tabName + `</button>`
+			header += `<button class="tablinks` + tabActive +
+				`" onclick="tabChangeGlobal('` + tabID + `')" id='tab-` + tabID + `'>` + tabName + `</button>`
 			tabContent := `<div class="tabcontent` + class + `" id="` + tabID + `">` + contentID.String() + `</div>`
 			buff.WriteString(tabContent)
 		}
@@ -150,20 +152,25 @@ func prepare(md goldmark.Markdown, fileContent string) string { //nolint:funlen,
 			return ``
 		}
 		// log.Println(".api.", parts)
-		return `<span onclick="triggerPool('` + parts[0] + `', '` + parts[1] + `')" style="cursor: pointer;">` + CreateCleanMD(prepare(md, display)).String() + `</span>`
+		return `<span onclick="triggerPool('` + parts[0] + `', '` + parts[1] + `')" style="cursor: pointer;">` +
+			CreateCleanMD(prepare(md, display)).String() + `</span>`
 	})
 	// fileContent = ProcessReplaceMiddle(fileContent, ".run", "{", "}", func(block, display string) string {
-	fileContent = ProcessReplaceMiddle(fileContent, parsing.PatternMiddleSimple(".run{", "}(", ")"), func(block, display string) string {
-		// .run.block.1{display}
-		return `<span onclick="triggerBlockRun('` + block + `')" style="cursor: pointer;">` + CreateCleanMD(prepare(md, display)).String() + `</span>`
-	})
+	fileContent = ProcessReplaceMiddle(fileContent, parsing.PatternMiddleSimple(".run{", "}(", ")"),
+		func(block, display string) string {
+			// .run.block.1{display}
+			return `<span onclick="triggerBlockRun('` + block + `')" style="cursor: pointer;">` +
+				CreateCleanMD(prepare(md, display)).String() + `</span>`
+		})
 	fileContent = processReplace(fileContent, ".center", ".center.end", func(data string) string {
 		return `<div style="text-align:center">` + CreateCleanMD(prepare(md, data)).String() + `</div>`
 	})
 	// fileContent = ProcessReplaceMiddle(fileContent, ".link{", "}(", ")", func(page, data string) string {
-	fileContent = ProcessReplaceMiddle(fileContent, parsing.PatternMiddleSimple(".link{", "}(", ")"), func(page, data string) string {
-		return `<span onclick="setPageWithUpdate(#link#` + page + `#link#)" style="cursor: pointer;">` + CreateCleanMD(prepare(md, data)).String() + `</span>`
-	})
+	fileContent = ProcessReplaceMiddle(fileContent, parsing.PatternMiddleSimple(".link{", "}(", ")"),
+		func(page, data string) string {
+			return `<span onclick="setPageWithUpdate(#link#` + page + `#link#)" style="cursor: pointer;">` +
+				CreateCleanMD(prepare(md, data)).String() + `</span>`
+		})
 	fileContent = processReplace(fileContent, ".image(", ")", func(data string) string {
 		parts := strings.SplitN(data, ` `, 2) //nolint:mnd
 		html := `<img src="` + parts[0] + `" `
@@ -183,74 +190,77 @@ func prepare(md goldmark.Markdown, fileContent string) string { //nolint:funlen,
 		html += `style="object-fit: contain; width: ` + width + `; height: ` + height + `;">`
 		return html
 	})
-	fileContent = ProcessReplaceMiddle(fileContent, parsing.PatternMiddleSimple(".{", "}(", ")"), func(style, content string) string {
-		var classes string
-		var elemID string
-		style = strings.Trim(style, `"'`)
-		style = processReplace(style, ".class(", ")", func(data string) string {
-			classes = data
-			return ""
+	fileContent = ProcessReplaceMiddle(fileContent, parsing.PatternMiddleSimple(".{", "}(", ")"),
+		func(style, content string) string {
+			var classes string
+			var elemID string
+			style = strings.Trim(style, `"'`)
+			style = processReplace(style, ".class(", ")", func(data string) string {
+				classes = data
+				return ""
+			})
+			if classes != "" {
+				classes = ` class="` + classes + `" `
+			}
+			style = processReplace(style, ".id(", ")", func(data string) string {
+				elemID = data
+				return ""
+			})
+			if elemID != "" {
+				elemID = ` id="` + elemID + `" `
+			}
+			id := CreateCleanMD(prepare(md, content))
+			html := `<span ` + elemID + classes + `style="` + style + `">` + id.String() + `</span>`
+			return html
 		})
-		if classes != "" {
-			classes = ` class="` + classes + `" `
-		}
-		style = processReplace(style, ".id(", ")", func(data string) string {
-			elemID = data
-			return ""
-		})
-		if elemID != "" {
-			elemID = ` id="` + elemID + `" `
-		}
-		id := CreateCleanMD(prepare(md, content))
-		html := `<span ` + elemID + classes + `style="` + style + `">` + id.String() + `</span>`
-		return html
-	})
 	// fileContent = ProcessReplaceMiddle(fileContent, ".div{", "}(", ")", func(style, content string) string {
-	fileContent = ProcessReplaceMiddle(fileContent, parsing.PatternMiddleSimple(".div{", "}(", ")"), func(style, content string) string {
-		var classes string
-		var elemID string
-		style = strings.Trim(style, `"'`)
-		style = processReplace(style, ".class(", ")", func(data string) string {
-			classes = data
-			return ""
+	fileContent = ProcessReplaceMiddle(fileContent, parsing.PatternMiddleSimple(".div{", "}(", ")"),
+		func(style, content string) string {
+			var classes string
+			var elemID string
+			style = strings.Trim(style, `"'`)
+			style = processReplace(style, ".class(", ")", func(data string) string {
+				classes = data
+				return ""
+			})
+			if classes != "" {
+				classes = ` class="` + classes + `" `
+			}
+			style = processReplace(style, ".id(", ")", func(data string) string {
+				elemID = data
+				return ""
+			})
+			if elemID != "" {
+				elemID = ` id="` + elemID + `" `
+			}
+			id := CreateCleanMD(prepare(md, content))
+			html := `<div ` + elemID + classes + `style="` + style + `">` + id.String() + `</div>`
+			return html
 		})
-		if classes != "" {
-			classes = ` class="` + classes + `" `
-		}
-		style = processReplace(style, ".id(", ")", func(data string) string {
-			elemID = data
-			return ""
-		})
-		if elemID != "" {
-			elemID = ` id="` + elemID + `" `
-		}
-		id := CreateCleanMD(prepare(md, content))
-		html := `<div ` + elemID + classes + `style="` + style + `">` + id.String() + `</div>`
-		return html
-	})
 	// fileContent = ProcessReplaceMiddle(fileContent, ".css{", "}", ".css.end", func(style, content string) string {
-	fileContent = ProcessReplaceMiddle(fileContent, parsing.PatternMiddleSimple(".css{", "}", ".css.end"), func(style, content string) string {
-		var classes string
-		var elemID string
-		style = strings.Trim(style, `"'`)
-		style = processReplace(style, ".class(", ")", func(data string) string {
-			classes = data
-			return ""
+	fileContent = ProcessReplaceMiddle(fileContent, parsing.PatternMiddleSimple(".css{", "}", ".css.end"),
+		func(style, content string) string {
+			var classes string
+			var elemID string
+			style = strings.Trim(style, `"'`)
+			style = processReplace(style, ".class(", ")", func(data string) string {
+				classes = data
+				return ""
+			})
+			if classes != "" {
+				classes = ` class="` + classes + `" `
+			}
+			style = processReplace(style, ".id(", ")", func(data string) string {
+				elemID = data
+				return ""
+			})
+			if elemID != "" {
+				elemID = ` id="` + elemID + `" `
+			}
+			id := CreateCleanMD(prepare(md, content))
+			html := `<div ` + elemID + classes + `style="` + style + `">` + id.String() + `</div>`
+			return html
 		})
-		if classes != "" {
-			classes = ` class="` + classes + `" `
-		}
-		style = processReplace(style, ".id(", ")", func(data string) string {
-			elemID = data
-			return ""
-		})
-		if elemID != "" {
-			elemID = ` id="` + elemID + `" `
-		}
-		id := CreateCleanMD(prepare(md, content))
-		html := `<div ` + elemID + classes + `style="` + style + `">` + id.String() + `</div>`
-		return html
-	})
 
 	fileContent = processReplace(fileContent, ".bx{", "}", func(data string) string {
 		return `<i class='bx ` + data + `'></i>`

@@ -36,7 +36,8 @@ func readSlideFile(filename string) (string, error) {
 	return string(content), nil
 }
 
-func processSlides(fileContent string, ro types.ReadOptions) types.Presentation { //nolint:funlen,gocognit,maintidx,gocyclo,cyclop
+//revive:disable:function-length,cognitive-complexity,cyclomatic
+func processSlides(fileContent string, ro types.ReadOptions) types.Presentation {
 	var title string
 	var author string
 	slides := []types.Slide{}

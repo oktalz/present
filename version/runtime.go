@@ -22,11 +22,6 @@ func Set() error {
 	Repo = buildinfo.Main.Path
 	CommitDate = get(buildinfo, "vcs.time")
 
-	commit := get(buildinfo, "vcs.revision")
-	if len(commit) > 8 {
-		commit = commit[:8]
-	}
-
 	Version = strings.Replace(buildinfo.Main.Version, "(devel)", "dev", 1)
 
 	return nil

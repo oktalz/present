@@ -17,7 +17,8 @@ import (
 	"github.com/oktalz/present/types"
 )
 
-func CastSSE(server data.Server, config configuration.Config) http.Handler { //nolint:funlen,gocognit,revive
+// CastSSE returns an HTTP handler that handles server execution of a commands
+func CastSSE(config configuration.Config) http.Handler { //revive:disable:function-length,cognitive-complexity
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		flusher, ok := w.(http.Flusher)
 		if !ok {
@@ -106,7 +107,10 @@ func CastSSE(server data.Server, config configuration.Config) http.Handler { //n
 				cmd.Dir = workingDir
 			}
 			if !cmd.Code.IsEmpty {
-				err = os.WriteFile(filepath.Join(workingDir, cmd.FileName), []byte(cmd.Code.Header+cmd.Code.Code+cmd.Code.Footer), 0o600)
+				err = os.WriteFile(
+					filepath.Join(workingDir, cmd.FileName),
+					[]byte(cmd.Code.Header+cmd.Code.Code+cmd.Code.Footer),
+					0o600)
 				if err != nil {
 					http.Error(w, err.Error(), http.StatusInternalServerError)
 				}
@@ -142,7 +146,10 @@ func CastSSE(server data.Server, config configuration.Config) http.Handler { //n
 					} else {
 						data = "<br>" + line + "\n\n"
 					}
-					fmt.Fprint(w, data)
+					_, err := fmt.Fprint(w, data)
+					if err != nil {
+						fmt.Println(err)
+					}
 					flusher.Flush()
 				}
 			} else {

@@ -57,7 +57,7 @@ func Gzip(srcDir string, destTar string) error {
 		}
 
 		header.Name = filepath.ToSlash(relativePath) // Use relative path
-		header.Size = fi.Size()                      // Ensure header size is set correctly to avoid "write too long" error
+		header.Size = fi.Size()                      // Ensure header size is set correctly - avoid "write too long" err
 
 		if err := tarWriter.WriteHeader(header); err != nil {
 			return err
@@ -81,7 +81,7 @@ func Gzip(srcDir string, destTar string) error {
 
 // UnGzip decompresses the .tar.gz file specified by srcTarGz and unpacks it to a temporary directory.
 // It then sets the temporary directory as the current working directory.
-func UnGzip(srcTarGz string) error {
+func UnGzip(srcTarGz string) error { //revive:disable:function-length,cognitive-complexity,cyclomatic
 	const maxArchiveSize = 1024 * 1024 * 1024
 
 	// Open the gzip file
@@ -142,10 +142,13 @@ func UnGzip(srcTarGz string) error {
 				return err
 			}
 			if _, err := io.Copy(outFile, tarReader); err != nil { //nolint:gosec
-				outFile.Close()
+				_ = outFile.Close()
 				return err
 			}
-			outFile.Close()
+			err = outFile.Close()
+			if err != nil {
+				return err
+			}
 		}
 	}
 
