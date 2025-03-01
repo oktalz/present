@@ -18,7 +18,7 @@ type Pattern struct {
 	AltEnd   string
 }
 
-func FindData(fileContent string, pattern Pattern) (start int, end int, result string) {
+func FindData(fileContent string, pattern Pattern) (start, end int, result string) {
 	start = strings.Index(fileContent, pattern.Start)
 	if start == -1 {
 		return -1, -1, ""
@@ -61,7 +61,7 @@ func FindData(fileContent string, pattern Pattern) (start int, end int, result s
 	return start, start + len(result), result
 }
 
-func FindDataWithAlternative(fileContent string, pattern1, pattern2 Pattern) (start int, end int, result string) {
+func FindDataWithAlternative(fileContent string, pattern1, pattern2 Pattern) (start, end int, result string) {
 	if fileContent == "" {
 		return -1, -1, ""
 	}
@@ -148,20 +148,20 @@ func findAllIndexes(text, substring string) []int {
 }
 
 type ParseResult struct {
-	IsStream           bool
-	IsEdit             bool
-	Before             []types.TerminalCommand
-	Cmd                []types.TerminalCommand
-	After              []types.TerminalCommand
-	CodeBlockShowStart int
-	CodeBlockShowEnd   int
 	NewCode            string
-	InjectCode         bool
 	Path               string
 	Lang               string
 	ID                 string
 	JS                 string
 	Endpoint           string
+	Before             []types.TerminalCommand
+	Cmd                []types.TerminalCommand
+	After              []types.TerminalCommand
+	CodeBlockShowStart int
+	CodeBlockShowEnd   int
+	IsStream           bool
+	IsEdit             bool
+	InjectCode         bool
 }
 
 func NewShortPattern(start, end string) Pattern {
@@ -173,7 +173,7 @@ func NewShortPattern(start, end string) Pattern {
 	}
 }
 
-func ParseCast(cast string, code string) ParseResult { //revive:disable:function-length,cognitive-complexity,cyclomatic
+func ParseCast(cast, code string) ParseResult { //revive:disable:function-length,cognitive-complexity,cyclomatic
 	// .cast
 	// + .stream
 	// + .edit

@@ -19,8 +19,8 @@ import (
 )
 
 type blockData struct {
-	ID   ulid.ULID
 	Data string
+	ID   ulid.ULID
 }
 
 var (

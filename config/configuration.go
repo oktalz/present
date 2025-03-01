@@ -28,9 +28,9 @@ func (a AspectRatio) String() string {
 }
 
 type AspectRatioData struct {
+	ValueChanged chan AspectRatio
 	Width        int
 	Height       int
-	ValueChanged chan AspectRatio
 }
 
 type AspectRatios struct {
@@ -39,7 +39,7 @@ type AspectRatios struct {
 	Disable bool
 }
 
-type Config struct {
+type Config struct { //betteralign:ignore
 	Version     bool   `ff:"short: v, long: version,                      usage: 'show version'"`
 	Address     string `ff:"short: h, long: host,     default: 127.0.0.1, usage: 'address that present will listen on'"`
 	Port        int    `ff:"short: p, long: port,     default: 8080,      usage: 'port that present will listen on'"`
@@ -57,13 +57,13 @@ type Config struct {
 	Update   Update
 }
 
-type Security struct {
+type Security struct { //betteralign:ignore
 	AdminPwd        string `ff:"long: admin-pwd,         usage: 'admin password'"`
 	UserPwd         string `ff:"long: user-pwd,          usage: 'user password'"`
 	AdminPwdDisable bool   `ff:"long: admin-pwd-disable, usage: 'disable admin password'"`
 }
 
-type Controls struct {
+type Controls struct { //betteralign:ignore
 	Menu          string `ff:"long: menu,              usage: 'keys that opens menu'"`
 	NextPage      string `ff:"long: next-page,         usage: 'keys that go to next page'"`
 	PreviousPage  string `ff:"long: previous-page,     usage: 'keys that go to previous page'"`

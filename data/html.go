@@ -12,19 +12,19 @@ import (
 )
 
 type TemplateData struct {
-	Slides        []types.Slide
 	CSS           string
 	JS            string
 	HTML          string
-	Menu          []types.Menu
 	Title         string
 	Author        string
-	Port          int
+	Slides        []types.Slide
+	Menu          []types.Menu
 	PageNext      []string
 	PagePrevious  []string
 	TerminalCast  []string
 	TerminalClose []string
 	MenuKey       []string
+	Port          int
 	Admin         bool
 }
 

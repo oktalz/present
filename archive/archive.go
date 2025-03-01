@@ -13,7 +13,7 @@ import (
 var ErrMaxSizeExceeded = errors.New("file size exceeds the maximum limit of 1 GB")
 
 // Gzip compresses the files in the srcDir directory and writes the compressed data to the destTar file.
-func Gzip(srcDir string, destTar string) error {
+func Gzip(srcDir, destTar string) error {
 	tarFile, err := os.Create(destTar)
 	if err != nil {
 		return err

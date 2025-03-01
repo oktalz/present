@@ -64,15 +64,15 @@ func Presentation() types.Presentation {
 }
 
 type Message struct {
+	Data   any
 	ID     string
 	Author string
-	Admin  bool
-	Msg    []byte
-	Slide  int
-	Reload bool
 	Pool   string
 	Value  string
-	Data   any
+	Msg    []byte
+	Slide  int
+	Admin  bool
+	Reload bool
 }
 
 //revive:disable:function-length,cognitive-complexity,cyclomatic

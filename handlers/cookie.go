@@ -36,7 +36,7 @@ func cookieIDValue(w http.ResponseWriter, r *http.Request) string {
 // Returns:
 //   - user: a boolean indicating if the user has user rights.
 //   - admin: a boolean indicating if the user has admin rights.
-func cookieAuth(userPwd, adminPwd string, r *http.Request) (user bool, admin bool) { //nolint:nonamedreturns
+func cookieAuth(userPwd, adminPwd string, r *http.Request) (user, admin bool) { //nolint:nonamedreturns
 	cookie, err := r.Cookie("present")
 	if err != nil {
 		return false, false

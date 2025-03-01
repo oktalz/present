@@ -13,11 +13,11 @@ import (
 )
 
 type User struct {
+	LoginTime time.Time           `json:"login_time"`
 	Username  string              `json:"username"`
-	Admin     bool                `json:"admin"`
 	IP        string              `json:"ip"`
 	UA        useragent.UserAgent `json:"ua"`
-	LoginTime time.Time           `json:"login_time"`
+	Admin     bool                `json:"admin"`
 }
 
 var (

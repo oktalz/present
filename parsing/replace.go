@@ -49,7 +49,7 @@ func ReplaceData[F ReplaceTypes](fileContent, startStr, endStr string, op F, opt
 	}
 }
 
-func ReplaceDataString(fileContent, startStr, endStr string, replaceWith string) string {
+func ReplaceDataString(fileContent, startStr, endStr, replaceWith string) string {
 	for {
 		start, _, raw := FindData(fileContent, Pattern{Start: startStr, End: endStr})
 		if start == -1 {

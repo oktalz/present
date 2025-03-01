@@ -23,12 +23,12 @@ type Cast struct {
 
 type TerminalCommand struct {
 	Dir      string
-	DirFixed bool
 	App      string
-	Cmd      []string
-	Code     Code
-	Index    int
 	FileName string
+	Code     Code
+	Cmd      []string
+	Index    int
+	DirFixed bool
 }
 
 type Content struct {
@@ -43,51 +43,51 @@ type Page struct {
 }
 
 type Slide struct {
-	Page                  Page
-	Admin                 Content
-	Notes                 string
-	IsAdmin               bool
-	Terminal              TerminalCommand
-	Asciinema             *Asciinema
-	Cast                  *Cast
-	TerminalCommandBefore []TerminalCommand
-	TerminalCommand       []TerminalCommand
-	TerminalCommandAfter  []TerminalCommand
-
-	SlideCmdBefore          []TerminalCommand
-	SlideCmdAfter           []TerminalCommand
+	Asciinema               *Asciinema
+	Cast                    *Cast
+	Page                    Page
+	Admin                   Content
+	Notes                   string
 	JS                      string // javascript function to call on page enter
 	Path                    string
-	UseTmpFolder            bool
-	CanEdit                 bool
-	HasCast                 bool
-	HasCastStreamed         bool
-	HasRun                  bool
-	HasTerminal             bool
 	BackgroundImage         string
 	BackgroundColor         string
-	PageIndex               int
-	PagePrint               int
 	FontSize                string
 	TerminalFontSize        string
 	TerminalFontColor       string
 	TerminalBackgroundColor string
-	HideRunButton           bool
 	Link                    string
 	LinkNext                string
 	LinkPrev                string
-	PrintOnly               bool
-	PrintDisable            bool
-	HidePageNumber          bool
 	Title                   string
-	EnableOverflow          bool
+	TerminalCommandBefore   []TerminalCommand
+	TerminalCommand         []TerminalCommand
+	TerminalCommandAfter    []TerminalCommand
+
+	SlideCmdBefore  []TerminalCommand
+	SlideCmdAfter   []TerminalCommand
+	Terminal        TerminalCommand
+	PageIndex       int
+	PagePrint       int
+	IsAdmin         bool
+	UseTmpFolder    bool
+	CanEdit         bool
+	HasCast         bool
+	HasCastStreamed bool
+	HasRun          bool
+	HasTerminal     bool
+	HideRunButton   bool
+	PrintOnly       bool
+	PrintDisable    bool
+	HidePageNumber  bool
+	EnableOverflow  bool
 }
 
 type Menu struct {
+	Title     string
 	Link      int
 	PagePrint int
 	PageIndex int
-	Title     string
 }
 
 type PresentationOptions struct {
@@ -97,16 +97,16 @@ type PresentationOptions struct {
 }
 
 type Presentation struct {
-	CSS       string
-	Options   PresentationOptions
-	JS        string
-	HTML      string
-	Slides    []Slide
-	Menu      []Menu
-	Title     string
-	Author    string
 	Replacers map[string]string
 	Endpoints map[string]TerminalCommand
+	CSS       string
+	JS        string
+	HTML      string
+	Title     string
+	Author    string
+	Slides    []Slide
+	Menu      []Menu
+	Options   PresentationOptions
 }
 
 type TerminalOutputLine struct {
@@ -116,14 +116,14 @@ type TerminalOutputLine struct {
 
 type ReadOptions struct {
 	DefaultFontSize                string
-	AspectRatioMin                 configuration.AspectRatio
-	AspectRatioMax                 configuration.AspectRatio
-	DisableAspectRatio             bool
 	DefaultBackgroundColor         string
-	EveryDashIsATransition         bool
 	DefaultTerminalFontSize        string
 	DefaultTerminalFontColor       string
 	DefaultTerminalBackgroundColor string
+	AspectRatioMin                 configuration.AspectRatio
+	AspectRatioMax                 configuration.AspectRatio
+	DisableAspectRatio             bool
+	EveryDashIsATransition         bool
 	HideRunButton                  bool
 	HidePageNumber                 bool
 	KeepPagePrintOnCut             bool

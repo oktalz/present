@@ -9,8 +9,8 @@ import (
 )
 
 type responseWriter struct {
-	Body         bytes.Buffer
 	CustomHeader http.Header
+	Body         bytes.Buffer
 	StatusCode   int
 }
 
