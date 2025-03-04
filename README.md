@@ -32,8 +32,8 @@ go install github.com/oktalz/present@latest
 - enter examples folder, type `present`
   - program should read all files and start web server on port 8080 (default)
     - port can be customized (see `present.env` file)
-- run `go run . -d /path/to/files`
-- run `go run . -g github.com/oktalz/present -d examples/go1.23`
+- run `present -d /path/to/files`
+- run `present -g github.com/oktalz/present -d examples/showcase`
   - for `gitlab.com` and `github.com` project url is detected, for others use full path `-g https://github.com/oktalz/present.git`
   - this will download repository, enter directory (if specified) and start server
 
