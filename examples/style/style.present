@@ -78,7 +78,7 @@ a second line
 ```
 
 .================================
-# Style - html styles - for block
+# Style - html styles - block
 
 .css{text-shadow: 0 0 3px #FFFFFF, 0 0 15px #000000;}
 **Go + VUE**
@@ -98,9 +98,9 @@ a second line
 
 .css{overflow: hidden}
 ```md
-#dot#style color: gray;background-color: aqua; text-align: right
+#dot#css{color: white;background-color: aqua; text-align: right}
 **Go + VUE**
-#dot#style.end
+#dot#css.end
 ```
 .css.end
 

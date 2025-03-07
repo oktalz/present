@@ -1,5 +1,4 @@
 .TITLE{Security}
-.slide.link.previous(#MENU#)
 .slide.link(#security#)
 
 - presentation are usually run on local machine

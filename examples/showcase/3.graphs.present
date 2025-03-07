@@ -11,16 +11,19 @@
 
 .================================
 .TITLE{Graphs - d2}
-
-.css{width: 100svw; height: 60svh; overflow: hidden; font-size: 4svh!important;}
+.center
+.css{width: 48svw; overflow: hidden; font-size: 4svh!important;}
 .block.path(graphs).source({graphs}scheduler.d2)
 .css.end
+.center.end
 
 .slide.font-size(3.78svh)
 ```txt
-#dot#css{width: 100svw; height: 75svh; overflow: hidden; font-size: 4svh!important;}
+#dot#center
+#dot#css{width: 48svw; overflow: hidden; font-size: 4svh!important;}
 #dot#block.path(graphs).source(scheduler.d2)
 #dot#css.end
+#dot#center.end
 ```
 .================================
 .//# Emoji

@@ -1,0 +1,44 @@
+.TITLE{pools - `experimental`}
+.slide.font-size(10svh)
+
+.table
+.tr
+.td
+.image(assets/images/1.png 15svw:15svh)
+.td
+.api.pool.1a.🐱{🐱}
+.td
+.api.pool.1a.🐶{🐶}
+.td
+.{font-size:5svh;}(open presentation in multiple browsers)
+.table.end
+
+.table
+.tr
+.td
+.css{width: 48svw}
+.graph.pool.pie{1a}(44svh)
+.css.end
+.td
+.css{width: 48svw}
+.graph.pool.bar{1a}(44svh)
+.css.end
+.table.end
+.{position: absolute; top: 18000svh; left: -24svw; }(.image(assets/images/1.png 85svw:85svh))
+.================================
+```mermaid
+%%{init: {'theme': 'default', 'themeVariables': { 'fontSize': '7svh' }}}%%
+xychart-beta
+    title "🐱 vs 🐶"
+    x-axis ["🐱", "🐶", na]
+    y-axis "" 0 --> 2
+    bar [1, 2, 1]
+
+```
+.================================
+```mermaid
+pie title cats vs dogs
+    "cat" : 2
+    "dog" : 2
+    "rust" : 1
+```
