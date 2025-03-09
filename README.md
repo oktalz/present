@@ -125,3 +125,19 @@ when presentation is opened in browser few paths exists:
 
 - display code that is editable and runnable
 ![code](assets/examples/code.png)
+
+## Examples directly from git repository
+
+some examples of present usage for Go meetups (presentations assumes go is installed on machine that runs it)
+
+```sh
+present --admin-pwd-disable -g github.com/golanghr/golangzg -d assets/2024/10
+```
+
+```sh
+present --admin-pwd-disable -g github.com/golanghr/golangzg -d assets/2025/01
+```
+
+```sh
+present --admin-pwd-disable -g github.com/golanghr/golangzg -d assets/2025/02
+```

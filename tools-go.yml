@@ -2,7 +2,7 @@ yq:
   version: v4.45.1
   install: github.com/mikefarah/yq/v4
 betteralign:
-  version: v0.6.6
+  version: v0.6.7
   install: github.com/dkorunic/betteralign/cmd/betteralign
 staticcheck:
   version: v0.6.0
