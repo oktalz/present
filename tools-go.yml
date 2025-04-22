@@ -2,10 +2,10 @@ yq:
   version: v4.45.1
   install: github.com/mikefarah/yq/v4
 betteralign:
-  version: v0.6.7
+  version: v0.7.0
   install: github.com/dkorunic/betteralign/cmd/betteralign
 staticcheck:
-  version: v0.6.0
+  version: v0.6.1
   install: honnef.co/go/tools/cmd/staticcheck
 go-licenses:
   version: v1.6.0
@@ -17,5 +17,5 @@ gofumpt:
   version: v0.7.0
   install: mvdan.cc/gofumpt
 revive:
-  version: v1.7.0
+  version: v1.9.0
   install: github.com/mgechev/revive

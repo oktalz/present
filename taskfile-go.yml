@@ -23,7 +23,9 @@ tasks:
       PKG:
         sh: /{{.TMP}}/yq/{{.YQ_VERSION}}/yq eval '.{{.PACKAGE}}.install | sub("/cmd/.*", "")' tools-go.yml
       LATEST_PACKAGE_VERSION:
-        sh: GO111MODULE=on go list -m -versions -json {{.PKG}} | yq -r '.Versions[-1]'
+        sh: |
+          GO111MODULE=on go list -m -versions -json {{.PKG}} | \
+          yq eval '.Versions | map(select(test("^v[0-9]+\\.[0-9]+\\.[0-9]+$"))) | .[-1]' -
     status:
       - "{{ if eq .LATEST_PACKAGE_VERSION .CURRENT_VERSION }}true{{ else }}false{{ end }}"
     cmds:
