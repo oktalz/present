@@ -3,19 +3,19 @@ module github.com/oktalz/present
 go 1.24
 
 require (
-	github.com/fsnotify/fsnotify v1.8.0
-	github.com/go-git/go-git/v5 v5.14.0
+	github.com/fsnotify/fsnotify v1.9.0
+	github.com/go-git/go-git/v5 v5.16.0
 	github.com/goccy/go-json v0.10.5
 	github.com/joho/godotenv v1.5.1
 	github.com/mileusna/useragent v1.3.5
 	github.com/oklog/ulid/v2 v2.1.0
 	github.com/oktalz/goldmark-d2 v0.0.0-20241123213649-3eb032fe55fe // fork of github.com/FurqanSoftware/goldmark-d2, go does not allow replace for go install
 	github.com/peterbourgon/ff/v4 v4.0.0-alpha.4
-	github.com/yuin/goldmark v1.7.10
-	github.com/yuin/goldmark-emoji v1.0.5
+	github.com/yuin/goldmark v1.7.11
+	github.com/yuin/goldmark-emoji v1.0.6
 	go.abhg.dev/goldmark/mermaid v0.5.0
-	golang.org/x/crypto v0.37.0
-	oss.terrastruct.com/d2 v0.6.9
+	golang.org/x/crypto v0.38.0
+	oss.terrastruct.com/d2 v0.7.0
 )
 
 require (
@@ -25,7 +25,7 @@ require (
 	github.com/PuerkitoBio/goquery v1.10.2 // indirect
 	github.com/alecthomas/chroma/v2 v2.15.0 // indirect
 	github.com/andybalholm/cascadia v1.3.3 // indirect
-	github.com/cloudflare/circl v1.6.0 // indirect
+	github.com/cloudflare/circl v1.6.1 // indirect
 	github.com/cyphar/filepath-securejoin v0.4.1 // indirect
 	github.com/dlclark/regexp2 v1.11.4 // indirect
 	github.com/dop251/goja v0.0.0-20240927123429-241b342198c2 // indirect
@@ -45,13 +45,13 @@ require (
 	github.com/sergi/go-diff v1.3.2-0.20230802210424-5b0b94c5c0d3 // indirect
 	github.com/skeema/knownhosts v1.3.1 // indirect
 	github.com/xanzy/ssh-agent v0.3.3 // indirect
-	golang.org/x/exp v0.0.0-20250408133849-7e4ce0ab07d0 // indirect
-	golang.org/x/image v0.26.0 // indirect
-	golang.org/x/net v0.39.0 // indirect
-	golang.org/x/sys v0.32.0 // indirect
-	golang.org/x/text v0.24.0 // indirect
+	golang.org/x/exp v0.0.0-20250506013437-ce4c2cf36ca6 // indirect
+	golang.org/x/image v0.27.0 // indirect
+	golang.org/x/net v0.40.0 // indirect
+	golang.org/x/sys v0.33.0 // indirect
+	golang.org/x/text v0.25.0 // indirect
 	golang.org/x/xerrors v0.0.0-20240903120638-7835f813f4da // indirect
 	gonum.org/v1/plot v0.15.0 // indirect
 	gopkg.in/warnings.v0 v0.1.2 // indirect
-	oss.terrastruct.com/util-go v0.0.0-20241005222610-44c011a04896 // indirect
+	oss.terrastruct.com/util-go v0.0.0-20250213174338-243d8661088a // indirect
 )
