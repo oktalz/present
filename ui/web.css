@@ -29,7 +29,7 @@ a, a:visited {
   right: 0;
   margin-right: 2svw;
   font-size: 3svh;
-  z-index: 10;
+  z-index: 20;
 }
 
 .page-footer-present{
@@ -41,6 +41,7 @@ a, a:visited {
   right: 0;
   margin-right: 2svw;
   font-size: 3svh;
+  z-index: 20;
 }
 
 code {
@@ -148,6 +149,7 @@ pre {
   position: relative;
   display: flex;
   flex-direction: column;
+  z-index: 10;
 }
 .slide-content {
   height: 100svh;

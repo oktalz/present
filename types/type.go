@@ -52,6 +52,7 @@ type Slide struct {
 	Path                    string
 	BackgroundImage         string
 	BackgroundColor         string
+	CSS                     string
 	FontSize                string
 	TerminalFontSize        string
 	TerminalFontColor       string
@@ -120,6 +121,7 @@ type ReadOptions struct {
 	DefaultTerminalFontSize        string
 	DefaultTerminalFontColor       string
 	DefaultTerminalBackgroundColor string
+	DefaultSlideCSS                string
 	AspectRatioMin                 configuration.AspectRatio
 	AspectRatioMax                 configuration.AspectRatio
 	DisableAspectRatio             bool

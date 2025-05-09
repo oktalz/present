@@ -82,7 +82,7 @@ onPageChange = function() {
 </html>
 
 {{ define "slide" }}
-  <div class="slide hidden {{- if .PrintDisable }} page-not-print-visible{{ end -}}" {{if not .PrintOnly}}id="slide-{{.PageIndex}}"{{end}} style="font-size: {{.FontSize}}; background-color: {{.BackgroundColor}}; background-image: url('{{.BackgroundImage}}');">
+  <div class="slide hidden {{- if .PrintDisable }} page-not-print-visible{{ end -}}" {{if not .PrintOnly}}id="slide-{{.PageIndex}}"{{end}} style="font-size: {{.FontSize}}; background-color: {{.BackgroundColor}}; {{if .BackgroundImage}}background-image: url('{{.BackgroundImage}}');{{end}} {{.CSS}};">
   <div class="presenter-comment closed" id="notes-{{.PageIndex}}">
     {{.Notes}}
   </div>

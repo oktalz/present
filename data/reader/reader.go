@@ -57,6 +57,7 @@ func processSlides(fileContent string, ro types.ReadOptions) types.Presentation 
 
 	currentBackgroundColor := ro.DefaultBackgroundColor
 	defaultEveryDashIsACut := ro.EveryDashIsATransition
+	currentSlideCSS := ro.DefaultSlideCSS
 	_ = defaultEveryDashIsACut
 	slideDashCut := ro.EveryDashIsATransition
 	notes := ""
@@ -276,6 +277,7 @@ func processSlides(fileContent string, ro types.ReadOptions) types.Presentation 
 						HidePageNumber:          hidePageNumber,
 						EnableOverflow:          enableOverflow,
 						BackgroundColor:         currentBackgroundColor,
+						CSS:                     currentSlideCSS,
 						Title:                   currentSlideTitle,
 					})
 					notes = ""
@@ -288,6 +290,7 @@ func processSlides(fileContent string, ro types.ReadOptions) types.Presentation 
 				currentTerminalFontColor = ro.DefaultTerminalFontColor
 				currentTerminalBackgroundColor = ro.DefaultTerminalBackgroundColor
 				currentBackgroundColor = ro.DefaultBackgroundColor
+				currentSlideCSS = ro.DefaultSlideCSS
 				hideRunButton = ro.HideRunButton
 				hidePageNumber = ro.HidePageNumber
 				keepPagePrintOnCut = ro.KeepPagePrintOnCut
@@ -522,6 +525,18 @@ func processSlides(fileContent string, ro types.ReadOptions) types.Presentation 
 			lines[index] = ""
 			continue
 		}
+		if strings.HasPrefix(line, ".slide.css{") && strings.HasSuffix(line, "}") {
+			currentSlideCSS = strings.TrimPrefix(line, ".slide.css{")
+			currentSlideCSS = strings.TrimSuffix(currentSlideCSS, "}")
+			lines[index] = ""
+			continue
+		}
+		if strings.HasPrefix(line, ".slide.CSS{") && strings.HasSuffix(line, "}") {
+			currentSlideCSS = strings.TrimPrefix(line, ".slide.CSS{")
+			currentSlideCSS = strings.TrimSuffix(currentSlideCSS, "}")
+			lines[index] = ""
+			continue
+		}
 		if strings.HasPrefix(line, ".transition.clean") {
 			// we have reached cut.clean delimiter, see if we have anything in buffer and clean it
 			var tmp string
@@ -551,6 +566,7 @@ func processSlides(fileContent string, ro types.ReadOptions) types.Presentation 
 					HidePageNumber:          hidePageNumber,
 					EnableOverflow:          enableOverflow,
 					BackgroundColor:         currentBackgroundColor,
+					CSS:                     currentSlideCSS,
 					Title:                   currentSlideTitle,
 					PrintDisable:            true,
 				})
@@ -628,6 +644,7 @@ func processSlides(fileContent string, ro types.ReadOptions) types.Presentation 
 					HidePageNumber:          hidePageNumber,
 					EnableOverflow:          enableOverflow,
 					BackgroundColor:         currentBackgroundColor,
+					CSS:                     currentSlideCSS,
 					Title:                   currentSlideTitle,
 					PrintDisable:            printDisable,
 				})
@@ -682,6 +699,7 @@ func processSlides(fileContent string, ro types.ReadOptions) types.Presentation 
 			HidePageNumber:          hidePageNumber,
 			EnableOverflow:          enableOverflow,
 			BackgroundColor:         currentBackgroundColor,
+			CSS:                     currentSlideCSS,
 			Title:                   currentSlideTitle,
 		})
 		// notes = ""
