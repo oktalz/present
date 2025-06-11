@@ -9,6 +9,7 @@ import (
 
 	"github.com/joho/godotenv"
 	configuration "github.com/oktalz/present/config"
+	"github.com/oktalz/present/doc"
 	"github.com/oktalz/present/version"
 )
 
@@ -52,6 +53,7 @@ func main() {
 	config := configuration.Get()
 
 	if config.Version {
+		fmt.Println(doc.Logo)
 		fmt.Println("present", version.Version)
 		fmt.Println("built-from", version.Repo)
 		if version.CommitDate != "" {
@@ -72,7 +74,8 @@ func main() {
 		os.Exit(1)
 	}
 
-	fmt.Println("present", version.Version)
+	fmt.Println(doc.Logo)
+	log.Println("present", version.Version)
 
 	if config.Compress != "" {
 		config.CompressPresentation()
