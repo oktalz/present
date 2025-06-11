@@ -22,7 +22,7 @@ var loginPage []byte
 //go:embed ui/stats.html
 var statsPage []byte
 
-func main() {
+func main() { //revive:disable:function-length
 	_ = godotenv.Load("present.env")
 	_ = godotenv.Overload(".env")
 	homeDir, err := os.UserHomeDir()

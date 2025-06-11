@@ -1,4 +1,4 @@
-package types
+package types //revive:disable:var-naming
 
 import configuration "github.com/oktalz/present/config"
 
