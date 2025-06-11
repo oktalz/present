@@ -1,0 +1,381 @@
+.slide.title(present)
+.//.slide.actions.js(moveGopherToPlace())
+.//.slide.css{background: linear-gradient(to bottom,rgb(255, 255, 255) ,rgb(106, 115, 218) );}
+.//.slide.background-color(rgb(106, 115, 218))
+.slide.class{back-intro}
+
+.//.slide.background(assets/large-triangles.svg)
+.{position:absolute; color: white; font-size: 18svh; top: 5svh; left: 5svh }(**present**)
+.{position:absolute; color: white; font-size: 8svh; top: 28svh; left: 10svh }(interactive Powerpoint alternative)
+
+.div{.id(presenter-talk-id)overflow: hidden; font-size: 5svh; position: absolute; left: 5svw; bottom: 15svh; border-radius: 50%; width: 30svh; height: 30svh;}(.image(assets/profile-kcd-Italy.png 100%:auto))
+
+.css{position:absolute; color: white; font-size: 8svh; bottom: 34svh; left: 45svh;  }
+  Zlatko Bratković
+.css.end
+.css{position:absolute; color: white; font-size: 6svh; bottom: 17svh; left: 45svh;  }
+  .bx{bxl-github} [.{color: white; text-decoration: underline; text-decoration-color: white;}(github.com/oktalz)](https://github.com/oktalz)
+  .bx{bxl-linkedin} [.{color: white; text-decoration: underline; text-decoration-color: white;}(linkedin.com/in/bratkoviczlatko/)](https://www.linkedin.com/in/bratkoviczlatko/)
+.css.end
+.//.slide.background(assets/golang-back.png)
+.================================
+.TITLE{present - `why`}
+
+- meetup presentations
+
+- educational purposes
+  - all code in working state
+  - "run on your own machine"
+  - easier preparation (or lack of it)
+
+- writing interactive tutorials
+- challenge
+.================================
+.TITLE{present - `overview`}
+
+- tool for viewing presentations written in markdown like format
+  - markdown - easy to read
+- slides are written in text friendly format and follow all standard markdown rules (with some additions)
+- easy to run
+- primarily for presentations + code
+  - inlined of linked code
+- tutorials
+  - *run/experiment on your machine*
+.================================
+.TITLE{present - `goals`}
+- view presentation in browser
+- text format
+  - git friendly
+- run the code (**any** language) directly from presentation
+  - run complex examples
+- standard header/footer options
+- fully customizable (settings and css/js customizations)
+- live share (as a help in large rooms) / remote watching*
+- easy share presentations
+  - share on github, run with link
+- print friendly (*chromium* browsers)
+.================================
+.TITLE{present - `alternatives`}
+
+- existing tools
+  - `golang.org/x/tools/present`
+  - https://jupyter.org/
+  - google slides
+  - ...
+
+.================================
+.TITLE{present - `live`}
+
+.{font-size: 5svh; position: absolute; top: 0svw; right: 1svh;}(.image(assets/live.svg :35svh))
+
+#space#
+
+## Live view
+
+.{margin-left: 4svw}(`* available during conference`)
+
+#space#
+
+.{font-size:8svh}([dors.bratkovic.eu](https://dors.bratkovic.eu/#5))
+
+
+#space#
+.================================
+.TITLE{present - `installation`}
+
+.{font-size: 5svh; position: absolute; top: 0svw; right: 1svh;}(.image(assets/qr-present-repo.png :35svh))
+
+[github.com/oktalz/present](https://github.com/oktalz/present)
+
+## Installation
+Use the following command to download and
+install this tool:
+```sh
+go install github.com/oktalz/present@latest
+```
+
+```sh
+go install github.com/oktalz/present@v1.0.0
+```
+
+### Binaries
+  prebuilt binaries can be found on [releases](https://github.com/oktalz/present/releases) page
+.================================
+.TITLE{present - `VS Code`}
+.center
+.image(assets/vscode-ext.png :45svh)
+.center.end
+
+.table
+.tr
+.td
+.{"font-size: 10svh"}(.image(assets/Microsoft_Visual_Studio_2022.svg :10svh))
+.td
+.div{width: 2svw}()
+.td
+[Visual Studio Code Marketplace](https://marketplace.visualstudio.com/items?itemName=ZlatkoBratkovic.vscode-oktalz-present)
+.tr
+.td
+.image(assets/open-vsx.png :10svh)
+.td
+.td
+[Open VSX Marketplace](https://open-vsx.org/extension/ZlatkoBratkovic/vscode-oktalz-present)
+.table.end
+.================================
+.TITLE{present - `running`}
+
+.slide.terminal.font-size(3svh)
+
+.cast.run(present --help)
+```sh
+present --help
+```
+.================================
+.TITLE{present - `running`}
+.slide.font-size(4.8svh)
+
+- enter folder, type `present`
+  - program should read all files and start web server on port 8080 (default)
+    - port can be customized (see `present.env` file)
+- run `present -d /path/to/files`
+- run `present -g github.com/oktalz/present -d examples/showcase`
+  - for `gitlab.com` and `github.com` project url is detected,
+  - for others use full path
+    `-g https://github.com/oktalz/present.git`
+
+.================================
+.TITLE{present - `overview - markdown`}
+
+.css{font-size: 4.5svh;}
+```txt
+### title
+- text that is **Bold**, *Italics*, `highlighted`, ~strikethrough~
+  - random point
+- :speech_balloon: :thought_balloon: :warning: :construction:
+#dot#transition
+- 😂 ⭐ ❗ 🔥 👍
+```
+.css.end
+.transition
+### title
+- text that is **Bold**, *Italics*, `highlighted`, ~strikethrough~
+  - random point
+- :speech_balloon: :thought_balloon: :warning: :construction:
+.transition
+- 😂 ⭐ ❗ 🔥 👍
+.================================
+.TITLE{present - overview - transitions, tables}
+
+## simple transition
+.replace{#spinner2#}(.{color:green; font-size: 4svh;}(.bx{bx-loader-circle bx-spin}))
+.replace{#check1#}(.{color:#00ADD8; font-size: 4svh;}(.bx{bxs-circle}))
+.replace{#content2#}(#space#)
+
+#spinner2# topic one
+.transition{#spinner2#}(#check1#)
+
+#spinner2# topic two
+.transition{#spinner2#}(#check1#)
+
+.replace{#spinner#}(.{color:green; font-size: 8svh;}(.bx{bx-loader-circle bx-spin}))
+.replace{#empty#}()
+.replace{#docker1#}(.div{width: 7svw;}(.image(assets/brands/docker.png :10svh)))
+.replace{#docker2#}(Docker)
+.replace{#cockroachdb1#}()
+.replace{#cockroachdb2#}(.image(assets/brands/cockroachdb.png :10svh))
+.replace{#cockroachdb3#}()
+.replace{#cockroachdb4#}(CockroachDB)
+.replace{#Kubernetes1#}()
+.replace{#Kubernetes2#}(.image(assets/brands/k8s.png :10svh))
+.replace{#Kubernetes3#}()
+.replace{#Kubernetes4#}(Kubernetes)
+.replace{#blockchain1#}()
+.replace{#blockchain2#}(.image(assets/brands/ethereum.png :10svh))
+.replace{#blockchain3#}()
+.replace{#blockchain4#}(Etherium blockchain)
+
+#### projects written in Go
+.table
+.tr
+.td #spinner#
+.td .{padding-left: 1svw; padding-right: 10svw; }(#empty#)
+.td #cockroachdb1#
+.td .{padding-left: 1svw; padding-right: 1svw;}(#cockroachdb3#)
+.tr
+.td #Kubernetes1#
+.td .{padding-left: 1svw; padding-right: 1svw;}(#Kubernetes3#)
+.td #blockchain1#
+.td .{padding-left: 1svw; padding-right: 1svw;}(#blockchain3#)
+.table.end
+.transition{#spinner#}(#docker1#).transition{#empty#}(#docker2#).transition{#cockroachdb1#}(#spinner#)
+.transition{#spinner#}(#cockroachdb2#).transition{#cockroachdb3#}(#cockroachdb4#).transition{#Kubernetes1#}(#spinner#)
+.transition{#spinner#}(#Kubernetes2#).transition{#Kubernetes3#}(#Kubernetes4#).transition{#blockchain1#}(#spinner#)
+.transition{#spinner#}(#blockchain2#).transition{#blockchain3#}(#blockchain4#)
+
+- can be a bit complex to setup (at first)
+.================================
+.TITLE2{images, style, header, footer}
+
+.image(assets/gopher-3.png :17svh)
+
+- any html style formatting is possible
+  - custom styling of span, div, blocks (div)
+  - existing styling can be overridden
+- use `svh` and `svw` for font size (and in general)
+
+#space#
+#space#
+
+.{text-shadow: 0 0 3px #FFFFFF, 0 0 15px #000000;}(**HTML styles**) .{color: white;background-color: green}(background)
+
+.{position: absolute; bottom: 20svh; right: 15svh; transform: rotate(25deg);}(even rotated, positional)
+.{position: absolute; top: 15svh; right: 15svh; transform: rotate(-15deg);}(.image(assets/gopher-3.png :37svh))
+.================================
+.TITLE2{images, style, header, footer}
+
+```txt
+#dot#{text-shadow: 0 0 3px #FFFFFF, 0 0 15px #000000;}(**HTML**)
+```
+
+.{text-shadow: 0 0 3px #FFFFFF, 0 0 15px #000000;}(**HTML**)
+
+```txt
+#dot#css{
+  text-shadow: 0 0 3px #FFFFFF, 0 0 15px #000000;
+  font-size: 10svh;
+  color: blue;
+}
+**DORS/CLUC**
+.css.end
+```
+
+.css{
+  text-shadow: 0 0 3px #FFFFFF, 0 0 15px #000000;
+  font-size: 10svh;
+  color: blue;
+}
+**DORS/CLUC**
+.css.end
+.================================
+.TITLE2{present - `templates`}
+
+.table
+.tr
+.td
+```
+#dot#================================
+#dot#TITLE{present - `why`}
+
+- meetup presentations
+
+- educational purposes
+  - all code in working state
+  - "run on your own machine"
+  - easier preparation (or lack of it)
+
+- writing interactive tutorials
+- challenge
+```
+.td
+- meetup presentations
+
+- educational purposes
+  - all code in working state
+  - "run on your own machine"
+  - easier preparation (or lack of it)
+
+- writing interactive tutorials
+- challenge
+.table.end
+
+.================================
+.TITLE2{present - `templates`}
+
+```txt
+#dot#template{TITLE}
+#dot#header
+#dot#div{margin-left: 3svw;}(##  {{.}})
+<hr>
+#dot#header.end
+#dot#footer
+#dot#div{position: absolute; left: 91svw;}(#dot#image(icon.png 8svw:))
+#dot#footer.end
+```
+.================================
+.TITLE2{present - `templates with arguments`}
+
+```txt
+#dot#template{FROM_TO}(From,To)
+{{.From}}:{{.To}})
+#dot#template.end
+```
+```txt
+.FROM_TO{From}(10){To}(20)
+```
+.================================
+.TITLE2{present - code}
+
+- editable
+- inline or imported from file
+- run in `tmp` or in specific folder
+- partially shown (with edit option)
+- response seen in presentation in terminal
+
+.================================
+.TITLE2{present - code}
+
+```txt
+#dot#cast.edit.save(main.go).run(go run .).before(go mod init x)
+```
+
+#space#
+.cast.edit.save(main.go).run(go run .).before(go mod init x)
+```go
+package main
+
+import (
+	"fmt"
+)
+
+func main() {
+	fmt.Println("hello DORS/CLUC 30")
+}
+```
+
+.================================
+.TITLE2{present - code}
+
+```txt
+#dot#cast.stream.edit.save(main.go).run(go run .).show(9:11)
+```
+
+#space#
+  .cast.stream.edit.save(main.go).run(go run .).before(go mod init x).show(9:11)
+```go
+package main
+
+import (
+  "fmt"
+  "time"
+)
+
+func main() {
+  fmt.Println("hello")
+  time.Sleep(3 * time.Second)
+  fmt.Println("world")
+}
+```
+
+.================================
+.TITLE2{present - code}
+
+```txt
+#dot#cast.stream.edit.save(script.sh).run(sh script.sh)
+```
+
+#space#
+  .cast.stream.edit.save(script.sh).run(sh script.sh)
+```go
+date
+echo "Hello DORC/CLUC"
+```

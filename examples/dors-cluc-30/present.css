@@ -1,0 +1,47 @@
+.tab button.active {
+    background-color: #5DC9E2;
+}
+
+.page-header-present {
+    top: 1svh;
+}
+
+hr {
+    border: 0.25svh solid #5DC9E2;
+    margin-left: 2svw;
+    margin-right: 2svw;
+    background-color: #5DC9E2;
+}
+
+.slide-header{
+  z-index: 1;
+}
+
+.back-intro {
+  text-shadow: 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black;
+
+  --s: 30svh; /* control the size*/
+  --c1: rgb(93, 102, 210);
+  --c2: rgb(106, 115, 218);
+
+  --g1:/calc(2*var(--s)) calc(2*var(--s))
+       radial-gradient(at 100% 0,var(--c2) 17.5%,#0000 18%);
+  --g2:/calc(2*var(--s)) calc(2*var(--s))
+       radial-gradient(at 0 100%,var(--c2) 17.5%,#0000 18%);
+  --_s:0 calc(var(--s)/2)/var(--s) var(--s);
+  background:
+    calc(var(--s)/ 2) var(--s) var(--g1),
+    calc(var(--s)/-2) 0        var(--g1),
+    calc(var(--s)/-2) var(--s) var(--g2),
+    calc(var(--s)/ 2) 0        var(--g2),
+    radial-gradient(at 100% 0,var(--c1) 35%,#0000 35.5%) var(--_s),
+    radial-gradient(at 0 100%,var(--c1) 35%,#0000 35.5%) var(--_s),
+    repeating-conic-gradient(from 45deg,var(--c1) 0 25%,var(--c2) 0 50%)
+     0 0/var(--s) var(--s);
+}
+
+.back-intro-2 {
+    background-color: #0909e6;
+    opacity: 0.8;
+    background-image:  repeating-radial-gradient( circle at 0 0, transparent 0, #43437e 10px ), repeating-linear-gradient( #444cf755, #444cf7 );
+}

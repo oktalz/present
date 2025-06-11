@@ -1,0 +1,243 @@
+grid-rows: 2
+
+run: {
+  label: ""
+  queue: {
+    label: Global run queue
+    style.font-size: 50
+    style.border-radius: 999
+    style.fill: "green"
+    g1: {
+      label: Go
+      shape: circle
+      style.font-size: 40
+    }
+    g2: {
+      label: Go
+      shape: circle
+      style.font-size: 40
+    }
+    g3: {
+      label: Go
+      shape: circle
+      style.font-size: 40
+    }
+    g4: {
+      label: Go
+      shape: circle
+      style.font-size: 40
+    }
+    g5: {
+      label: Go
+      shape: circle
+      style.font-size: 40
+    }
+    g6: {
+      label: Go
+      shape: circle
+      style.font-size: 40
+      style.opacity: 0
+    }
+    g7: {
+      label: Go
+      shape: circle
+      style.font-size: 40
+      style.opacity: 0
+    }
+  }
+}
+
+core1: {
+  label: ""
+  grid-rows: 3
+  grid-columns: 3
+  p1: {
+    label: P
+    style.border-radius: 999
+    style.fill: "#59c8ff"
+    style.font-size: 40
+  }
+  m1: {
+    label: M
+    shape: circle
+    style.fill: "#e08ce1"
+    style.font-size: 40
+  }
+  cgo1: {
+    label: Go
+    shape: circle
+    style.font-size: 40
+  }
+
+  c1q: {
+    label: ""
+    direction: right
+    style.border-radius: 999
+    style.fill: "green"
+    c1q1: {
+      label: Go
+      style.border-radius: 999
+      style.font-size: 40
+    }
+    c1q2: {
+      label: Go
+      style.border-radius: 999
+      style.font-size: 40
+    }
+    c1q3: {
+      label: Go
+      style.border-radius: 999
+      style.font-size: 40
+    }
+    c1q4: {
+      label: Go
+      style.border-radius: 999
+      style.font-size: 40
+    }
+  }
+  p1 -> c1q.c1q1: {
+    style.stroke-dash: 3
+  }
+  p1 -> m1: {
+    style.stroke-dash: 3
+  }
+  m1 -> cgo1: {
+    style.stroke-dash: 3
+  }
+}
+
+core2: {
+  label: ""
+  grid-rows: 3
+  grid-columns: 3
+  p1: {
+    label: P
+    style.border-radius: 999
+    style.fill: "#59c8ff"
+    style.font-size: 40
+  }
+  m1: {
+    label: M
+    shape: circle
+    style.fill: "#e08ce1"
+    style.font-size: 40
+  }
+  cgo1: {
+    label: Go
+    shape: circle
+    style.font-size: 40
+  }
+
+  c1q: {
+    label: ""
+    direction: right
+    style.border-radius: 999
+    style.fill: "green"
+    c1q1: {
+      label: Go
+      style.border-radius: 999
+      style.font-size: 40
+    }
+    c1q2: {
+      label: Go
+      style.border-radius: 999
+      style.font-size: 40
+      style.opacity: 0
+    }
+    c1q3: {
+      label: Go
+      style.border-radius: 999
+      style.font-size: 40
+      style.opacity: 0
+    }
+    c1q4: {
+      label: Go
+      style.border-radius: 999
+      style.font-size: 40
+      style.opacity: 0
+    }
+  }
+  p1 -> c1q.c1q1: {
+    style.stroke-dash: 3
+  }
+  p1 -> m1: {
+    style.stroke-dash: 3
+  }
+  m1 -> cgo1: {
+    style.stroke-dash: 3
+  }
+}
+
+core3: {
+  label: ""
+  grid-rows: 3
+  grid-columns: 3
+  p1: {
+    label: P
+    style.border-radius: 999
+    style.fill: "#59c8ff"
+    style.font-size: 40
+  }
+  m1: {
+    label: M
+    shape: circle
+    style.fill: "#e08ce1"
+    style.font-size: 40
+  }
+  cgo1: {
+    label: Go
+    shape: circle
+    style.font-size: 40
+  }
+
+  c1q: {
+    label: ""
+    direction: right
+    style.border-radius: 999
+    style.fill: "green"
+    c1q1: {
+      label: Go
+      style.border-radius: 999
+      style.font-size: 40
+    }
+    c1q2: {
+      label: Go
+      style.border-radius: 999
+      style.font-size: 40
+    }
+    c1q3: {
+      label: Go
+      style.border-radius: 999
+      style.font-size: 40
+    }
+    c1q4: {
+      label: Go
+      style.border-radius: 999
+      style.font-size: 40
+    }
+  }
+  p1 -> c1q.c1q1: {
+    style.stroke-dash: 3
+  }
+  p1 -> m1: {
+    style.stroke-dash: 3
+  }
+  m1 -> cgo1: {
+    style.stroke-dash: 3
+  }
+}
+
+run.queue.g6 -> core2.c1q.c1q1 {
+  style {
+    stroke-dash: 3
+    stroke-width: 8
+    stroke: red
+  }
+}
+run.queue.g7 -> core2.cgo1 {
+  style {
+    stroke-dash: 3
+    stroke-width: 8
+    stroke: red
+  }
+}

@@ -1,0 +1,30 @@
+.================================
+.TITLE2{Graphs - mermaid}
+
+.slide.font-size(4.5svh)
+
+.block.path(graphs).source(k8sIC.mermaid).lang(mermaid)
+
+```txt
+#dot#block.path(graphs)#dot#source(k8sIC.mermaid).lang(mermaid)
+```
+
+.{color:blue}(.bx{bxs-info-circle}) `.lang(mermaid)` is not needed if extension matches block type
+
+.{color:blue}(.bx{bxs-info-circle}) can be embedded directly in file
+
+.================================
+.TITLE2{Graphs - d2}
+
+.center
+.css{width: 50svw; height: 60svh; overflow: hidden; font-size: 4svh!important;}
+.block.path(graphs).source({graphs}scheduler.d2)
+.css.end
+.center.end
+
+.slide.font-size(3.78svh)
+```txt
+#dot#css{width: 100svw; height: 75svh; overflow: hidden; font-size: 4svh!important;}
+#dot#block.path(graphs).source(scheduler.d2)
+#dot#css.end
+```

@@ -1,0 +1,28 @@
+.template{TITLE}
+.header
+.div{font-size: 5svh; margin-bottom: 0px!important; margin-left: 3svw;}(##  {{.}})
+<hr>
+.header.end
+.footer
+.div{font-size: 5svh; position: absolute; left: 91svw; bottom: 0svh;}(.image(icon.png 8svw:))
+.footer.end
+
+.template.end
+
+.template{FOOTER}
+.footer
+.css{min-width: 100svw; background-color: #a7a7a7; padding-right: 3svw; padding-top: 0.25svh; padding-bottom: 0.25svh; font-size: 2.5svh; color: white; text-align:right }
+.{margin-right: 2svw}(DORS/CLUC 30)
+.css.end
+.footer.end
+.template.end
+
+.template{TITLE2}
+.header
+.{font-size: 5svh;}(## .{background-color: #00ADD8}(#space#)#space##space#{{ . }})
+.raw
+<span style="margin-left:1svw;margin-right: 1svw;display: block;"><hr></span>
+.raw.end
+.header.end
+.FOOTER
+.template.end

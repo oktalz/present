@@ -1,0 +1,28 @@
+.================================
+.TITLE2 Controlling presentation
+.================================
+.TITLE2 Roadmap
+
+- viewers do not see admin executions of code
+- browser based editing
+- tests :)
+- animations (native)
+- performance
+
+.================================
+.TITLE Thank you !
+
+.slide.font-size(20svh)
+
+.center
+.css{font-family: Arial, Helvetica, sans-serif;}
+Q & A
+.css.end
+.center.end
+
+.css{font-size: 4.3svh}
+locally you can run presentation with
+```sh
+present -g github.com/oktalz/present -d examples/dors-cluc-30
+```
+.css.end
