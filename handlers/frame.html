@@ -57,8 +57,8 @@
     iframe.src = newSrc;
 
     function calcAspectRatioFit() {
-      const expectedRatioMin = widthRatioMin / heightRatioMin;
-      const expectedRatioMax = widthRatioMax / heightRatioMax;
+      let expectedRatioMin = widthRatioMin / heightRatioMin;
+      let expectedRatioMax = widthRatioMax / heightRatioMax;
       // in case ratios are reversed
       if (expectedRatioMax < expectedRatioMin) {
         let r = expectedRatioMin;
@@ -71,7 +71,7 @@
         widthRatioMin = widthRatioMax;
         widthRatioMax = r;
       }
-      const currentRatio = window.innerWidth / window.innerHeight;
+      let currentRatio = window.innerWidth / window.innerHeight;
 
       if (widthRatioAvg >= heightRatioAvg) {
         if (currentRatio < expectedRatioMin) {
