@@ -302,8 +302,8 @@ func ReadFiles() types.Presentation { //revive:disable:function-length,cognitive
 		if hasLink {
 			lines := strings.Split(slide.Page.Data.Markdown, "\n")
 			for index, line := range lines {
-				if strings.HasPrefix(line, ".slide.link.next(") {
-					link := strings.TrimPrefix(line, ".slide.link.next(")
+				if after, ok := strings.CutPrefix(line, ".slide.link.next("); ok {
+					link := after
 					link = strings.TrimSuffix(link, ")")
 					slide.LinkNext = link
 					lines = slices.Delete(lines, index, index+1)
@@ -317,8 +317,8 @@ func ReadFiles() types.Presentation { //revive:disable:function-length,cognitive
 		if hasLink {
 			lines := strings.Split(slide.Page.Data.Markdown, "\n")
 			for index, line := range lines {
-				if strings.HasPrefix(line, ".slide.link.previous(") {
-					link := strings.TrimPrefix(line, ".slide.link.previous(")
+				if after, ok := strings.CutPrefix(line, ".slide.link.previous("); ok {
+					link := after
 					link = strings.TrimSuffix(link, ")")
 					slide.LinkPrev = link
 					lines = slices.Delete(lines, index, index+1)
@@ -332,8 +332,8 @@ func ReadFiles() types.Presentation { //revive:disable:function-length,cognitive
 		if hasLink {
 			lines := strings.Split(slide.Page.Data.Markdown, "\n")
 			for index, line := range lines {
-				if strings.HasPrefix(line, ".slide.link(") {
-					link := strings.TrimPrefix(line, ".slide.link(")
+				if after, ok := strings.CutPrefix(line, ".slide.link("); ok {
+					link := after
 					link = strings.TrimSuffix(link, ")")
 					slide.Link = link
 					lines = slices.Delete(lines, index, index+1)
