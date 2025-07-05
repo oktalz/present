@@ -151,6 +151,7 @@ type ParseResult struct {
 	NewCode            string
 	Path               string
 	Lang               string
+	File               string
 	ID                 string
 	JS                 string
 	Endpoint           string
@@ -297,6 +298,7 @@ func ParseCast(cast, code string) ParseResult { //revive:disable:function-length
 
 		pth := path.Join(folder, content)
 		file, err := os.ReadFile(pth)
+		result.File = pth
 		if err == nil {
 			// just save the code, all else will be processed later again
 			code = string(file)

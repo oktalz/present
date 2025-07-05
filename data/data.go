@@ -77,7 +77,8 @@ type Message struct {
 
 //revive:disable:function-length,cognitive-complexity,cyclomatic
 func Init(server Server, config *configuration.Config) {
-	filesModified := fsnotify.FileWatcher()
+	filesModified, extraFiles := fsnotify.FileWatcher()
+	_ = extraFiles // we do not use this channel, but we need to keep it for the watcher
 
 	// initial read
 	go func() {
@@ -91,7 +92,7 @@ func Init(server Server, config *configuration.Config) {
 	go func() {
 		for range filesModified {
 			muPresentation.Lock()
-			presentation = reader.ReadFiles()
+			presentation = reader.ReadFiles(extraFiles)
 			if presentation.Options.AspectRatioMin.String() != "" {
 				go func() {
 					config.AspectRatio.Min.ValueChanged <- presentation.Options.AspectRatioMin

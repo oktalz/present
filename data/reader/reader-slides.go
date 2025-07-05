@@ -15,7 +15,10 @@ import (
 	"github.com/oktalz/present/types"
 )
 
-func ReadFiles() types.Presentation { //revive:disable:function-length,cognitive-complexity,cyclomatic
+// ReadFiles reads all slide files from the current directory, processes them, and returns a Presentation object.
+//
+//revive:disable:function-length,cognitive-complexity,cyclomatic
+func ReadFiles(filesWatcher chan string) types.Presentation {
 	ro := types.ReadOptions{
 		DefaultFontSize:                "5svh",
 		EveryDashIsATransition:         false,
@@ -154,7 +157,7 @@ func ReadFiles() types.Presentation { //revive:disable:function-length,cognitive
 		markdownData = slide.Page.Data.Markdown
 		start, _, data, _, _ = parsing.FindDataWithCode(markdownData, ".block", "\n")
 		for start != -1 {
-			// .block.source{filename.ext}.show{0:8}.path{/path/to/code}.lang{go}
+			// .block.source(filename.ext).show(0:8).path(/path/to/code).lang(go)
 			pc := parsing.ParseCast(data, "")
 			for {
 				if strings.HasSuffix(pc.NewCode, "\n") {
@@ -166,6 +169,9 @@ func ReadFiles() types.Presentation { //revive:disable:function-length,cognitive
 			extraClass := "code-block "
 			if pc.IsEdit {
 				extraClass += "code-edit "
+			} else if pc.File != "" {
+				// we need to add file to watcher list (for easier updates)
+				filesWatcher <- pc.File
 			}
 			replaceWith := "```" + pc.Lang + "\n" + pc.NewCode + "\n```\n"
 			md := markdown.GetMD()
