@@ -163,7 +163,13 @@ func prepare(md goldmark.Markdown, fileContent string) string {
 				CreateCleanMD(prepare(md, display)).String() + `</span>`
 		})
 	fileContent = processReplace(fileContent, ".center", ".center.end", func(data string) string {
-		return `<div style="text-align:center; justify-content: center; align-items: center;">` +
+		flex := ""
+		if strings.HasPrefix(data, ".flex") {
+			data = strings.TrimSpace(strings.TrimPrefix(data, ".flex"))
+			flex = "display: flex; "
+		}
+
+		return `<div style="text-align:center; ` + flex + `justify-content: center; align-items: center;">` +
 			CreateCleanMD(prepare(md, data)).String() + `</div>`
 	})
 	// fileContent = ProcessReplaceMiddle(fileContent, ".link{", "}(", ")", func(page, data string) string {
