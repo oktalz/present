@@ -10,6 +10,7 @@ setPage(page);
 var spinner = false
 var myID = ""
 var showMenu = false
+var showOptions = false
 
 function setSpinner(value){
     spinner = value
@@ -146,6 +147,14 @@ document.addEventListener('keydown', function(e) {
       }
     } else {
       document.getElementById('menu').classList.add('menu-hidden');
+    }
+  }
+  if (optionsKey.includes(keyCode)) {
+    showOptions = !showOptions
+    if (showOptions) {
+      document.getElementById('options').classList.remove('options-hidden');
+    } else {
+      document.getElementById('options').classList.add('options-hidden');
     }
   }
 });

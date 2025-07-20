@@ -97,6 +97,10 @@ body {
           let origin = "/"
           if (urlParams.get('origin') !== null) {
             origin = urlParams.get('origin')
+            //console.log('Redirecting to origin:', origin);
+            //let redirectUrl = window.location.href.replace(/\/login.*$/, origin);
+            window.location.href = origin;
+            return
           }
           window.location.href = origin;
         } else {

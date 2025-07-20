@@ -22,6 +22,9 @@ var loginPage []byte
 //go:embed ui/stats.html
 var statsPage []byte
 
+//go:embed ui/options.html
+var optionsPage []byte
+
 func main() { //revive:disable:function-length
 	_ = godotenv.Load("present.env")
 	_ = godotenv.Overload(".env")
@@ -51,6 +54,7 @@ func main() { //revive:disable:function-length
 	log.SetOutput(os.Stderr) // why do packages feel the need to change this in init()? :(
 
 	config := configuration.Get()
+	// config.Security.AllowAnyUser = true // allow any user to login as user without knowing password
 
 	if config.Version {
 		fmt.Println(doc.Logo)

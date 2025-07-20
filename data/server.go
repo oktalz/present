@@ -14,6 +14,7 @@ type Server interface {
 	Broadcast(msg Message)
 	Send(id string, msg Message)
 	Pool(msg Message)
+	GetUsers() []string
 }
 
 func NewServer() *server { //revive:disable:unexported-return
@@ -188,4 +189,14 @@ func (s *server) BroadcastPoolsToID(id string) {
 	for k := range s.pools {
 		go s.BroadcastPool(k, id)
 	}
+}
+
+func (s *server) GetUsers() []string {
+	muWS.RLock()
+	defer muWS.RUnlock()
+	users := make([]string, 0, len(s.clients))
+	for k := range s.clients {
+		users = append(users, k)
+	}
+	return users
 }

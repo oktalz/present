@@ -26,6 +26,7 @@
     let terminalCast = [{{range $index, $element := .TerminalCast}}{{if $index}}, {{end}}"{{$element}}"{{end}}]
     let terminalClose = [{{range $index, $element := .TerminalClose}}{{if $index}}, {{end}}"{{$element}}"{{end}}]
     let menuKey = [{{range $index, $element := .MenuKey}}{{if $index}}, {{end}}"{{$element}}"{{end}}]
+    let optionsKey = [{{range $index, $element := .OptionsKey}}{{if $index}}, {{end}}"{{$element}}"{{end}}]
   </script>
   <script>
     {{template "js" .}}
@@ -55,6 +56,7 @@
   <div class="" id="spinner"></div>
   {{template "notes" .}}
   {{template "menu" .}}
+  {{template "options" .}}
   {{- range .Slides -}}
     {{template "slide" .}}
   {{- end -}}
@@ -146,6 +148,16 @@ onPageChange = function() {
       </tr>
       {{- end}}
     </table>
+  </div>
+{{ end }}
+
+{{ define "options" }}
+  <div class="options options-hidden" id="options" style="width: {{- if .Admin }}100{{- else }}50{{- end }}%; {{- if not .Admin }}left: 25%;{{- end }}">
+    {{- if .Admin }}
+    <iframe src="/stats?origin=/stats" style="width: 100%; height: 100svh; border: none;"></iframe>
+    {{- else }}
+    <iframe src="/options?origin=/options" style="width: 100%; height: 54svh; border: none;"></iframe>
+    {{- end }}
   </div>
 {{ end }}
 

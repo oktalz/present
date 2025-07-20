@@ -24,6 +24,7 @@ type TemplateData struct {
 	TerminalCast  []string
 	TerminalClose []string
 	MenuKey       []string
+	OptionsKey    []string
 	Port          int
 	Admin         bool
 }
@@ -49,6 +50,8 @@ func regenerateHTML(presentation types.Presentation, config configuration.Config
 	terminalCloseStr = strings.ReplaceAll(terminalCloseStr, "Space", " ")
 	menuKeyStr := cmp.Or(config.Controls.Menu, "m")
 	menuKeyStr = strings.ReplaceAll(menuKeyStr, "Space", " ")
+	optionsKeyStr := cmp.Or(config.Controls.Options, "o")
+	optionsKeyStr = strings.ReplaceAll(optionsKeyStr, "Space", " ")
 	err = tmpl.Execute(&out, TemplateData{
 		Admin:         adminPrivileges,
 		Slides:        slides,
@@ -63,6 +66,7 @@ func regenerateHTML(presentation types.Presentation, config configuration.Config
 		TerminalCast:  strings.Split(terminalCastStr, ","),
 		TerminalClose: strings.Split(terminalCloseStr, ","),
 		MenuKey:       strings.Split(menuKeyStr, ","),
+		OptionsKey:    strings.Split(optionsKeyStr, ","),
 	})
 	if err != nil {
 		return nil, err

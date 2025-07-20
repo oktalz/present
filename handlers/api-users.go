@@ -16,6 +16,7 @@ type User struct {
 	LoginTime time.Time           `json:"login_time"`
 	Username  string              `json:"username"`
 	IP        string              `json:"ip"`
+	Hash      string              `json:"-"`
 	UA        useragent.UserAgent `json:"ua"`
 	Admin     bool                `json:"admin"`
 }
@@ -28,7 +29,7 @@ var (
 func APIUsers(config configuration.Config) http.Handler {
 	users = make(map[string]User)
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		cookie, err := r.Cookie("present")
+		cookie, err := r.Cookie("present-sec")
 		var pass string
 		if err == nil {
 			// Cookie exists, you can access its value using cookie.Value

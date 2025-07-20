@@ -40,6 +40,7 @@
 <body>
     <div class="login-page">
         <div class="form">
+            Anonymous Users: <span id="anonymous-count">0</span>
             <table id="user-table">
                 <thead>
                     <tr>
@@ -89,14 +90,20 @@
                         <td>${new Date(user.login_time).toLocaleString()}</td>
                         <td>${user.ua.Name}</td>
                         <td>${user.ua.OS} ${user.ua.OSVersion}</td>
-                        <td>${user.ua.Desktop ? '🟢' : ''}</td>
-                        <td>${user.ua.Mobile ? '🟢' : ''}</td>
-                        <td>${user.ua.Tablet ? '🟢' : ''}</td>
-                        <td>${user.ua.Bot ? '🟢' : ''}</td>
+                        <td>${user.ua.Desktop ? '⚡' : ''}</td>
+                        <td>${user.ua.Mobile ? '⚡' : ''}</td>
+                        <td>${user.ua.Tablet ? '⚡' : ''}</td>
+                        <td>${user.ua.Bot ? '⚡' : ''}</td>
                     `;
-                    console.log(user)
+                    //console.log(user)
                     tableBody.appendChild(row);
                 });
+
+
+                const responseConn = await fetch('/api/connections');
+                const dataConn = await responseConn.json();
+                //console.log('Connections:', dataConn);
+                document.getElementById('anonymous-count').textContent = dataConn.count - counter;
 
                 setTimeout(fetchUserData, 3000);
             } catch (error) {

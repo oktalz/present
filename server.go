@@ -31,8 +31,10 @@ func configureServer(config configuration.Config) {
 	http.Handle("/login", handlers.Login(loginPage))
 	http.Handle("/stats", handlers.Stats(statsPage, config))
 	http.Handle("/events", handlers.SSE(wsServer, config))
+	http.Handle("/options", handlers.Options(optionsPage, config))
 	http.Handle("GET /api/login", handlers.APILogin(config))
 	http.Handle("GET /api/users", handlers.APIUsers(config))
+	http.Handle("GET /api/connections", handlers.APIConnections(config, wsServer))
 	http.Handle("GET /api/cmd/", handlers.APICmd(config))
 
 	sub, err := fs.Sub(dist, "ui/static")

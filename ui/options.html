@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stats Page</title>
+    <script src="boxicons.js"></script>
+    <style>
+
+.options-page {
+  max-width: 768px;
+  width: fit-content;
+  padding: 3svh 0 0;
+  margin: auto;
+}
+
+.form {
+  position: relative;
+  z-index: 1;
+  background: #FFFFFF;
+  max-width: 80svw;
+  padding: 5svh;
+  text-align: center;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+.form input {
+  outline: 0;
+  background: #f2f2f2;
+  width: 100%;
+  border: 0;
+  margin: 0 0 15px;
+  padding: 15px;
+  box-sizing: border-box;
+  font-size: 24px;
+}
+.form button {
+  text-transform: uppercase;
+  outline: 0;
+  background: #5DC9E2;
+  width: 100%;
+  border: 0;
+  padding: 15px;
+  color: #FFFFFF;
+  font-size: 14px;
+  -webkit-transition: all 0.3 ease;
+  transition: all 0.3 ease;
+  cursor: pointer;
+}
+.form button:hover,.form button:active,.form button:focus {
+  background: #00ADD8;
+}
+
+body {
+  background: #00ADD8;
+  background: linear-gradient(90deg, #00ADD8 0%, #5DC9E2 50%);
+  font-family: "Roboto", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+    </style>
+</head>
+<body>
+    <div class="options-page">
+    <div class="form">
+        <form class="login-form">
+        <input type="user" name="user" placeholder="user" value="" />
+        <input type="data" name="email" placeholder="email" value="" />
+        <input type="password" placeholder="password"/>
+        <button>save</button>
+        </form>
+    </div>
+    </div>
+    <script>
+        // fetch username from cookie `present-user`
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+        }
+        let cookie = getCookie("present-usr")
+        // cookie is in format `"username, email"` so split it
+        if (cookie) {
+            cookie = cookie.replace(/"/g, ''); // remove quotes if any
+            let parts = cookie.split(",");
+            if (parts.length === 2) {
+                document.querySelector("input[name='user']").value = parts[0].trim();
+                document.querySelector("input[name='email']").value = parts[1].trim();
+            }
+        }
+        document.querySelector('form').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    let username = 'present';
+
+    const userInput = document.querySelector('input[type="user"]');
+    if (userInput !== null) {
+      username = userInput.value
+    }
+    if (document.querySelector('input[type="data"]') != null) {
+      username += ", "+document.querySelector('input[type="data"]').value;
+    }
+    const password = document.querySelector('input[type="password"]').value;
+
+    const headers = new Headers();
+    headers.append('Authorization', 'Basic ' + btoa(username + ":" + password));
+
+    fetch('/api/login', { method: 'GET', headers: headers })
+      .then(response => {
+        if (response.ok) {
+
+            // try to see if you are in frame and if so, send a keypress `o` event on parent window
+            if (window.self !== window.top) {
+              const oKeyEvent = new KeyboardEvent('keydown', { key: 'o' });
+              window.parent.document.dispatchEvent(oKeyEvent);
+                // read body as json and log it (it has admin attribute)
+                response.json().then(data => {
+                    //console.log('Login response:', data);
+                    if (data.admin) {
+                         // reload top window
+                        window.top.location.reload();
+                    }
+                });
+            }
+        } else {
+          alert('Invalid username or password');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  });
+    </script>
+</body>
+</html>

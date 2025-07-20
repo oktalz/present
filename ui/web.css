@@ -113,6 +113,22 @@ pre code.hljs {
   display: none;
 }
 
+.options{
+  margin-right: 0px;
+  top: 0px;
+  position:absolute;
+  padding-top: 1svh;
+  color: rgb(0, 0, 0);
+  font-size: 3.5svh;
+  background-color: #00ADD8;
+  z-index: 69142;
+  overflow-y: auto !important;
+}
+
+.options-hidden {
+  display: none;
+}
+
 p {
   margin-block-start: 1svh;
   margin-block-end: 1svh;

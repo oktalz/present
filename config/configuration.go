@@ -60,11 +60,13 @@ type Config struct { //betteralign:ignore
 type Security struct { //betteralign:ignore
 	AdminPwd        string `ff:"long: admin-pwd,         usage: 'admin password'"`
 	UserPwd         string `ff:"long: user-pwd,          usage: 'user password'"`
+	AllowAnyUser    bool   `ff:"long: any-user,          usage: 'allow any user to login without password'"`
 	AdminPwdDisable bool   `ff:"long: admin-pwd-disable, usage: 'disable admin password'"`
 }
 
 type Controls struct { //betteralign:ignore
 	Menu          string `ff:"long: menu,              usage: 'keys that opens menu'"`
+	Options       string `ff:"long: options,           usage: 'keys that opens options'"`
 	NextPage      string `ff:"long: next-page,         usage: 'keys that go to next page'"`
 	PreviousPage  string `ff:"long: previous-page,     usage: 'keys that go to previous page'"`
 	TerminalCast  string `ff:"long: terminal-cast,     usage: 'keys that run commands'"`
