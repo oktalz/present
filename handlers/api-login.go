@@ -11,7 +11,7 @@ import (
 	"github.com/oktalz/present/hash"
 )
 
-func APILogin(config configuration.Config) http.Handler {
+func APILogin(config configuration.Config) http.Handler { //revive:disable:function-length
 	userPwd := config.Security.UserPwd
 	adminPwd := config.Security.AdminPwd
 	users = make(map[string]User)

@@ -164,8 +164,8 @@ func prepare(md goldmark.Markdown, fileContent string) string {
 		})
 	fileContent = processReplace(fileContent, ".center", ".center.end", func(data string) string {
 		flex := ""
-		if strings.HasPrefix(data, ".flex") {
-			data = strings.TrimSpace(strings.TrimPrefix(data, ".flex"))
+		if after, ok := strings.CutPrefix(data, ".flex"); ok {
+			data = strings.TrimSpace(after)
 			flex = "display: flex; "
 		}
 
