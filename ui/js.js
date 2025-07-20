@@ -206,6 +206,25 @@ window.addEventListener('wheel', function(event) {
   }
 }, true);
 
+window.addEventListener("popstate", function(e) {
+  // detect that back is clicked and go to the appropriate page
+  // add a func that activates after 50ms when this is activated (its to early to do it immediately)
+  this.setTimeout(() => {
+    //remove the hash from the URL
+    hash = window.location.hash;
+    if (hash != "") {
+      hash = hash.slice(1);
+      if (/^\d+$/.test(hash)) {
+        newPage = parseInt(hash, 10);
+        if (page != newPage) {
+          setPage(newPage);
+        }
+      }
+    }
+  }, 50);
+  //console.log('Popstate event triggered:', e.state);
+}, false);
+
 touchX = 0;
 touchY = 0;
 
