@@ -58,8 +58,10 @@ FLAGS
       --help                    help
       --admin-pwd STRING        admin password
       --user-pwd STRING         user password
+      --any-user                allow any user to login without password
       --admin-pwd-disable       disable admin password
       --menu STRING             keys that opens menu
+      --options STRING          keys that opens options
       --next-page STRING        keys that go to next page
       --previous-page STRING    keys that go to previous page
       --terminal-cast STRING    keys that run commands
