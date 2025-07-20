@@ -52,6 +52,7 @@ func (s *server) Register(userID string, isAdmin bool, currentSlide int64) (ch c
 	go func() { //revive:disable:datarace
 		ch <- Message{
 			ID:     userID,
+			Admin:  isAdmin,
 			Author: "SERVER",
 			// Slides: data.Presentation(),
 			Slide: int(currentSlide),

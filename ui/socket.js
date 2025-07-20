@@ -1,3 +1,6 @@
+
+PresentAdmin = false
+
 function startSSESession() {
     const eventSource = new EventSource('/events');
     // Listen for messages from the server
@@ -19,7 +22,12 @@ function startSSESession() {
             }
             if (myID == ""){
               myID = data.ID
-              console.log("myID",myID)
+              admin = "user"
+              if (data.Admin) {
+                PresentAdmin = true
+                admin = "admin"
+              }
+              console.log("myID",myID,admin)
             }
             if (data.Slide != page){
               setPage(data.Slide)
@@ -33,16 +41,24 @@ function startSSESession() {
      };
 }
 
-  function updateData(data) {
-    fetch('/events', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    })
-    .catch(error => {
-      console.error('Error occurred when sending data:', error);
-    })
-    console.log("updateData send", data)
+function updateData(data) {
+  if (!PresentAdmin) {
+    return
+  }
+  fetch('/events', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  })
+  .catch(error => {
+    console.error('Error occurred when sending data:', error);
+  })
+  .then(response => {
+    if (response.status === 401) {
+      console.log("Not authorized to send data:", data);
+      PresentAdmin = false
+    }
+  })
 };
