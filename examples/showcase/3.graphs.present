@@ -11,7 +11,7 @@
 
 .================================
 .TITLE{Graphs - d2}
-.center.flex
+.center
 .css{width: 48svw; overflow: hidden; font-size: 4svh!important;}
 .block.path(graphs).source({graphs}scheduler.d2)
 .css.end
