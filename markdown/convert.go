@@ -167,8 +167,8 @@ func prepare(md goldmark.Markdown, fileContent string) string {
 		if after, ok := strings.CutPrefix(data, ".flex"); ok {
 			data = strings.TrimSpace(after)
 		}
-		if strings.HasPrefix(data, ".noflex") {
-			data = strings.TrimPrefix(data, ".noflex")
+		if after, ok := strings.CutPrefix(data, ".noflex"); ok {
+			data = after
 			data = strings.TrimSpace(data)
 			flex = ""
 		}
