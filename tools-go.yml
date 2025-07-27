@@ -17,5 +17,5 @@ gofumpt:
   version: v0.8.0
   install: mvdan.cc/gofumpt
 revive:
-  version: v1.10.0
+  version: v1.11.0
   install: github.com/mgechev/revive

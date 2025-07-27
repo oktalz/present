@@ -128,7 +128,7 @@ func UnGzip(srcTarGz string) error { //revive:disable:function-length,cognitive-
 		}
 
 		// fmt.Println(header.Name, header.Typeflag)
-		switch header.Typeflag {
+		switch header.Typeflag { //revive:disable:enforce-switch-style
 		case tar.TypeDir: // Directory
 			if err := os.MkdirAll(header.Name, 0o755); err != nil {
 				return err
