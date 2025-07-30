@@ -309,6 +309,28 @@ func prepare(md goldmark.Markdown, fileContent string) string {
 		// fmt.Println(lines2)
 		i := 0
 		for currLine = i + 1; currLine < len(lines); currLine++ {
+			if currLine == 1 {
+				zeroline := lines[0]
+				// check if we have a style defined for the table
+				if strings.HasPrefix(zeroline, "{") && strings.HasSuffix(zeroline, "}") {
+					var tableStyle string
+					var tableClass string
+					var elemID string
+					tableStyle = zeroline[1 : len(zeroline)-1]
+					tableStyle = processReplace(tableStyle, ".class(", ")", func(data string) string {
+						tableClass = data
+						return ""
+					})
+					tableStyle = processReplace(tableStyle, ".id(", ")", func(data string) string {
+						elemID = data
+						return ""
+					})
+					if elemID != "" {
+						elemID = ` id="` + elemID + `" `
+					}
+					html = `<table class="` + tableClass + `" style="` + tableStyle + `"` + elemID + `>`
+				}
+			}
 			if lines[currLine] == ".tr" {
 				if trStarted {
 					if tdData != "" {
@@ -326,7 +348,20 @@ func prepare(md goldmark.Markdown, fileContent string) string {
 					end := strings.Index(lines[currLine+1], "}")
 					if end != -1 {
 						css := lines[currLine+1][1:end]
-						html += `<tr style="` + css + `">`
+						classes := ""
+						elemID := ""
+						css2 := processReplace(css, ".class(", ")", func(data string) string {
+							classes = ` class="` + data + `" `
+							return ""
+						})
+						css2 = processReplace(css2, ".id(", ")", func(data string) string {
+							elemID = data
+							return ""
+						})
+						if elemID != "" {
+							elemID = ` id="` + elemID + `" `
+						}
+						html += `<tr ` + classes + `style="` + css2 + `"` + elemID + `>`
 						lines[currLine+1] = strings.Replace(lines[currLine+1], "{"+css+"}", "", 1)
 					} else {
 						html += `<tr>`
@@ -348,7 +383,21 @@ func prepare(md goldmark.Markdown, fileContent string) string {
 					end := strings.Index(lines[currLine+1], "}")
 					if end != -1 {
 						css := lines[currLine+1][1:end]
-						html += `</td><td style="` + css + `">`
+						classes := ""
+						elemID := ""
+						css2 := processReplace(css, ".class(", ")", func(data string) string {
+							classes = ` class="` + data + `" `
+							return ""
+						})
+						css2 = processReplace(css2, ".id(", ")", func(data string) string {
+							elemID = data
+							return ""
+						})
+						if elemID != "" {
+							elemID = ` id="` + elemID + `" `
+						}
+
+						html += `</td><td ` + classes + ` style="` + css2 + `"` + elemID + `>`
 						lines[currLine+1] = strings.Replace(lines[currLine+1], "{"+css+"}", "", 1)
 					} else {
 						html += `<td>`
