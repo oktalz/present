@@ -49,12 +49,21 @@ function setPage(newPage) {
   if (newPage < -2){
     return
   }
+  // remove class menu-selected from elements that has class menu-selected
+  document.querySelectorAll('.menu-selected').forEach(el => {
+    el.classList.remove('menu-selected');
+  });
   page = newPage
   if (page < 0) {
     page = 0;
   }
   if (page > maxPage) {
     page = maxPage
+  }
+  //set class menu-selected to element that has id menu+page
+  menu = document.getElementById('menu-'+page)
+  if (menu != null) {
+    menu.classList.add('menu-selected')
   }
   window.location.hash = page.toString();
   updateSlideVisibility(page);

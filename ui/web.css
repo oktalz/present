@@ -113,6 +113,23 @@ pre code.hljs {
   display: none;
 }
 
+.menu td {
+  padding: 0;
+  padding-left: 1svw;
+}
+
+.menu td:first-child {
+  padding-left: 1svw;
+}
+
+.menu table {
+  border-spacing: 0;
+}
+
+.menu-selected {
+  background-color: #5DC9E2;
+}
+
 .options{
   margin-right: 0px;
   top: 0px;
