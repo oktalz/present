@@ -32,6 +32,18 @@
 .cast.stream.edit.save(main.go).run(go run .).before(go mod init x)
 .template.end
 
+.template{PYTHON}
+.cast.stream.edit.save(main.py).run(docker run --rm -v ./:/app:ro -w /app --read-only --tmpfs /tmp --security-opt=no-new-privileges --network=none -m 32m python:3.9-slim python3 main.py)
+.template.end
+
+.template{PHP}
+.cast.stream.edit.save(index.php).run(docker run --rm -v ./:/app:ro -w /app --read-only --tmpfs /tmp --security-opt=no-new-privileges --network=none -m 32m php:8.2-alpine php index.php)
+.template.end
+
+.template{PHP_WITH_BEFORE}
+.cast.stream.edit.save(index.php).run(docker run --rm -v ./:/app:ro -w /app --read-only --tmpfs /tmp --security-opt=no-new-privileges --network=none -m 32m php:8.2-alpine php index.php).before(docker pull php:8.2-alpine)
+.template.end
+
 .template{CAST_SHOW}(From,To)
 .cast.stream.edit.save(main.go).run(go run .).before(go mod init x).show({{.From}}:{{.To}})
 .template.end

@@ -42,7 +42,7 @@ in the window on top of the presentation
 
 .slide.font-size(4.3svh)
 
-.CAST
+.cast.stream.edit.save(main.go).run(go run .).before(go mod init x)
 ```go
 package main
 
@@ -61,6 +61,63 @@ func main() {
 ```
 
 📜 use `r` key to run the code and `c` to close the terminal
+.================================
+.TITLE{Code - Running Example with template}
+.slide.font-size(4.3svh)
+
+.CAST
+```go
+package main
+
+import (
+  "fmt"
+)
+
+func main() {
+	false := true
+	if false {
+		fmt.Println("its true!")
+	}
+}
+```
+
+📜 use `r` key to run the code and `c` to close the terminal
+.================================
+.TITLE{Code - Running in docker}
+.slide.font-size(4.3svh)
+.api.endpoint(image-pull).run(docker pull php:8.2-alpine)
+.slide.actions.js(imagePull())
+
+.PHP
+```php
+<?php
+$smile     = 'smile';
+$shrug     = 'shrug';
+$facepalm  = 'php';
+
+$opts = ['smile','shrug','facepalm'];
+$pick = $opts[array_rand($opts)];
+
+${$pick}();
+
+function smile() { echo "😄\n";}
+function shrug() { echo "¯\_(ツ)_/¯\n";}
+function php() { echo "PHP\n";}
+?>
+```
+
+📜 use `r` key to run the code and `c` to close the terminal
+.================================
+.TITLE{Code - Running in docker - python}
+.slide.font-size(4.2svh)
+.api.endpoint(image-pull-python).run(docker pull python:3.9-slim)
+.slide.actions.js(imagePullPython())
+.slide.terminal.font-size(3svh)
+
+.PYTHON
+```python
+import this
+```
 .================================
 .TITLE{Code - Omitting the code}
 .slide.font-size(4.35svh)
