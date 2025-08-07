@@ -80,7 +80,7 @@ jobs:
         run: go build -v .
   Test:
     name: Tests
-    needs: ["Lint","Tidy","Build"]
+    needs: ["Lint", "Tidy", "Build"]
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -99,7 +99,7 @@ jobs:
         run: task test
   License:
     name: license-check
-    needs: ["Lint","Tidy","Build"]
+    needs: ["Lint", "Tidy", "Build"]
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -117,4 +117,4 @@ jobs:
       - name: go-licenses install
         run: go install github.com/google/go-licenses@latest
       - name: Check Licenses
-        run:  task licenses
+        run: task licenses
