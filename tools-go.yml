@@ -19,3 +19,6 @@ gofumpt:
 revive:
   version: v1.11.0
   install: github.com/mgechev/revive
+gotestsum:
+  version: v1.12.3
+  install: gotest.tools/gotestsum

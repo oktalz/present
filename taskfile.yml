@@ -43,8 +43,23 @@ tasks:
 
   test:
     desc: 'run Go tests'
+    deps:
+      - task: check-yq-installed
     cmds:
-      - CGO_ENABLED=1 go test -race -v ./...
+      - task: test-internal
+
+  test-internal:
+    internal: true
+    deps:
+      - task: check-go-tool
+        vars:
+          PACKAGE: gotestsum
+    vars:
+      TS_VERSION:
+        sh: /{{.TMP}}/yq/{{.YQ_VERSION}}/yq eval '.gotestsum.version' tools-go.yml
+    desc: 'run Go tests'
+    cmds:
+      - CGO_ENABLED=1 /{{.TMP}}/gotestsum/{{.TS_VERSION}}/gotestsum --hide-summary=output --format-icons=hivis --format=testdox --format-hide-empty-pkg -- -race ./...
 
   install:
     desc: 'build the project'
