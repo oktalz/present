@@ -2,6 +2,9 @@
 version: '3'
 
 includes:
+  tools:
+    taskfile: taskfile-tools.yml
+    flatten: true
   ci:
     taskfile: taskfile-ci.yml
     flatten: true
@@ -13,11 +16,8 @@ includes:
     taskfile: taskfile-external.yml
     flatten: true
 
-vars:
-  YQ_VERSION: v4.45.1
-  YQ_INSTALLED_V:
-   sh: /{{.TMP}}/yq/{{.YQ_VERSION}}/yq --version || echo ""
-  YQ_INSTALLED: "{{ if contains .YQ_VERSION .YQ_INSTALLED_V }}true{{ else }}false{{ end }}"
+env:
+  TMP: tmp
 
 tasks:
 
@@ -44,27 +44,16 @@ tasks:
   test:
     desc: 'run Go tests'
     deps:
-      - task: check-yq-installed
-    cmds:
-      - task: test-internal
-
-  test-internal:
-    internal: true
-    deps:
       - task: check-go-tool
         vars:
-          PACKAGE: gotestsum
-    vars:
-      TS_VERSION:
-        sh: /{{.TMP}}/yq/{{.YQ_VERSION}}/yq eval '.gotestsum.version' tools-go.yml
-    desc: 'run Go tests'
+          TOOL: GOTESTSUM
     cmds:
-      - CGO_ENABLED=1 /{{.TMP}}/gotestsum/{{.TS_VERSION}}/gotestsum --hide-summary=output --format-icons=hivis --format=testdox --format-hide-empty-pkg -- -race ./...
+      - CGO_ENABLED=1 /{{.TMP}}/gotestsum/{{.GOTESTSUM_VERSION}}/gotestsum --hide-summary=output --format-icons=hivis --format=testdox --format-hide-empty-pkg -- -race ./...
 
   install:
     desc: 'build the project'
     cmds:
-      - go build
+      - go build -buildvcs=true
       - go install
 
   run:
@@ -77,3 +66,9 @@ tasks:
     cmds:
       - go get -u golang.org/x/...
       - task: tidy
+
+  tools-install:
+    task:
+      - task: check-go-tools
+        vars:
+          TOOLS: [YQ, BETTERALIGN, STATICCHECK, GOLICENSES, GOVULNCHECK, GOFUMPT, REVIVE, GOTESTSUM]

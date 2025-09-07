@@ -20,8 +20,7 @@ tasks:
     desc: 'check-latest-version'
     silent: true
     vars:
-      PKG:
-        sh: /{{.TMP}}/yq/{{.YQ_VERSION}}/yq eval '.{{.PACKAGE}}.install | sub("/cmd/.*", "")' tools-go.yml
+      PKG: '{{ regexReplaceAll "/cmd/.*$" .URL "" }}'
       LATEST_PACKAGE_VERSION:
         sh: |
           GO111MODULE=on go list -m -versions -json {{.PKG}} | \
@@ -29,7 +28,7 @@ tasks:
     status:
       - "{{ if eq .LATEST_PACKAGE_VERSION .CURRENT_VERSION }}true{{ else }}false{{ end }}"
     cmds:
-      - cmd: echo "{{.PACKAGE}} can be updated from {{.CURRENT_VERSION}} to {{.LATEST_PACKAGE_VERSION}}"
+      - cmd: echo "{{.NAME}} can be updated from {{.CURRENT_VERSION}} to {{.LATEST_PACKAGE_VERSION}}"
 
   go-install:
     desc: ""
@@ -43,24 +42,36 @@ tasks:
     desc: 'install go tool'
     silent: true
     preconditions:
-      - task: check-yq-installed
+     - task: check-yq-installed
     deps:
       - task: check-latest-version-go
         vars:
-          PACKAGE: '{{.PACKAGE}}'
+          NAME: '{{ index . (print .TOOL "_NAME") }}'
+          VERSION: '{{ index . (print .TOOL "_VERSION") }}'
+          URL: '{{ index . (print .TOOL "_URL") }}'
           CURRENT_VERSION: '{{.CURRENT_VERSION}}'
     status:
       - "{{ if eq .CURRENT_VERSION .VERSION }}true{{ else }}false{{ end }}"
     vars:
-      VERSION:
-        sh: /{{.TMP}}/yq/{{.YQ_VERSION}}/yq eval '.{{.PACKAGE}}.version' tools-go.yml
-      URL:
-        sh: /{{.TMP}}/yq/{{.YQ_VERSION}}/yq eval '.{{.PACKAGE}}.install' tools-go.yml
+      NAME: '{{ index . (print .TOOL "_NAME") }}'
+      VERSION: '{{ index . (print .TOOL "_VERSION") }}'
+      URL: '{{ index . (print .TOOL "_URL") }}'
       CURRENT_VERSION:
-        sh: go version -m /{{.TMP}}/{{.PACKAGE}}/{{.VERSION}}/{{.PACKAGE}} | awk '$1 == "mod" {print $3}'
+        sh: go version -m /{{.TMP}}/{{.NAME}}/{{.VERSION}}/{{.NAME}} | awk '$1 == "mod" {print $3}'
     cmds:
+      - echo -n "installing {{.NAME}} {{.VERSION}} ..."
       - task : go-install
         vars:
           PACKAGE: '{{.URL}}@{{.VERSION}}'
-          GOBIN: '/{{.TMP}}/{{.PACKAGE}}/{{.VERSION}}'
-      - echo "Installed {{.PACKAGE}} {{.VERSION}} in /{{.TMP}}/{{.PACKAGE}}/{{.VERSION}}"
+          GOBIN: '/{{.TMP}}/{{.NAME}}/{{.VERSION}}'
+      - echo " /{{.TMP}}/{{.NAME}}/{{.VERSION}} done."
+
+  check-go-tools:
+    desc: 'install go tools'
+    silent: true
+    cmds:
+      - for:
+          var: TOOLS
+        task: check-go-tool
+        vars:
+          TOOL: '{{.ITEM}}'

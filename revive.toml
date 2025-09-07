@@ -22,3 +22,6 @@ enableAllRules = true
 
 [rule.add-constant]
   Disabled = true
+
+[rule.package-directory-mismatch]
+  Disabled = true
