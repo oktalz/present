@@ -27,6 +27,7 @@ type TerminalCommand struct {
 	FileName string
 	Code     Code
 	Cmd      []string
+	ENV      []string
 	Index    int
 	DirFixed bool
 }

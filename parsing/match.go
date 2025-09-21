@@ -190,6 +190,7 @@ func ParseCast(cast, code string) ParseResult { //revive:disable:function-length
 	// + .id(my-id)
 	// + .js(findPODid())
 	// + .endpoint(my-endpoint)
+	// + .env(MYVAR=value) (every run command reset it)
 	result := ParseResult{
 		Before:             []types.TerminalCommand{},
 		Cmd:                []types.TerminalCommand{},
@@ -205,6 +206,7 @@ func ParseCast(cast, code string) ParseResult { //revive:disable:function-length
 	var data string
 	var content string
 	var lang string
+	var env []string
 
 	hasRun := -1
 
@@ -229,6 +231,18 @@ func ParseCast(cast, code string) ParseResult { //revive:disable:function-length
 		}
 		if content != "" {
 			result.ID = content
+		}
+		data = data[end+1:]
+	}
+
+	data = cast
+	for {
+		start, end, content = FindDataWithAlternative(data, NewShortPattern(".env(", ")"), NewShortPattern(".env{", "}"))
+		if start == -1 {
+			break
+		}
+		if content != "" {
+			env = append(env, content)
 		}
 		data = data[end+1:]
 	}
@@ -351,6 +365,8 @@ func ParseCast(cast, code string) ParseResult { //revive:disable:function-length
 				IsEmpty: true,
 			}
 		}
+		tc.ENV = env
+		env = nil
 
 		result.Cmd = append(result.Cmd, tc)
 		hasRun = len(result.Cmd) - 1

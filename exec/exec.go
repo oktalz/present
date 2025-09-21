@@ -107,6 +107,15 @@ func cmdStreamWS(tc types.TerminalCommand, ch chan string, timeout time.Duration
 		}
 		cmd.Dir = path.Join(dir, tc.Dir)
 	}
+	for _, e := range tc.ENV {
+		parts := strings.SplitN(e, "=", 2)
+		if len(parts) == 2 {
+			cmd.Env = append(cmd.Env, e)
+		}
+	}
+	if len(tc.ENV) > 0 {
+		cmd.Env = append(cmd.Env, os.Environ()...)
+	}
 
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
