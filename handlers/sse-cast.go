@@ -66,6 +66,7 @@ func CastSSE(config configuration.Config) http.Handler { //revive:disable:functi
 		slides := data.Presentation().Slides
 		if slideIndex < 0 || slideIndex >= int64(len(slides)) {
 			http.Error(w, "Invalid slide number", http.StatusBadRequest)
+			return
 		}
 		slide := slides[slideIndex]
 		terminalCommand := slide.TerminalCommand
@@ -95,6 +96,7 @@ func CastSSE(config configuration.Config) http.Handler { //revive:disable:functi
 			err = os.MkdirAll(workingDir, 0o755)
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return
 			}
 			// defer os.RemoveAll(workingDir)
 		}
@@ -113,6 +115,7 @@ func CastSSE(config configuration.Config) http.Handler { //revive:disable:functi
 					0o600)
 				if err != nil {
 					http.Error(w, err.Error(), http.StatusInternalServerError)
+					return
 				}
 			}
 		}
@@ -148,7 +151,8 @@ func CastSSE(config configuration.Config) http.Handler { //revive:disable:functi
 					}
 					_, err := fmt.Fprint(w, data)
 					if err != nil {
-						fmt.Println(err)
+						log.Printf("cast stream write error: %v", err)
+						return
 					}
 					flusher.Flush()
 				}
