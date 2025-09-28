@@ -237,7 +237,8 @@ func ParseCast(cast, code string) ParseResult { //revive:disable:function-length
 
 	data = cast
 	for {
-		start, end, content = FindDataWithAlternative(data, NewShortPattern(".env(", ")"), NewShortPattern(".env{", "}"))
+		start, end, content = FindDataWithAlternative(data,
+			NewShortPattern(".env(", ")"), NewShortPattern(".env{", "}"))
 		if start == -1 {
 			break
 		}

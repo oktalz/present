@@ -87,14 +87,15 @@ func CmdStreamWS(tc types.TerminalCommand, ch chan string, timeout time.Duration
 	go cmdStreamWS(tc, ch, timeout, raw)
 }
 
-//revive:disable:confusing-naming,flag-parameter
+//revive:disable:confusing-naming,flag-parameter,function-length
 func cmdStreamWS(tc types.TerminalCommand, ch chan string, timeout time.Duration, raw bool) {
-	fmt.Println("======== executing", tc.Dir, tc.App, strings.Join(tc.Cmd, " "))
+	env := strings.Join(tc.ENV, " ")
+	fmt.Println("======== executing", tc.Dir, env, tc.App, strings.Join(tc.Cmd, " "))
 	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer func() {
 		cancel()
 		close(ch)
-		fmt.Println("======== finished ", tc.Dir, tc.App, strings.Join(tc.Cmd, " "))
+		fmt.Println("======== finished ", tc.Dir, env, tc.App, strings.Join(tc.Cmd, " "))
 	}()
 	cmd := exec.CommandContext(ctx, tc.App, tc.Cmd...) //nolint:gosec
 	if DirectoryExists(tc.Dir) {
@@ -107,13 +108,8 @@ func cmdStreamWS(tc types.TerminalCommand, ch chan string, timeout time.Duration
 		}
 		cmd.Dir = path.Join(dir, tc.Dir)
 	}
-	for _, e := range tc.ENV {
-		parts := strings.SplitN(e, "=", 2)
-		if len(parts) == 2 {
-			cmd.Env = append(cmd.Env, e)
-		}
-	}
 	if len(tc.ENV) > 0 {
+		cmd.Env = append(cmd.Env, tc.ENV...)
 		cmd.Env = append(cmd.Env, os.Environ()...)
 	}
 
