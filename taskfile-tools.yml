@@ -1,9 +1,5 @@
 version: '3'
 vars:
-  TOOL_NAME: 0
-  TOOL_VERSION: 1
-  TOOL_URL: 2
-
   YQ_NAME: yq
   YQ_VERSION: v4.47.1
   YQ_URL: github.com/mikefarah/yq/v4
@@ -33,7 +29,7 @@ vars:
   REVIVE_URL: github.com/mgechev/revive
 
   GOTESTSUM_NAME: gotestsum
-  GOTESTSUM_VERSION: v1.12.3
+  GOTESTSUM_VERSION: v1.13.0
   GOTESTSUM_URL: gotest.tools/gotestsum
 
   YQ_INSTALLED_V:
