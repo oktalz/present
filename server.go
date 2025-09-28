@@ -18,7 +18,7 @@ import (
 	"github.com/oktalz/present/handlers"
 )
 
-func configureServer(config configuration.Config) {
+func configureServer(config configuration.Config) (handler http.Handler) {
 	wsServer := data.NewServer()
 	data.Init(wsServer, &config)
 
@@ -45,19 +45,21 @@ func configureServer(config configuration.Config) {
 	if err != nil {
 		panic(err)
 	}
-	handler := &fallbackFileServer{
+	handler = &fallbackFileServer{
 		primary:   http.FileServer(http.FS(sub)),
 		secondary: http.FileServer(http.Dir(wd)),
 		eTag:      ulid.Make().String(),
 	}
 	http.Handle("/", handler)
+	return http.DefaultServeMux
 }
 
 func startServer(config configuration.Config) {
 	signalCh := make(chan os.Signal, 1)
 	signal.Notify(signalCh, syscall.SIGTERM, os.Interrupt)
 
-	configureServer(config)
+	var err error
+	handler := configureServer(config)
 
 	server := &http.Server{
 		Addr:         config.Address + ":" + strconv.Itoa(config.Port),
@@ -65,6 +67,8 @@ func startServer(config configuration.Config) {
 		WriteTimeout: 5 * time.Second,
 		IdleTimeout:  5 * time.Second,
 	}
+
+	_ = handler
 
 	go func() {
 		log.Println("Listening on", server.Addr)
@@ -81,7 +85,7 @@ func startServer(config configuration.Config) {
 	defer cancelShutdown()
 
 	server.SetKeepAlivesEnabled(false)
-	err := server.Shutdown(shutdownCtx)
+	err = server.Shutdown(shutdownCtx)
 	if err != nil {
 		log.Printf("HTTP server shutdown error: %s\n", err)
 	}
