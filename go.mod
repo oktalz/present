@@ -27,6 +27,7 @@ require (
 	github.com/andybalholm/cascadia v1.3.3 // indirect
 	github.com/cloudflare/circl v1.6.1 // indirect
 	github.com/cyphar/filepath-securejoin v0.4.1 // indirect
+	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/dlclark/regexp2 v1.11.4 // indirect
 	github.com/dop251/goja v0.0.0-20240927123429-241b342198c2 // indirect
 	github.com/emirpasic/gods v1.18.1 // indirect
@@ -41,9 +42,11 @@ require (
 	github.com/lucasb-eyer/go-colorful v1.2.0 // indirect
 	github.com/mazznoer/csscolorparser v0.1.5 // indirect
 	github.com/pjbgf/sha1cd v0.3.2 // indirect
+	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/rivo/uniseg v0.4.7 // indirect
 	github.com/sergi/go-diff v1.3.2-0.20230802210424-5b0b94c5c0d3 // indirect
 	github.com/skeema/knownhosts v1.3.1 // indirect
+	github.com/stretchr/testify v1.10.0
 	github.com/xanzy/ssh-agent v0.3.3 // indirect
 	golang.org/x/exp v0.0.0-20250911091902-df9299821621 // indirect
 	golang.org/x/image v0.31.0 // indirect
@@ -53,5 +56,6 @@ require (
 	golang.org/x/xerrors v0.0.0-20240903120638-7835f813f4da // indirect
 	gonum.org/v1/plot v0.15.0 // indirect
 	gopkg.in/warnings.v0 v0.1.2 // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 	oss.terrastruct.com/util-go v0.0.0-20250213174338-243d8661088a // indirect
 )
