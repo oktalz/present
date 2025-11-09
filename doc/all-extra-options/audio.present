@@ -1,0 +1,7 @@
+.// audio settings
+.// on slide add icon to play audio
+.slide.audio.src{filename}
+.// on entering slide, autoplay audio first time
+.slide.audio.autoplay
+.// when audio play ends, automatically switch to next page
+.slide.audio.on.end.next-page

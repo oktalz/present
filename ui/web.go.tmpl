@@ -88,6 +88,34 @@ onPageChange = function() {
     {{.Notes}}
   </div>
   <div class="page-header-present">
+    {{- if .HasAudio }}
+    <audio id="audio-page-{{.PageIndex}}" src="{{.HasAudioSrc}}"></audio>
+    <div class="run">
+      <i onclick="playAudio({{.PageIndex}}, true)" class='bx bx-volume-full' id="audio-play-{{.PageIndex}}" style="color: #00ADD8; font-size: 7svh;"></i>
+      <i onclick="pauseAudio({{.PageIndex}})" class='bx bx-volume-mute' id="audio-pause-{{.PageIndex}}" style="color: #00ADD8; font-size: 7svh; display: none;"></i>
+      <script>
+        const audioElm{{.PageIndex}} = document.getElementById('audio-page-{{.PageIndex}}');
+        audioElm{{.PageIndex}}.addEventListener('ended', () => {
+          resetAudio({{.PageIndex}})
+          {{- if .HasAudioAutoPlay }}
+          oldPage = page;
+          page = page + 1;
+          target = getPageUp(oldPage,page);
+          setTimeout(() => {
+            setPage(target);
+            updateData({
+              Author: myID,
+              Slide: page
+            })
+          }, 1500);
+          {{- end }}
+        });
+        {{- if .HasAudioAutoPlay }}
+          pagesWithAutoPlayAudio.set("audio-page-{{.PageIndex}}", true);
+        {{- end }}
+      </script>
+    </div>
+    {{- end }}
     {{- if .HasCast }}
     <div class="run {{- if not .IsAdmin }} closed-permanently{{ end }} {{ if .HideRunButton }} closed-permanently{{ end -}}" id="run-{{.PageIndex}}">
       <i class='bx bxs-right-arrow' id="run-icon-{{.PageIndex}}" style="color: #00ADD8;"></i>

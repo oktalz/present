@@ -4,15 +4,6 @@ import (
 	"strings"
 )
 
-type ReplaceTypes interface {
-	string | func(data string) string | func(data string)
-}
-
-type ReplaceDataOptions struct {
-	Once             bool
-	OnlyAllowOnStart bool
-}
-
 func ReplaceData[F ReplaceTypes](fileContent, startStr, endStr string, op F, opt ...ReplaceDataOptions) string {
 	once := false
 	startOnIndex0 := false

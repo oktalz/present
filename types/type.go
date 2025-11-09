@@ -63,27 +63,31 @@ type Slide struct {
 	LinkNext                string
 	LinkPrev                string
 	Title                   string
+	HasAudioSrc             string
 	TerminalCommandBefore   []TerminalCommand
 	TerminalCommand         []TerminalCommand
 	TerminalCommandAfter    []TerminalCommand
 
-	SlideCmdBefore  []TerminalCommand
-	SlideCmdAfter   []TerminalCommand
-	Terminal        TerminalCommand
-	PageIndex       int
-	PagePrint       int
-	IsAdmin         bool
-	UseTmpFolder    bool
-	CanEdit         bool
-	HasCast         bool
-	HasCastStreamed bool
-	HasRun          bool
-	HasTerminal     bool
-	HideRunButton   bool
-	PrintOnly       bool
-	PrintDisable    bool
-	HidePageNumber  bool
-	EnableOverflow  bool
+	SlideCmdBefore        []TerminalCommand
+	SlideCmdAfter         []TerminalCommand
+	Terminal              TerminalCommand
+	PageIndex             int
+	PagePrint             int
+	IsAdmin               bool
+	UseTmpFolder          bool
+	CanEdit               bool
+	HasCast               bool
+	HasCastStreamed       bool
+	HasAudio              bool
+	HasAudioAutoPlay      bool
+	HasAudioOnEndNextpage bool
+	HasRun                bool
+	HasTerminal           bool
+	HideRunButton         bool
+	PrintOnly             bool
+	PrintDisable          bool
+	HidePageNumber        bool
+	EnableOverflow        bool
 }
 
 type Menu struct {

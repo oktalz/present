@@ -1,4 +1,8 @@
 var page = /^#?\d+$/.test(window.location.hash) ? parseInt(window.location.hash.slice(1), 10) : 0;
+var previousPage = -100;
+const pagesWithAutoPlayAudio = new Map();
+const pagesWithAutoPlayAudioPlayed = new Map();
+
 if (window.self !== window.top) {
   topPage = /^#?\d+$/.test(window.top.location.hash) ? parseInt(window.top.location.hash.slice(1), 10) : 0;
   page = topPage
@@ -53,6 +57,12 @@ function setPage(newPage) {
   document.querySelectorAll('.menu-selected').forEach(el => {
     el.classList.remove('menu-selected');
   });
+  if (previousPage != newPage && newPage > -1) {
+    pauseAudio(previousPage)
+    playAudioIfPaused(newPage, pagesWithAutoPlayAudio.get("audio-page-"+newPage))
+  }
+
+  previousPage = page
   page = newPage
   if (page < 0) {
     page = 0;
@@ -394,3 +404,80 @@ function triggerBlockRun(id) {
   //document.getElementById(id).click();
   castTerminal(id-1)
 }
+
+function playAudioIfPaused(id, force) {
+  const audio = document.getElementById('audio-page-' + id);
+  if (!audio) {
+    return
+  }
+  if (pagesWithAutoPlayAudioPlayed.get("audio-page-"+id)){
+    return
+  }
+  if (audio.currentTime > 0 || force) {
+    if (force){
+      setTimeout(() => {
+        playAudio(id, false);
+      }, 1500);
+    } else {
+      pauseAudio(id);
+    }
+  }
+}
+
+function playAudio(id, user) {
+  const audio = document.getElementById('audio-page-' + id);
+  if (!audio) {
+    return
+  }
+  if (pagesWithAutoPlayAudioPlayed.get("audio-page-"+id) && !user){
+    return
+  }
+  if (user) {
+    pagesWithAutoPlayAudioPlayed.set("audio-page-"+id, false)
+  } else {
+    pagesWithAutoPlayAudioPlayed.set("audio-page-"+id, true)
+  }
+
+  const playBtn = document.getElementById('audio-play-' + id);
+  const pauseBtn = document.getElementById('audio-pause-' + id)
+  playBtn.style.display = 'none';
+  pauseBtn.style.display = 'inline';
+
+  audio.play().catch(error => {
+    console.log('ERROR: User interaction required first to play audio.');
+  })
+}
+
+function pauseAudio(id) {
+  const audio = document.getElementById('audio-page-' + id);
+  if (!audio) {
+    return
+  }
+  const playBtn = document.getElementById('audio-play-' + id);
+  const pauseBtn = document.getElementById('audio-pause-' + id)
+
+  audio.pause();
+  pauseBtn.style.display = 'none';
+  playBtn.style.display = 'inline';
+  console.log(id)
+  console.log(audio.currentTime)
+}
+
+function resetAudio(id) {
+  const audio = document.getElementById('audio-page-' + id)
+  if (!audio) {
+    return
+  }
+  const playBtn = document.getElementById('audio-play-' + id)
+  const pauseBtn = document.getElementById('audio-pause-' + id)
+  audio.pause()
+  audio.currentTime = 0
+  pauseBtn.style.display = 'none'
+  playBtn.style.display = 'inline'
+}
+
+  // Optional: reset buttons when audio ends, this needs improvement
+  // audio.addEventListener('ended', () => {
+  //   pauseBtn.style.display = 'none';
+  //   playBtn.style.display = 'inline';
+  // });

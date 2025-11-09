@@ -12,6 +12,7 @@ import (
 	configuration "github.com/oktalz/present/config"
 	"github.com/oktalz/present/markdown"
 	"github.com/oktalz/present/parsing"
+	"github.com/oktalz/present/ptr"
 	"github.com/oktalz/present/types"
 )
 
@@ -122,6 +123,30 @@ func ReadFiles(filesWatcher chan string) types.Presentation {
 				}
 			}
 		}
+
+		parsing.ReplaceDataPtr(&slide.Page.Data.Markdown,
+			parsing.ReplaceDataOptionsPtr[func(data string)]{
+				StartStr: ptr.New(".slide.audio.src{"),
+				EndStr:   ptr.New("}"),
+				Op: func(data string) {
+					slide.HasAudio = true
+					slide.HasAudioSrc = data
+				},
+			})
+		parsing.ReplaceDataPtr(&slide.Page.Data.Markdown,
+			parsing.ReplaceDataOptionsPtr[func()]{
+				Pattern: ptr.New(".slide.audio.autoplay"),
+				Op: func() {
+					slide.HasAudioAutoPlay = true
+				},
+			})
+		parsing.ReplaceDataPtr(&slide.Page.Data.Markdown,
+			parsing.ReplaceDataOptionsPtr[func()]{
+				Pattern: ptr.New(".slide.audio.on.end.next-page"),
+				Op: func() {
+					slide.HasAudioOnEndNextpage = true
+				},
+			})
 
 		markdownData := slide.Page.Data.Markdown
 		start, _, data, _, _ := parsing.FindDataWithCode(markdownData, ".api.endpoint", "\n")
