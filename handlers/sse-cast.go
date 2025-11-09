@@ -7,7 +7,6 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
-	"strconv"
 	"strings"
 	"time"
 
@@ -91,9 +90,8 @@ func CastSSE(config configuration.Config) http.Handler { //revive:disable:functi
 			terminalCommand = []types.TerminalCommand{terminalCommand[*payload.Block]}
 		}
 		workingDir := slide.Path
-		if workingDir == "" {
-			workingDir = os.TempDir() + "/present-" + strconv.FormatInt(time.Now().UnixNano(), 10)
-			err = os.MkdirAll(workingDir, 0o755)
+		if workingDir == "" || strings.HasPrefix(workingDir, "mkdir{") || strings.HasPrefix(workingDir, "{") {
+			workingDir, err = GetWorkingTmpDir(workingDir)
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 				return
