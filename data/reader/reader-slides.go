@@ -115,13 +115,13 @@ func ReadFiles(filesWatcher chan string) types.Presentation {
 			// from index + 1 to end is pathToDir
 			pathToDir := data[end+1:]
 			properPath := ""
-			if strings.HasPrefix(pathToDir, ".path(") {
-				pathToDir = strings.TrimPrefix(pathToDir, ".path(")
+			if after, ok := strings.CutPrefix(pathToDir, ".path("); ok {
+				pathToDir = after
 				pathToDir = strings.TrimSuffix(pathToDir, ")")
 				properPath = pathToDir
 			}
-			if strings.HasPrefix(pathToDir, ".path{") {
-				pathToDir = strings.TrimPrefix(pathToDir, ".path{")
+			if after, ok := strings.CutPrefix(pathToDir, ".path{"); ok {
+				pathToDir = after
 				pathToDir = strings.TrimSuffix(pathToDir, "}")
 				properPath = pathToDir
 			}
@@ -160,13 +160,13 @@ func ReadFiles(filesWatcher chan string) types.Presentation {
 			// from index + 1 to end is pathToDir
 			pathToDir := data[end+1:]
 			properPath := ""
-			if strings.HasPrefix(pathToDir, ".path(") {
-				pathToDir = strings.TrimPrefix(pathToDir, ".path(")
+			if after, ok := strings.CutPrefix(pathToDir, ".path("); ok {
+				pathToDir = after
 				pathToDir = strings.TrimSuffix(pathToDir, ")")
 				properPath = pathToDir
 			}
-			if strings.HasPrefix(pathToDir, ".path{") {
-				pathToDir = strings.TrimPrefix(pathToDir, ".path{")
+			if after, ok := strings.CutPrefix(pathToDir, ".path{"); ok {
+				pathToDir = after
 				pathToDir = strings.TrimSuffix(pathToDir, "}")
 				properPath = pathToDir
 			}
