@@ -5,6 +5,7 @@ import (
 	"log"
 	"maps"
 	"os"
+	"path"
 	"slices"
 	"strings"
 
@@ -12,6 +13,9 @@ import (
 	configuration "github.com/oktalz/present/config"
 	"github.com/oktalz/present/markdown"
 	"github.com/oktalz/present/parsing"
+	"github.com/oktalz/present/parsing/download"
+	"github.com/oktalz/present/parsing/execution"
+	"github.com/oktalz/present/parsing/tmp"
 	"github.com/oktalz/present/ptr"
 	"github.com/oktalz/present/types"
 )
@@ -96,6 +100,108 @@ func ReadFiles(filesWatcher chan string) types.Presentation {
 		if defaultBackend != "" {
 			slide.BackgroundImage = defaultBackend
 		}
+
+		markdownData := slide.Page.Data.Markdown
+		start, _, data, _, _ := parsing.FindDataWithCode(markdownData, ".execute(", "\n")
+		for start != -1 {
+			// .execute(git clone xyz).path({web-data})
+			// we need to extract url and path
+			end := strings.Index(data, ")")
+			if end == -1 {
+				break
+			}
+			// from start of data to index is cmd
+			cmd := data[:end]
+			// from index + 1 to end is pathToDir
+			pathToDir := data[end+1:]
+			properPath := ""
+			if strings.HasPrefix(pathToDir, ".path(") {
+				pathToDir = strings.TrimPrefix(pathToDir, ".path(")
+				pathToDir = strings.TrimSuffix(pathToDir, ")")
+				properPath = pathToDir
+			}
+			if strings.HasPrefix(pathToDir, ".path{") {
+				pathToDir = strings.TrimPrefix(pathToDir, ".path{")
+				pathToDir = strings.TrimSuffix(pathToDir, "}")
+				properPath = pathToDir
+			}
+			if properPath != "" {
+				// check if its temp dir, tmp dir is marked as {my-id}
+				if strings.HasPrefix(properPath, "{") && strings.HasSuffix(properPath, "}") {
+					dir, err := tmp.GetWorkingTmpDir(properPath, true)
+					if err != nil {
+						log.Println(err)
+						break
+					}
+					// we have dir, we have cmd, now execute that cmd in that dir
+					// run it only once per life of application
+					_ = execution.RunOnce(dir, cmd)
+				} else {
+					_ = execution.RunOnce(properPath, cmd)
+				}
+			}
+
+			markdownData = strings.Replace(markdownData, ".execute("+data+"\n", "", 1)
+			slide.Page.Data.Markdown = strings.Replace(slide.Page.Data.Markdown, ".execute("+data+"\n", "", 1)
+			start, _, data, _, _ = parsing.FindDataWithCode(markdownData, ".execute(", "\n")
+		}
+
+		markdownData = slide.Page.Data.Markdown
+		start, _, data, _, _ = parsing.FindDataWithCode(markdownData, ".download(", "\n")
+		for start != -1 {
+			// .download(https://some.url/some.file).path({web-data})
+			// we need to extract url and path
+			end := strings.Index(data, ")")
+			if end == -1 {
+				break
+			}
+			// from start of data to index is url
+			url := data[:end]
+			// from index + 1 to end is pathToDir
+			pathToDir := data[end+1:]
+			properPath := ""
+			if strings.HasPrefix(pathToDir, ".path(") {
+				pathToDir = strings.TrimPrefix(pathToDir, ".path(")
+				pathToDir = strings.TrimSuffix(pathToDir, ")")
+				properPath = pathToDir
+			}
+			if strings.HasPrefix(pathToDir, ".path{") {
+				pathToDir = strings.TrimPrefix(pathToDir, ".path{")
+				pathToDir = strings.TrimSuffix(pathToDir, "}")
+				properPath = pathToDir
+			}
+			if properPath != "" {
+				fileData := download.DownloadFromURL(url)
+				fileName := path.Base(url)
+				// check if its temp dir, tmp dir is marked as {my-id}
+				if strings.HasPrefix(properPath, "{") && strings.HasSuffix(properPath, "}") {
+					dir, err := tmp.GetWorkingTmpDir(properPath, true)
+					if err != nil {
+						log.Println(err)
+						break
+					}
+					if fileName != "" {
+						fileName := path.Join(dir, fileName)
+						err = os.WriteFile(fileName, []byte(fileData), 0o644)
+						if err != nil {
+							log.Println(err)
+						}
+					}
+				} else {
+					if fileName != "" {
+						fileName := path.Join(properPath, fileName)
+						err = os.WriteFile(fileName, []byte(fileData), 0o644)
+						if err != nil {
+							log.Println(err)
+						}
+					}
+				}
+			}
+
+			markdownData = strings.Replace(markdownData, ".download("+data+"\n", "", 1)
+			slide.Page.Data.Markdown = strings.Replace(slide.Page.Data.Markdown, ".download("+data+"\n", "", 1)
+			start, _, data, _, _ = parsing.FindDataWithCode(markdownData, ".download(", "\n")
+		}
 		hasDefaultBackground := strings.Contains(slide.Page.Data.Markdown, ".global.background(")
 		if hasDefaultBackground {
 			lines := strings.SplitSeq(slide.Page.Data.Markdown, "\n")
@@ -148,8 +254,8 @@ func ReadFiles(filesWatcher chan string) types.Presentation {
 				},
 			})
 
-		markdownData := slide.Page.Data.Markdown
-		start, _, data, _, _ := parsing.FindDataWithCode(markdownData, ".api.endpoint", "\n")
+		markdownData = slide.Page.Data.Markdown
+		start, _, data, _, _ = parsing.FindDataWithCode(markdownData, ".api.endpoint", "\n")
 		for start != -1 {
 			pc := parsing.ParseCast(".endpoint"+data, "")
 			if pc.Cmd[0].Dir == "" {

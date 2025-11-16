@@ -1,4 +1,4 @@
-package handlers
+package tmp
 
 import (
 	"errors"
@@ -15,10 +15,10 @@ var (
 	tmpDirsMutex = &sync.Mutex{}
 )
 
-func GetWorkingTmpDir(workingDir string) (string, error) {
+func GetWorkingTmpDir(workingDir string, createIfNotExists bool) (string, error) {
 	tmpDirsMutex.Lock()
 	defer tmpDirsMutex.Unlock()
-	createAFixedTmpDIr := false
+	createAFixedTmpDIr := createIfNotExists
 	additionalDir := ""
 	if strings.HasPrefix(workingDir, "mkdir{") {
 		createAFixedTmpDIr = true
@@ -42,7 +42,9 @@ func GetWorkingTmpDir(workingDir string) (string, error) {
 		if ok {
 			return path.Join(tmpDir, additionalDir), nil
 		}
-		return "", errors.New("tmp dir " + workingDir + " not found")
+		if !createAFixedTmpDIr {
+			return "", errors.New("tmp dir " + workingDir + " not found")
+		}
 	}
 
 	tmpDir := os.TempDir() + "/present-" + strconv.FormatInt(time.Now().UnixNano(), 10)

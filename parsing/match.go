@@ -8,6 +8,8 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/oktalz/present/parsing/download"
+	"github.com/oktalz/present/parsing/tmp"
 	"github.com/oktalz/present/types"
 )
 
@@ -190,6 +192,7 @@ func ParseCast(cast, code string) ParseResult { //revive:disable:function-length
 	// + .id(my-id)
 	// + .js(findPODid())
 	// + .endpoint(my-endpoint)
+	// + .source(filename)
 	// + .env(MYVAR=value) (every run command reset it)
 	result := ParseResult{
 		Before:             []types.TerminalCommand{},
@@ -268,7 +271,12 @@ func ParseCast(cast, code string) ParseResult { //revive:disable:function-length
 			break
 		}
 		if content != "" {
-			result.Path = content
+			if strings.HasPrefix(content, "{") {
+				dir, _ := tmp.GetWorkingTmpDir(content, true)
+				result.Path = dir
+			} else {
+				result.Path = content
+			}
 		}
 		data = data[end+1:]
 	}
@@ -286,6 +294,29 @@ func ParseCast(cast, code string) ParseResult { //revive:disable:function-length
 		data = data[end+1:]
 	}
 
+	data = cast
+	for {
+		start, end, content = FindDataWithAlternative(data,
+			NewShortPattern(".url(", ")"), NewShortPattern(".url{", "}"))
+		if start == -1 {
+			break
+		}
+
+		if lang == "" {
+			if slices.Contains([]string{"go.mod", "go.sum"}, content) {
+				// known exceptions
+				lang = "go"
+			} else {
+				// extract extension from content
+				lang = path.Ext(content)
+				lang = strings.TrimPrefix(lang, ".")
+			}
+		}
+
+		// content contains url, so we need to download it
+		code = download.DownloadFromURL(content)
+		data = data[end+1:]
+	}
 	data = cast
 	for {
 		start, end, content = FindDataWithAlternative(data,

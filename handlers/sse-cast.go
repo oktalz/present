@@ -13,6 +13,7 @@ import (
 	configuration "github.com/oktalz/present/config"
 	"github.com/oktalz/present/data"
 	"github.com/oktalz/present/exec"
+	"github.com/oktalz/present/parsing/tmp"
 	"github.com/oktalz/present/types"
 )
 
@@ -91,7 +92,7 @@ func CastSSE(config configuration.Config) http.Handler { //revive:disable:functi
 		}
 		workingDir := slide.Path
 		if workingDir == "" || strings.HasPrefix(workingDir, "mkdir{") || strings.HasPrefix(workingDir, "{") {
-			workingDir, err = GetWorkingTmpDir(workingDir)
+			workingDir, err = tmp.GetWorkingTmpDir(workingDir, false)
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 				return
