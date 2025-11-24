@@ -17,6 +17,13 @@
 .cast.stream.edit.show{0:1000}.path(/path/to/code).save(filename).run(cmd).before(cmd).after(cmd)
 .cast.stream.edit.show{0:1000}.path(dir).save(main.go).run(go run .).before(go mod init x).after()
 
+.// .path(mkdir{my-presentation}) will create a new directory with my-presentation ID
+.cast.stream.edit.save(install1.sh).run(sh install1.sh).path(mkdir{my-presentation})
+.// .path({my-presentation}) will use previously created directory with my-presentation ID
+.cast.stream.edit.save(install1.sh).run(sh install1.sh).path({hug-presentation})
+.// .path({my-presentation}/subdir) it is possible to reference a subdirectory in ID referenced folder
+.cast.stream.edit.save(install1.sh).run(sh install1.sh).path({hug-presentation}/subdir)
+
 .// index needs to be a number (starting from index 1)
 .run{index}(md-data)
 .run{1}(md-data)

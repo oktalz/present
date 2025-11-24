@@ -25,6 +25,11 @@
 markdown
 .center.end
 
+.// center data with display: flex; (sometimes useful)
+.center.flex
+markdown
+.center.end
+
 .// apply HTML style to markdown data
 .{"font-size: 4svh"}(markdown)
 .div{"font-size: 4svh"}(markdown)
