@@ -15,11 +15,11 @@ import (
 func IFrame(config configuration.Config) http.Handler { //revive:disable:function-length,cognitive-complexity
 	eTagFrame := ""
 	var mu sync.RWMutex
-	pageResult := page
+	pageResult := framePage
 	aspectRatioChange := func() {
 		mu.Lock()
 		defer mu.Unlock()
-		pageResult = page
+		pageResult = framePage
 		pageResult = strings.Replace(pageResult,
 			"widthRatioMin = 16", "widthRatioMin = "+strconv.Itoa(config.AspectRatio.Min.Width)+" // custom", 1)
 		pageResult = strings.Replace(pageResult,
@@ -100,4 +100,4 @@ func IFrame(config configuration.Config) http.Handler { //revive:disable:functio
 }
 
 //go:embed frame.html
-var page string
+var framePage string

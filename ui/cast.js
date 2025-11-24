@@ -1,5 +1,5 @@
 function castTerminal(block){
-    pageNum = page
+    pageNum = currentPage
 
     const slideElement = document.getElementById('slide-'+pageNum);
     const terminalElement = document.getElementById('terminal-'+pageNum);

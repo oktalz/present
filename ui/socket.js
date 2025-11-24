@@ -29,7 +29,7 @@ function startSSESession() {
               }
               console.log("myID",myID,admin)
             }
-            if (data.Slide != page){
+            if (data.Slide != currentPage){
               setPage(data.Slide)
             }
           }

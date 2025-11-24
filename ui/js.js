@@ -1,13 +1,13 @@
-var page = /^#?\d+$/.test(window.location.hash) ? parseInt(window.location.hash.slice(1), 10) : 0;
+var currentPage = /^#?\d+$/.test(window.location.hash) ? parseInt(window.location.hash.slice(1), 10) : 0;
 var previousPage = -100;
 const pagesWithAutoPlayAudio = new Map();
 const pagesWithAutoPlayAudioPlayed = new Map();
 
 if (window.self !== window.top) {
   topPage = /^#?\d+$/.test(window.top.location.hash) ? parseInt(window.top.location.hash.slice(1), 10) : 0;
-  page = topPage
+  currentPage = topPage
 }
-setPage(page);
+setPage(currentPage);
 // window.addEventListener('hashchange', () => {
 //   console.log('Hash changed (print):', window.location.hash);
 // }, false);
@@ -19,11 +19,11 @@ var showOptions = false
 function setSpinner(value){
     spinner = value
     if (value) {
-        document.getElementById("run-"+page+"-refresh").classList.remove("closed")
-        document.getElementById("run-"+page+"").classList.add("closed")
+        document.getElementById("run-"+currentPage+"-refresh").classList.remove("closed")
+        document.getElementById("run-"+currentPage+"").classList.add("closed")
     } else {
-        document.getElementById("run-"+page+"-refresh").classList.add("closed")
-        document.getElementById("run-"+page+"").classList.remove("closed")
+        document.getElementById("run-"+currentPage+"-refresh").classList.add("closed")
+        document.getElementById("run-"+currentPage+"").classList.remove("closed")
     }
 }
 
@@ -32,7 +32,6 @@ function getSlideElements() {
 }
 
 function setPageWithUpdate(newPage) {
-  oldPage = page;
   setPage(newPage);
   updateData({
     Author: myID,
@@ -62,21 +61,21 @@ function setPage(newPage) {
     playAudioIfPaused(newPage, pagesWithAutoPlayAudio.get("audio-page-"+newPage))
   }
 
-  previousPage = page
-  page = newPage
-  if (page < 0) {
-    page = 0;
+  previousPage = currentPage
+  currentPage = newPage
+  if (currentPage < 0) {
+    currentPage = 0;
   }
-  if (page > maxPage) {
-    page = maxPage
+  if (currentPage > maxPage) {
+    currentPage = maxPage
   }
   //set class menu-selected to element that has id menu+page
-  menu = document.getElementById('menu-'+page)
+  menu = document.getElementById('menu-'+currentPage)
   if (menu != null) {
     menu.classList.add('menu-selected')
   }
-  window.location.hash = page.toString();
-  updateSlideVisibility(page);
+  window.location.hash = currentPage.toString();
+  updateSlideVisibility();
   menu = document.getElementById('menu')
   if (menu != null) {
     menu.classList.add('menu-hidden')
@@ -94,9 +93,9 @@ function setPage(newPage) {
   }
 }
 
-function updateSlideVisibility(page) {
+function updateSlideVisibility() {
   getSlideElements().forEach(function(slide) {
-    if (parseInt(slide.id.slice(6)) == page) {
+    if (parseInt(slide.id.slice(6)) == currentPage) {
       slide.classList.remove('hidden');
       slide.classList.add('visible');
     } else {
@@ -107,8 +106,8 @@ function updateSlideVisibility(page) {
 }
 
 function closeTerminal(){
-  const terminalElement = document.getElementById('terminal-'+page);
-  const terminalElementX = document.getElementById('terminalx-'+page);
+  const terminalElement = document.getElementById('terminal-'+currentPage);
+  const terminalElementX = document.getElementById('terminalx-'+currentPage);
   terminalElement.innerHTML = ''
   terminalElement.classList.add('closed');
   terminalElementX.classList.add('closed');
@@ -126,23 +125,23 @@ document.addEventListener('keydown', function(e) {
     }
   }
   if (nextPageKeys.includes(keyCode)) {
-    oldPage = page;
-    page = page + 1;
-    target = getPageUp(oldPage,page);
+    oldPage = currentPage;
+    newPage = currentPage + 1;
+    target = getPageUp(oldPage,newPage);
     setPage(target);
     updateData({
       Author: myID,
-      Slide: page
+      Slide: currentPage
     })
   }
   if (previousPageKeys.includes(keyCode)) {
-    oldPage = page;
-    page = page - 1;
-    target = getPageDown(oldPage,page);
+    oldPage = currentPage;
+    newPage = currentPage - 1;
+    target = getPageDown(oldPage,newPage);
     setPage(target);
     updateData({
       Author: myID,
-      Slide: page
+      Slide: currentPage
     })
   }
   if (terminalCast.includes(keyCode)) {
@@ -156,7 +155,7 @@ document.addEventListener('keydown', function(e) {
     if (showMenu) {
       document.getElementById('menu').classList.remove('menu-hidden');
       let targetElement = null
-      let index = page
+      let index = currentPage
       while (targetElement == null && index < maxPage) {
         targetElement = document.getElementById(`menu-`+index);
         if (targetElement) {
@@ -213,23 +212,23 @@ window.addEventListener('wheel', function(event) {
   const scrollDirection = event.deltaY > 0 ? 'downward' : 'upward';
   //console.log(`Mouse scroll ${scrollDirection}: ${Math.abs(event.deltaY)} pixels`);
   if (scrollDirection == 'downward') {
-      oldPage = page;
-      page = page + 1;
-      target = getPageUp(oldPage,page);
+      oldPage = currentPage;
+      newPage = currentPage + 1;
+      target = getPageUp(oldPage,newPage);
       setPage(target);
       updateData({
         Author: myID,
-        Slide: page
+        Slide: currentPage
       })
   }
   if (scrollDirection == 'upward') {
-      oldPage = page;
-      page = page - 1;
-      target = getPageDown(oldPage,page);
+      oldPage = currentPage;
+      newPage = currentPage - 1;
+      target = getPageDown(oldPage,newPage);
       setPage(target);
       updateData({
         Author: myID,
-        Slide: page
+        Slide: currentPage
       })
   }
 }, true);
@@ -244,7 +243,7 @@ window.addEventListener("popstate", function(e) {
       hash = hash.slice(1);
       if (/^\d+$/.test(hash)) {
         newPage = parseInt(hash, 10);
-        if (page != newPage) {
+        if (currentPage != newPage) {
           setPage(newPage);
         }
       }
@@ -279,24 +278,24 @@ document.addEventListener('touchend', function (event) {
   }
 
   if (endX > touchX) {
-    oldPage = page;
-    page = page - 1;
-    target = getPageDown(oldPage,page);
+    oldPage = currentPage;
+    newPage = currentPage - 1;
+    target = getPageDown(oldPage,newPage);
     setPage(target);
     updateData({
       Author: myID,
-      Slide: page
+      Slide: currentPage
     })
   }
 
   if (endX < touchX) {
-    oldPage = page;
-    page = page + 1;
-    target = getPageUp(oldPage,page);
+    oldPage = currentPage;
+    newPage = currentPage + 1;
+    target = getPageUp(oldPage,newPage);
     setPage(target);
     updateData({
       Author: myID,
-      Slide: page
+      Slide: currentPage
     })
   }
 }, false);
@@ -313,7 +312,7 @@ document.addEventListener('click', function(event) {
 
 function tabChangeGlobal(tabID){
   console.log(tabID)
-  let pageDIV = document.getElementById("slide-"+page);
+  let pageDIV = document.getElementById("slide-"+currentPage);
   let tablinks = Array.from(pageDIV.querySelectorAll(".tablinks"));
   console.log(tablinks)
   for (let i = 0; i < tablinks.length; i++) {

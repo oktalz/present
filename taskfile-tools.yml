@@ -5,7 +5,7 @@ vars:
   YQ_URL: github.com/mikefarah/yq/v4
 
   BETTERALIGN_NAME: betteralign
-  BETTERALIGN_VERSION: v0.8.0
+  BETTERALIGN_VERSION: v0.8.1
   BETTERALIGN_URL: github.com/dkorunic/betteralign/cmd/betteralign
 
   STATICCHECK_NAME: staticcheck
@@ -13,8 +13,8 @@ vars:
   STATICCHECK_URL: honnef.co/go/tools/cmd/staticcheck
 
   GO_LICENSES_NAME: go-licenses
-  GO_LICENSES_VERSION: v1.6.0
-  GO_LICENSES_URL: github.com/google/go-licenses
+  GO_LICENSES_VERSION: v2.0.1
+  GO_LICENSES_URL: github.com/google/go-licenses/v2
 
   GOVULNCHECK_NAME: govulncheck
   GOVULNCHECK_VERSION: v1.1.4
@@ -25,7 +25,7 @@ vars:
   GOFUMPT_URL: mvdan.cc/gofumpt
 
   REVIVE_NAME: revive
-  REVIVE_VERSION: v1.12.0
+  REVIVE_VERSION: v1.13.0
   REVIVE_URL: github.com/mgechev/revive
 
   GOTESTSUM_NAME: gotestsum

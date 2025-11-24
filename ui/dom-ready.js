@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function() {
-  setPage(page);
+  setPage(currentPage);
   document.querySelectorAll('pre code.code-edit').forEach(function(codeElement) {
     codeElement.contentEditable = "true";
     codeElement.spellcheck = false;

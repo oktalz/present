@@ -72,7 +72,7 @@
 onPageChange = function() {
     {{- range .Slides -}}
       {{if ne .JS ""}}
-      if (page == {{.PageIndex}}){
+      if (currentPage == {{.PageIndex}}){
         {{ .JS }}
       }
       {{end}}
@@ -98,14 +98,14 @@ onPageChange = function() {
         audioElm{{.PageIndex}}.addEventListener('ended', () => {
           resetAudio({{.PageIndex}})
           {{- if .HasAudioAutoPlay }}
-          oldPage = page;
-          page = page + 1;
-          target = getPageUp(oldPage,page);
+          oldPage = currentPage;
+          newPage = currentPage + 1;
+          target = getPageUp(oldPage,newPage);
           setTimeout(() => {
             setPage(target);
             updateData({
               Author: myID,
-              Slide: page
+              Slide: currentPage
             })
           }, 1500);
           {{- end }}
