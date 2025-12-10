@@ -5,7 +5,7 @@ vars:
   YQ_URL: github.com/mikefarah/yq/v4
 
   BETTERALIGN_NAME: betteralign
-  BETTERALIGN_VERSION: v0.8.1
+  BETTERALIGN_VERSION: v0.8.2
   BETTERALIGN_URL: github.com/dkorunic/betteralign/cmd/betteralign
 
   STATICCHECK_NAME: staticcheck

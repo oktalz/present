@@ -1,4 +1,4 @@
-package hash
+package hash //revive:disable:var-naming
 
 import (
 	"golang.org/x/crypto/bcrypt"
