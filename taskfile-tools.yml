@@ -5,7 +5,7 @@ vars:
   YQ_URL: github.com/mikefarah/yq/v4
 
   BETTERALIGN_NAME: betteralign
-  BETTERALIGN_VERSION: v0.8.2
+  BETTERALIGN_VERSION: v0.8.4
   BETTERALIGN_URL: github.com/dkorunic/betteralign/cmd/betteralign
 
   STATICCHECK_NAME: staticcheck
@@ -25,7 +25,7 @@ vars:
   GOFUMPT_URL: mvdan.cc/gofumpt
 
   REVIVE_NAME: revive
-  REVIVE_VERSION: v1.13.0
+  REVIVE_VERSION: v1.14.0
   REVIVE_URL: github.com/mgechev/revive
 
   GOTESTSUM_NAME: gotestsum

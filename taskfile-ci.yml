@@ -15,7 +15,7 @@ tasks:
         vars:
           TOOLS: [GOFUMPT, BETTERALIGN]
     cmds:
-      - go run golang.org/x/tools/gopls/internal/analysis/modernize/cmd/modernize@latest -fix -test ./...
+      - go fix ./...
       - /{{.TMP}}/betteralign/{{.BETTERALIGN_VERSION}}/betteralign -apply ./... || true
       - /{{.TMP}}/gofumpt/{{.GOFUMPT_VERSION}}/gofumpt -extra -l -w .
 

@@ -89,7 +89,7 @@ func Init(server Server, config *configuration.Config) {
 	var wg sync.WaitGroup
 	wg.Add(1)
 
-	go func() {
+	wg.Go(func() {
 		for range filesModified {
 			muPresentation.Lock()
 			presentation = reader.ReadFiles(extraFiles)
@@ -200,10 +200,9 @@ func Init(server Server, config *configuration.Config) {
 			muPresentation.Unlock()
 			if firstRun {
 				firstRun = false
-				wg.Done()
 			}
 		}
-	}()
+	})
 
 	wg.Wait()
 }

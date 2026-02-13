@@ -16,7 +16,6 @@ import (
 	"github.com/oktalz/present/parsing/download"
 	"github.com/oktalz/present/parsing/execution"
 	"github.com/oktalz/present/parsing/tmp"
-	"github.com/oktalz/present/ptr"
 	"github.com/oktalz/present/types"
 )
 
@@ -232,8 +231,8 @@ func ReadFiles(filesWatcher chan string) types.Presentation {
 
 		parsing.ReplaceDataPtr(&slide.Page.Data.Markdown,
 			parsing.ReplaceDataOptionsPtr[func(data string)]{
-				StartStr: ptr.New(".slide.audio.src{"),
-				EndStr:   ptr.New("}"),
+				StartStr: new(".slide.audio.src{"),
+				EndStr:   new("}"),
 				Op: func(data string) {
 					slide.HasAudio = true
 					slide.HasAudioSrc = data
@@ -241,14 +240,14 @@ func ReadFiles(filesWatcher chan string) types.Presentation {
 			})
 		parsing.ReplaceDataPtr(&slide.Page.Data.Markdown,
 			parsing.ReplaceDataOptionsPtr[func()]{
-				Pattern: ptr.New(".slide.audio.autoplay"),
+				Pattern: new(".slide.audio.autoplay"),
 				Op: func() {
 					slide.HasAudioAutoPlay = true
 				},
 			})
 		parsing.ReplaceDataPtr(&slide.Page.Data.Markdown,
 			parsing.ReplaceDataOptionsPtr[func()]{
-				Pattern: ptr.New(".slide.audio.on.end.next-page"),
+				Pattern: new(".slide.audio.on.end.next-page"),
 				Op: func() {
 					slide.HasAudioOnEndNextpage = true
 				},

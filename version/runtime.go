@@ -1,4 +1,4 @@
-package version
+package version //revive:disable-line:var-naming
 
 import (
 	"errors"

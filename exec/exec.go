@@ -1,4 +1,4 @@
-package exec
+package exec //revive:disable-line:var-naming
 
 import (
 	"bufio"
@@ -131,9 +131,8 @@ func cmdStreamWS(tc types.TerminalCommand, ch chan string, timeout time.Duration
 	}
 
 	var wg sync.WaitGroup
-	wg.Add(2)
 
-	go func() {
+	wg.Go(func() {
 		scannerOut := bufio.NewScanner(stdout)
 		// scannerOut.Split(bufio.ScanLines)
 		for scannerOut.Scan() {
@@ -146,16 +145,14 @@ func cmdStreamWS(tc types.TerminalCommand, ch chan string, timeout time.Duration
 			// fmt.Println(scannerOut.Text())
 			log.Println(txt)
 		}
-		wg.Done()
-	}()
-	go func() {
+	})
+	wg.Go(func() {
 		scannerErr := bufio.NewScanner(stderr)
 		for scannerErr.Scan() {
 			ch <- scannerErr.Text()
 			log.Println(scannerErr.Text())
 		}
-		wg.Done()
-	}()
+	})
 
 	wg.Wait()
 

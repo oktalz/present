@@ -94,11 +94,11 @@ func FindDataWithCode(fileContent, startStr, endStr string) (start, end int, res
 	}
 	start += len(startStr)
 	content := fileContent[start:]
-	index := strings.Index(content, endStr)
-	if index == -1 {
+	before, _, ok := strings.Cut(content, endStr)
+	if !ok {
 		return -1, -1, "", "", ""
 	}
-	result = content[:index]
+	result = before
 	// now we need to check if the startStr occures before the endStr
 	count := strings.Count(result, startStr)
 	if count > 0 {
@@ -503,8 +503,8 @@ func ParseCommand(command string) types.TerminalCommand {
 }
 
 func splitCode(code string, result *ParseResult, tc *types.TerminalCommand) {
-	var header string
-	var footer string
+	var header strings.Builder
+	var footer strings.Builder
 	codeLines := strings.Split(code, "\n")
 	code = ""
 	if result.CodeBlockShowStart > len(codeLines) {
@@ -514,14 +514,14 @@ func splitCode(code string, result *ParseResult, tc *types.TerminalCommand) {
 		result.CodeBlockShowEnd = len(codeLines)
 	}
 	for i := range result.CodeBlockShowStart {
-		header += codeLines[i] + "\n"
+		header.WriteString(codeLines[i] + "\n")
 	}
 	until := min(result.CodeBlockShowEnd, len(codeLines))
 	for i := result.CodeBlockShowStart; i < until; i++ {
 		code += codeLines[i] + "\n"
 	}
 	for i := result.CodeBlockShowEnd; i < len(codeLines); i++ {
-		footer += codeLines[i] + "\n"
+		footer.WriteString(codeLines[i] + "\n")
 	}
 	// for {
 	// 	if strings.HasSuffix(code, "\n") {
@@ -542,9 +542,9 @@ func splitCode(code string, result *ParseResult, tc *types.TerminalCommand) {
 		}
 	}
 	tc.Code = types.Code{
-		Header: header,
+		Header: header.String(),
 		Code:   code,
-		Footer: footer,
+		Footer: footer.String(),
 	}
 	if tc.Code.Header == "" && tc.Code.Code == "" && tc.Code.Footer == "" {
 		tc.Code.IsEmpty = true

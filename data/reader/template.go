@@ -24,11 +24,11 @@ func applyTemplate(fileContent string, templateData TemplateData) string {
 		}
 		start += len(startStr)
 		content := fileContent[start:]
-		end := strings.Index(content, "\n")
-		if end == -1 {
+		before, _, ok := strings.Cut(content, "\n")
+		if !ok {
 			break
 		}
-		toReplace := content[:end]
+		toReplace := before
 		var data any
 		if strings.HasPrefix(toReplace, "{") { //nolint:gocritic
 			_, end, item := parsing.FindData(toReplace, parsing.NewShortPattern("{", "}"))

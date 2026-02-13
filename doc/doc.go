@@ -1,4 +1,4 @@
-package doc
+package doc //revive:disable-line:var-naming
 
 import (
 	_ "embed"

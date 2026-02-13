@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"net/http"
-	"sort"
+	"slices"
 	"sync"
 	"time"
 
@@ -49,8 +49,8 @@ func APIUsers(config configuration.Config) http.Handler {
 		for _, v := range users {
 			usersSlice = append(usersSlice, v)
 		}
-		sort.Slice(usersSlice, func(i, j int) bool {
-			return usersSlice[i].LoginTime.Before(usersSlice[j].LoginTime)
+		slices.SortFunc(usersSlice, func(a, b User) int {
+			return a.LoginTime.Compare(b.LoginTime)
 		})
 
 		err = json.NewEncoder(w).Encode(usersSlice)

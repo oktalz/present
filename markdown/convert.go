@@ -77,8 +77,8 @@ func Convert(source string) (string, error) {
 		res = strings.TrimPrefix(res, "<p>")
 		res = strings.Replace(res, "</p>", "", 1)
 	}
-	if strings.HasSuffix(res, "</p>") {
-		res = strings.TrimSuffix(res, "</p>")
+	if before, ok := strings.CutSuffix(res, "</p>"); ok {
+		res = before
 		endIndex := strings.LastIndex(res, "<p>")
 		if endIndex != -1 {
 			res = res[:endIndex] + res[endIndex+3:]
@@ -103,7 +103,8 @@ func prepare(md goldmark.Markdown, fileContent string) string {
 	fileContent = processReplace(fileContent, ".tabs", ".tabs.end", func(data string) string {
 		data = strings.TrimPrefix(data, "\n")
 		tabs := strings.Split(data, ".tab")
-		header := `<div class="tab">`
+		var header strings.Builder
+		header.WriteString(`<div class="tab">`)
 		var buff strings.Builder
 		for _, tab := range tabs {
 			if tab == "" {
@@ -127,14 +128,14 @@ func prepare(md goldmark.Markdown, fileContent string) string {
 			tabName = strings.Trim(tabName, "() ")
 			tab = tab[firstNewLine+1:]
 			contentID := CreateCleanMD(prepare(md, tab))
-			header += `<button class="tablinks` + tabActive +
-				`" onclick="tabChangeGlobal('` + tabID + `')" id='tab-` + tabID + `'>` + tabName + `</button>`
+			header.WriteString(`<button class="tablinks` + tabActive +
+				`" onclick="tabChangeGlobal('` + tabID + `')" id='tab-` + tabID + `'>` + tabName + `</button>`)
 			tabContent := `<div class="tabcontent` + class + `" id="` + tabID + `">` + contentID.String() + `</div>`
 			buff.WriteString(tabContent)
 		}
-		header += `</div>`
+		header.WriteString(`</div>`)
 		_ = tabs
-		return header + buff.String()
+		return header.String() + buff.String()
 	})
 	fileContent = ProcessReplaceMiddle(fileContent, parsing.PatternMiddle{
 		Start:       ".api.pool.",
