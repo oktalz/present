@@ -4,17 +4,17 @@ go 1.26.0
 
 require (
 	github.com/fsnotify/fsnotify v1.9.0
-	github.com/go-git/go-git/v5 v5.16.4
+	github.com/go-git/go-git/v5 v5.16.5
 	github.com/goccy/go-json v0.10.5
 	github.com/joho/godotenv v1.5.1
 	github.com/mileusna/useragent v1.3.5
 	github.com/oklog/ulid/v2 v2.1.1
 	github.com/oktalz/goldmark-d2 v0.0.0-20241123213649-3eb032fe55fe // fork of github.com/FurqanSoftware/goldmark-d2, go does not allow replace for go install
 	github.com/peterbourgon/ff/v4 v4.0.0-beta.1
-	github.com/yuin/goldmark v1.7.13
+	github.com/yuin/goldmark v1.7.16
 	github.com/yuin/goldmark-emoji v1.0.6
 	go.abhg.dev/goldmark/mermaid v0.6.0
-	golang.org/x/crypto v0.46.0
+	golang.org/x/crypto v0.48.0
 	oss.terrastruct.com/d2 v0.7.1
 )
 
@@ -49,11 +49,11 @@ require (
 	github.com/skeema/knownhosts v1.3.1 // indirect
 	github.com/stretchr/testify v1.10.0
 	github.com/xanzy/ssh-agent v0.3.3 // indirect
-	golang.org/x/exp v0.0.0-20251209150349-8475f28825e9 // indirect
-	golang.org/x/image v0.34.0 // indirect
-	golang.org/x/net v0.48.0 // indirect
-	golang.org/x/sys v0.39.0 // indirect
-	golang.org/x/text v0.32.0 // indirect
+	golang.org/x/exp v0.0.0-20260212183809-81e46e3db34a // indirect
+	golang.org/x/image v0.36.0 // indirect
+	golang.org/x/net v0.50.0 // indirect
+	golang.org/x/sys v0.41.0 // indirect
+	golang.org/x/text v0.34.0 // indirect
 	golang.org/x/xerrors v0.0.0-20240903120638-7835f813f4da // indirect
 	gopkg.in/warnings.v0 v0.1.2 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
