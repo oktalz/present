@@ -34,9 +34,7 @@ tasks:
     desc: ""
     silent: true
     cmds:
-      - go install {{.PACKAGE}}
-    env:
-      GOBIN: "{{.GOBIN}}"
+      - GOBIN={{.TARGET_DIR}} go install {{.PACKAGE}}
 
   check-go-tool:
     desc: 'install go tool'
@@ -63,7 +61,7 @@ tasks:
       - task : go-install
         vars:
           PACKAGE: '{{.URL}}@{{.VERSION}}'
-          GOBIN: '/{{.TMP}}/{{.NAME}}/{{.VERSION}}'
+          TARGET_DIR: '/{{.TMP}}/{{.NAME}}/{{.VERSION}}'
       - echo " /{{.TMP}}/{{.NAME}}/{{.VERSION}} done."
 
   check-go-tools:
