@@ -41,8 +41,8 @@ tasks:
       - |
           PROJECT="$(go list -m)"
           ALLOWED_LICENSES="$(<.allowed_license_types)"
-          $(check-go-tool {{.GO_LICENSES}}) report --ignore "$PROJECT" --ignore "github.com/golang/freetype/raster" --ignore "github.com/golang/freetype/truetype" --ignore "oss.terrastruct.com/d2" .
-          $(check-go-tool {{.GO_LICENSES}}) check --allowed_licenses="$ALLOWED_LICENSES" --ignore "$PROJECT"  --ignore "github.com/oktalz/present" --ignore "github.com/golang/freetype/raster" --ignore "github.com/golang/freetype/truetype" --ignore "oss.terrastruct.com/d2" .
+          $(check-go-tool {{.GO_LICENSES}}) report --ignore "$PROJECT" --ignore "github.com/golang/freetype/raster" --ignore "github.com/golang/freetype/truetype" --ignore "oss.terrastruct.com/d2" --ignore "github.com/cyphar/filepath-securejoin" .
+          $(check-go-tool {{.GO_LICENSES}}) check --allowed_licenses="$ALLOWED_LICENSES" --ignore "$PROJECT"  --ignore "github.com/oktalz/present" --ignore "github.com/golang/freetype/raster" --ignore "github.com/golang/freetype/truetype" --ignore "oss.terrastruct.com/d2"  --ignore "github.com/cyphar/filepath-securejoin" .
 
   govulncheck:
     desc: 'check vulnerabilities in Go code'

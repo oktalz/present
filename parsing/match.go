@@ -200,9 +200,10 @@ func ParseCast(cast, code string) ParseResult { //revive:disable:function-length
 		After:              []types.TerminalCommand{},
 		CodeBlockShowStart: 0,
 		CodeBlockShowEnd:   math.MaxInt,
+
+		IsStream: strings.Contains(cast, ".stream"),
+		IsEdit:   strings.Contains(cast, ".edit"),
 	}
-	result.IsStream = strings.Contains(cast, ".stream")
-	result.IsEdit = strings.Contains(cast, ".edit")
 	isBlock := strings.Contains(cast, ".save") || strings.Contains(cast, ".source")
 	var start int
 	var end int
