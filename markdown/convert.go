@@ -3,6 +3,7 @@ package markdown
 import (
 	"bytes"
 	"log"
+	"slices"
 	"strings"
 	"sync"
 
@@ -85,8 +86,8 @@ func Convert(source string) (string, error) {
 		}
 	}
 
-	for index := len(blocks) - 1; index >= 0; index-- {
-		res = strings.ReplaceAll(res, blocks[index].ID.String(), blocks[index].Data)
+	for _, block := range slices.Backward(blocks) {
+		res = strings.ReplaceAll(res, block.ID.String(), block.Data)
 	}
 	return res, nil
 }

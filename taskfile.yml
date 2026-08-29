@@ -8,10 +8,6 @@ includes:
   ci:
     taskfile: taskfile-ci.yml
     flatten: true
-  go:
-    taskfile: taskfile-go.yml
-    flatten: true
-    internal: true
   external:
     taskfile: taskfile-external.yml
     flatten: true
@@ -30,8 +26,6 @@ tasks:
 
   ci:
     desc: 'do all the checks'
-    deps:
-      - task: check-yq-installed
     cmds:
       - task: tidy
       - task: format
@@ -48,7 +42,7 @@ tasks:
         vars:
           TOOL: GOTESTSUM
     cmds:
-      - CGO_ENABLED=1 /{{.TMP}}/gotestsum/{{.GOTESTSUM_VERSION}}/gotestsum --hide-summary=output --format-icons=hivis --format=testdox --format-hide-empty-pkg -- -race ./...
+      - CGO_ENABLED=1 $(check-go-tool {{.GOTESTSUM}}) --hide-summary=output --format-icons=hivis --format=testdox --format-hide-empty-pkg -- -race ./...
 
   install:
     desc: 'build the project'
@@ -68,7 +62,8 @@ tasks:
       - task: tidy
 
   tools-install:
-    task:
+    desc: 'install all go tools'
+    cmds:
       - task: check-go-tools
         vars:
-          TOOLS: [YQ, BETTERALIGN, STATICCHECK, GOLICENSES, GOVULNCHECK, GOFUMPT, REVIVE, GOTESTSUM]
+          TOOLS: [YQ, BETTERALIGN, STATICCHECK, GO_LICENSES, GOVULNCHECK, GOFUMPT, REVIVE, GOTESTSUM]

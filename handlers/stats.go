@@ -19,7 +19,7 @@ func Stats(statsPage []byte, config configuration.Config) http.Handler {
 			adminPrivileges = true
 		}
 		if !adminPrivileges {
-			if !(userOK) {
+			if !userOK {
 				LoginRedirect(w, r, "/stats")
 				return
 			}

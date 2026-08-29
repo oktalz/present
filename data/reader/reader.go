@@ -3,6 +3,7 @@ package reader
 import (
 	"os"
 	"path/filepath"
+	"slices"
 	"strconv"
 	"strings"
 
@@ -101,8 +102,8 @@ func processSlides(fileContent string, ro types.ReadOptions) types.Presentation 
 		return ""
 	})
 
-	for i := len(templates) - 1; i >= 0; i-- {
-		fileContent = applyTemplate(fileContent, templates[i])
+	for _, template := range slices.Backward(templates) {
+		fileContent = applyTemplate(fileContent, template)
 	}
 
 	lines := strings.Split(fileContent, "\n")

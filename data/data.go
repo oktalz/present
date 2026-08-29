@@ -165,11 +165,14 @@ func Init(server Server, config *configuration.Config) {
 					p := presentation.Slides[index]
 					linkToReplace := `#link#` + link + `#link#`
 					presentation.Slides[index].Page.Header.HTML = strings.ReplaceAll(
-						p.Page.Header.HTML, linkToReplace, strconv.Itoa(page))
+						p.Page.Header.HTML, linkToReplace, strconv.Itoa(page),
+					)
 					presentation.Slides[index].Page.Data.HTML = strings.ReplaceAll(
-						p.Page.Data.HTML, linkToReplace, strconv.Itoa(page))
+						p.Page.Data.HTML, linkToReplace, strconv.Itoa(page),
+					)
 					presentation.Slides[index].Page.Footer.HTML = strings.ReplaceAll(
-						p.Page.Footer.HTML, linkToReplace, strconv.Itoa(page))
+						p.Page.Footer.HTML, linkToReplace, strconv.Itoa(page),
+					)
 					if p.LinkNext == link {
 						presentation.Slides[index].LinkNext = strconv.Itoa(page)
 					}

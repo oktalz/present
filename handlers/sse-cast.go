@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"slices"
 	"strings"
 	"time"
 
@@ -111,7 +112,8 @@ func CastSSE(config configuration.Config) http.Handler { //revive:disable:functi
 				err = os.WriteFile(
 					filepath.Join(workingDir, cmd.FileName),
 					[]byte(cmd.Code.Header+cmd.Code.Code+cmd.Code.Footer),
-					0o600)
+					0o600,
+				)
 				if err != nil {
 					http.Error(w, err.Error(), http.StatusInternalServerError)
 					return
@@ -130,8 +132,7 @@ func CastSSE(config configuration.Config) http.Handler { //revive:disable:functi
 				}
 			}
 		}
-		for i := len(terminalCommand) - 1; i >= 0; i-- {
-			cmd := terminalCommand[i]
+		for _, cmd := range slices.Backward(terminalCommand) {
 			cmd.Dir = workingDir
 			if cmd.App == "" {
 				continue
